@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Accomodationmanager\Component\Accommodation_manager\Administrator\Field">
+  <fieldset>
+    <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+    <field name="ordering"/>
+    <field name="state" default="1" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1">
+      <option value="1">JPUBLISHED</option>
+      <option value="0">JUNPUBLISHED</option>
+      <option value="2">JARCHIVED</option>
+      <option value="-2">JTRASHED</option>
+    </field>
+    <field name="checked_out" type="hidden" filter="unset"/>
+    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+    <field name="created_by" type="createdby" default="0" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" hidden="true" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_CREATED_BY"/>
+    <field name="room_category_title" filter="raw" type="text" required="true" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_TITLE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_TITLE" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_TITLE"/>
+    <field name="room_category_parent" type="foreignkey" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_PARENT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_PARENT" default="0" input_type="list" table="#__accommodation_manager_room_categories" key_field="id" translate="true" value_field="room_category_title"/>
+    <field name="room_category_name_de" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_DE" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_DE"/>
+    <field name="room_category_name_it" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_IT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_IT" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_IT"/>
+    <field name="room_category_name_en" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_EN" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_EN" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_EN"/>
+    <field name="room_category_name_fr" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_FR" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_FR" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_FR"/>
+    <field name="room_category_name_es" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_ES" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_ES" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_NAME_ES"/>
+    <field name="room_category_description_de" buttons="false" filter="JComponentHelper::filterText" type="editor" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_DE" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_DE"/>
+    <field name="room_category_description_it" buttons="false" filter="JComponentHelper::filterText" type="editor" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_IT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_IT" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_IT"/>
+    <field name="room_category_description_en" buttons="false" filter="JComponentHelper::filterText" type="editor" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_EN" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_EN" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_EN"/>
+    <field name="room_category_description_fr" buttons="false" filter="JComponentHelper::filterText" type="editor" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_FR" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_FR" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_FR"/>
+    <field name="room_category_description_es" buttons="false" filter="JComponentHelper::filterText" type="editor" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_ES" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_ES" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGERCATEGORY_ROOM_CATEGORY_DESCRIPTION_ES"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+  </fieldset>
+</form>

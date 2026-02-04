@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search" type="text" description="COM_ACCOMMODATION_MANAGER_SEARCH_FILTER_SUBMIT"
+               label="COM_USERS_FILTER_SEARCH_DESC"
+               class="js-stools-search-string" />
+
+        <field name="state"
+               type="status"
+               label="COM_ACCOMMODATION_MANAGER_FILTER_STATE"
+               description="COM_ACCOMMODATION_MANAGER_FILTER_STATE_DESC"
+               onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        
+
+    </fields>
+
+    <fields name="list">
+
+        <field name="fullordering"
+               type="list"
+               label="COM_ACCOMMODATION_MANAGER_LIST_FULL_ORDERING"
+               description="COM_ACCOMMODATION_MANAGER_LIST_FULL_ORDERING_DESC"
+               onchange="this.form.submit();"
+               default="a.id DESC"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.id ASC">COM_ACCOMMODATION_MANAGER_ID_ASC</option><option value="a.id DESC">COM_ACCOMMODATION_MANAGER_ID_DESC</option><option value="a.ordering ASC">COM_ACCOMMODATION_MANAGER_ORDERING_ASC</option><option value="a.ordering DESC">COM_ACCOMMODATION_MANAGER_ORDERING_DESC</option><option value="a.state ASC">COM_ACCOMMODATION_MANAGER_STATE_ASC</option><option value="a.state DESC">COM_ACCOMMODATION_MANAGER_STATE_DESC</option><option value="a.rate_typology_de ASC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_DE_ASC</option><option value="a.rate_typology_de DESC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_DE_DESC</option><option value="a.rate_typology_it ASC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_IT_ASC</option><option value="a.rate_typology_it DESC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_IT_DESC</option><option value="a.rate_typology_en ASC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_EN_ASC</option><option value="a.rate_typology_en DESC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_EN_DESC</option><option value="a.rate_typology_fr ASC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_FR_ASC</option><option value="a.rate_typology_fr DESC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_FR_DESC</option><option value="a.rate_typology_es ASC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_ES_ASC</option><option value="a.rate_typology_es DESC">COM_ACCOMMODATION_MANAGER_RATE_TYPOLOGY_ES_DESC</option>
+
+        </field>
+
+       <field name="limit"
+               type="limitbox"
+               label="COM_ACCOMMODATION_MANAGER_LIST_LIMIT"
+               description="COM_ACCOMMODATION_MANAGER_LIST_LIMIT_DESC"
+               class="input-mini"
+               default="25"
+               onchange="this.form.submit();"
+        />
+
+    </fields>
+
+</form>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.0" method="upgrade">
+    <name>com_accommodation_manager</name>
+    <creationDate>2.1.1</creationDate>
+    <copyright>Copyright (C) 2024. Tutti i diritti riservati.</copyright>
+    <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
+    <author>Altea Software Srl</author>
+    <authorEmail>web@altea.it</authorEmail>
+    <authorUrl>https://www.altea.it</authorUrl>
+    <version>2.1.1</version>
+    <description>COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION</description>
+    <namespace path="src">Accomodationmanager\Component\Accommodation_manager</namespace>
+
+    <scriptfile>script.php</scriptfile>
+
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <update> <!-- Runs on update -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/update.mysql.utf8.sql</file>
+        </sql>
+    </update>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+
+
+    <files folder="site">
+        <folder>src</folder>
+        <folder>forms</folder>
+        <folder>tmpl</folder>
+    </files>
+    <media destination="com_accommodation_manager" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <filename>joomla.asset.json</filename>
+    </media>
+    <languages folder="site/languages">
+			<language tag="en-GB">en-GB/com_accommodation_manager.ini</language>
+			<language tag="de-DE">de-DE/com_accommodation_manager.ini</language>
+			<language tag="it-IT">it-IT/com_accommodation_manager.ini</language>
+    </languages>
+    <administration>
+        <menu>COM_ACCOMMODATION_MANAGER</menu>
+        <submenu>
+
+			<menu link="option=com_accommodation_manager&amp;view=roomsmanager" view="roomsmanager" alt="Accommodation_manager/Roomsmanager">COM_ACCOMMODATION_MANAGER_TITLE_ROOMSMANAGER</menu>
+
+			<menu link="option=com_accommodation_manager&amp;view=managerroomcategories" view="managerroomcategories" alt="Accommodation_manager/Managerroomcategories">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERROOMCATEGORIES</menu>
+
+			<menu link="option=com_accommodation_manager&amp;view=managerrateperiods" view="managerrateperiods" alt="Accommodation_manager/Managerrateperiods">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATEPERIODS</menu>
+
+			<menu link="option=com_accommodation_manager&amp;view=managerrates" view="managerrates" alt="Accommodation_manager/Managerrates">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATES</menu>
+
+			<menu link="option=com_accommodation_manager&amp;view=managerratetypologies" view="managerratetypologies" alt="Accommodation_manager/Managerratetypologies">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATETYPOLOGIES</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <folder>forms</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+            <folder>services</folder>
+            <folder>presets</folder>
+            <folder>sql</folder>
+            <folder>ajax</folder>
+            <folder>assets</folder>
+        </files>
+        <languages folder="administrator/languages">
+
+			<language tag="en-GB">en-GB/com_accommodation_manager.ini</language>
+			<language tag="en-GB">en-GB/com_accommodation_manager.sys.ini</language>
+			<language tag="de-DE">de-DE/com_accommodation_manager.ini</language>
+			<language tag="de-DE">de-DE/com_accommodation_manager.sys.ini</language>
+			<language tag="it-IT">it-IT/com_accommodation_manager.ini</language>
+			<language tag="it-IT">it-IT/com_accommodation_manager.sys.ini</language>
+        </languages>
+    </administration>
+    <config>
+        <fields name="params">
+            <fieldset name="component">
+                <field name="save_history" default="0" />
+            </fieldset>
+        </fields>
+    </config>
+    <plugins>
+		<plugin group="finder" plugin="accommodation_manager_roomsmanager"/>
+    </plugins>
+
+
+    <updateservers>
+        <server type="extension" priority="1" name="com_accommodation_manager">https://www.component-creator.com/index.php?task=builder.preupdatecheckhook&amp;option=com_combuilder&amp;component=Mjk4NzAtMjAyODU3</server>
+    </updateservers>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.component-creator.com/ -->

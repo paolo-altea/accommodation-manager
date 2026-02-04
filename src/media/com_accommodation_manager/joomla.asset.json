@@ -1,0 +1,29 @@
+{
+    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+    "name": "com_accommodation_manager",
+    "version": "CVS: 2.0.1",
+    "license": "GNU General Public License versione 2 o successiva; vedi LICENSE.txt",
+    "assets": [
+        {
+            "name": "com_accommodation_manager.admin",
+            "type": "style",
+            "uri": "com_accommodation_manager/admin.css"
+        },
+        {
+            "name": "com_accommodation_manager.admin",
+            "type": "script",
+            "uri": "com_accommodation_manager/admin.js",
+            "dependencies": [
+                "jquery"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_accommodation_manager.list",
+            "type": "style",
+            "uri": "com_accommodation_manager/list.css"
+        }
+    ]
+}

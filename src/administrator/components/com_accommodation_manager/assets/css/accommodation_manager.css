@@ -1,0 +1,70 @@
+.icon-48-roomsmanager {
+      background-image: url(../images/l_roomsmanager.png);
+      padding-left:60px!important;
+}
+
+.icon-48-roommanager {
+      background-image: url(../images/l_roomsmanager.png);
+      padding-left:60px!important;
+}
+
+.color-box-roomsmanager { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-managerroomcategories {
+      background-image: url(../images/l_managerroomcategories.png);
+      padding-left:60px!important;
+}
+
+.icon-48-roommanagercategory {
+      background-image: url(../images/l_managerroomcategories.png);
+      padding-left:60px!important;
+}
+
+.color-box-managerroomcategories { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-managerrateperiods {
+      background-image: url(../images/l_managerrateperiods.png);
+      padding-left:60px!important;
+}
+
+.icon-48-managerrateperiod {
+      background-image: url(../images/l_managerrateperiods.png);
+      padding-left:60px!important;
+}
+
+.color-box-managerrateperiods { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-managerrates {
+      background-image: url(../images/l_managerrates.png);
+      padding-left:60px!important;
+}
+
+.icon-48-managerrate {
+      background-image: url(../images/l_managerrates.png);
+      padding-left:60px!important;
+}
+
+.color-box-managerrates { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-managerratetypologies {
+      background-image: url(../images/l_managerratetypologies.png);
+      padding-left:60px!important;
+}
+
+.icon-48-managerratetypology {
+      background-image: url(../images/l_managerratetypologies.png);
+      padding-left:60px!important;
+}
+
+.color-box-managerratetypologies { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+
+
+.other-filters{
+    padding: 0 14px;
+}

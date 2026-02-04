@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Accomodationmanager\Component\Accommodation_manager\Administrator\Field">
+  <fieldset>
+    <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+    <field name="ordering"/>
+    <field name="state" default="1" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1">
+      <option value="1">JPUBLISHED</option>
+      <option value="0">JUNPUBLISHED</option>
+      <option value="2">JARCHIVED</option>
+      <option value="-2">JTRASHED</option>
+    </field>
+    <field name="checked_out" type="hidden" filter="unset"/>
+    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+    <field name="created_by" type="createdby" default="0" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" hidden="true" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_CREATED_BY"/>
+    <field name="rate_typology_de" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE"/>
+    <field name="rate_typology_it" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT"/>
+    <field name="rate_typology_en" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN"/>
+    <field name="rate_typology_fr" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR"/>
+    <field name="rate_typology_es" filter="raw" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+  </fieldset>
+</form>
