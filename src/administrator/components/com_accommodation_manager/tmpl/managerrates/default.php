@@ -42,7 +42,7 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
       id="adminForm"
       class="form-validate">
 
-    <div class="rate-table-box">
+    <div id="j-main-container" class="j-main-container">
         <div class="row mb-3">
             <div class="col-md-6">
                 <a href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=managerrateperiod&layout=edit'); ?>"
@@ -73,7 +73,7 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
             </div>
         <?php else : ?>
             <div class="rates-grid-wrapper">
-                <table class="table table-bordered rates-grid">
+                <table class="table rates-grid">
                     <thead>
                         <tr>
                             <th scope="col" class="sticky-col sticky-header"><?php echo Text::_('COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATEPERIODS'); ?></th>
@@ -86,8 +86,11 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
                         </tr>
                     </thead>
                     <tbody>
+                        <?php $periodIndex = 0; ?>
                         <?php foreach ($periods as $period) : ?>
                             <?php
+                            $periodRowClass = ($periodIndex % 2 === 0) ? 'period-even' : 'period-odd';
+                            $periodIndex++;
                             $periodTitleField = 'period_title_' . $lang;
                             $periodTitle = !empty($period->$periodTitleField)
                                 ? $period->$periodTitleField
@@ -111,7 +114,7 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
                                             ? $typology->rate_typology_title
                                             : 'Type #' . $typology->id));
                                 ?>
-                                <tr>
+                                <tr class="<?php echo $periodRowClass; ?>">
                                     <?php if ($firstTypology) : ?>
                                         <td class="period-cell sticky-col" rowspan="<?php echo $typologyCount; ?>">
                                             <strong><?php echo $periodLabel; ?></strong>
@@ -176,10 +179,6 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
 </form>
 
 <style>
-.rate-table-box {
-    padding: 1rem;
-}
-
 /* Grid wrapper for horizontal scroll */
 .rates-grid-wrapper {
     overflow-x: auto;
@@ -239,5 +238,20 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+/* Period-based row striping - works in both light and dark mode */
+.rates-grid tr.period-odd > td {
+    background-color: rgba(128, 128, 128, 0.15) !important;
+}
+
+.rates-grid tr.period-even > td {
+    background-color: transparent !important;
+}
+
+/* Disable row hover effect - override Atum dark theme */
+[data-bs-theme="dark"] .j-main-container .table.rates-grid tr:hover,
+.j-main-container .table.rates-grid tr:hover {
+    background: transparent !important;
 }
 </style>

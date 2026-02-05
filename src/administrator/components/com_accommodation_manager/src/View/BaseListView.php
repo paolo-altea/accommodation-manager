@@ -28,8 +28,8 @@ abstract class BaseListView extends BaseHtmlView
 	protected $items;
 	protected $pagination;
 	protected $state;
-	protected $filterForm;
-	protected $activeFilters;
+	public $filterForm;
+	public $activeFilters;
 
 	/**
 	 * Workflow transitions (empty if workflows not used)
