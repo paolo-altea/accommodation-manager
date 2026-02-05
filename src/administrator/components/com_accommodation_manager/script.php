@@ -129,7 +129,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function processTable($app, $table)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$table_added = false;
 
@@ -263,7 +263,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function existsTable($table_name)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$table_name = str_replace('#__', $db->getPrefix(), (string) $table_name);
 
@@ -288,7 +288,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			$fields_definitions = array();
 			$indexes            = array();
 
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 
 			foreach ($fields as $field)
 			{
@@ -346,7 +346,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function generateColumnDeclaration($field)
 	{
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get('DatabaseDriver');
 		$col_name  = $db->quoteName((string) $field['field_name']);
 		$data_type = $this->getFieldType($field);
 
@@ -467,7 +467,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function processField($app, $table_name, $field)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		if (isset($field['action']))
 		{
@@ -642,7 +642,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function addField($table_name, $field)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$query_generated = false;
 
@@ -689,7 +689,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	private function existsField($table_name, $field_name)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		return in_array((string) $field_name, array_keys($db->getTableColumns($table_name)));
 	}
@@ -710,7 +710,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			return false;
 		}
 		
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$query = Text::sprintf(
 			'SHOW FULL COLUMNS FROM `%s` WHERE Field LIKE %s', $table_name, $db->quote((string) $field['field_name'])
@@ -783,7 +783,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 
 		if (count($plugins->children()))
 		{
-			$db    = Factory::getDbo();
+			$db    = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			foreach ($plugins->children() as $plugin)
@@ -959,7 +959,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 
 		if (count($plugins->children()))
 		{
-			$db    = Factory::getDbo();
+			$db    = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			foreach ($plugins->children() as $plugin)
@@ -1024,7 +1024,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 
 			if (count($modules->children()))
 			{
-				$db    = Factory::getDbo();
+				$db    = Factory::getContainer()->get('DatabaseDriver');
 				$query = $db->getQuery(true);
 
 				foreach ($modules->children() as $plugin)

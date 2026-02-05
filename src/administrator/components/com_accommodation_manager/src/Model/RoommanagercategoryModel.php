@@ -166,7 +166,7 @@ class RoommanagercategoryModel extends AdminModel
 	public function duplicate(&$pks)
 	{
 		$app = Factory::getApplication();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Access checks.
 		if (!$user->authorise('core.create', 'com_accommodation_manager'))
@@ -174,7 +174,7 @@ class RoommanagercategoryModel extends AdminModel
 			throw new \Exception(Text::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
-		$context    = $this->option . '.' . $this->name;
+		$context = $this->option . '.' . $this->name;
 
 		// Include the plugins for the save events.
 		PluginHelper::importPlugin($this->events_map['save']);
@@ -183,17 +183,15 @@ class RoommanagercategoryModel extends AdminModel
 
 		foreach ($pks as $pk)
 		{
-			
-				if ($table->load($pk, true))
-				{
-					// Reset the id to create a new record.
-					$table->id = 0;
+			try
+			{
+				$table->load($pk, true);
 
-					if (!$table->check())
-					{
-						throw new \Exception($table->getError());
-					}
-					
+				// Reset the id to create a new record.
+				$table->id = 0;
+
+				$table->check();
+
 				if (!empty($table->room_category_parent))
 				{
 					if (is_array($table->room_category_parent))
@@ -206,23 +204,23 @@ class RoommanagercategoryModel extends AdminModel
 					$table->room_category_parent = '';
 				}
 
+				// Trigger the before save event.
+				$result = $app->triggerEvent($this->event_before_save, array($context, &$table, true, $table));
 
-					// Trigger the before save event.
-					$result = $app->triggerEvent($this->event_before_save, array($context, &$table, true, $table));
-
-					if (in_array(false, $result, true) || !$table->store())
-					{
-						throw new \Exception($table->getError());
-					}
-
-					// Trigger the after save event.
-					$app->triggerEvent($this->event_after_save, array($context, &$table, true));
-				}
-				else
+				if (in_array(false, $result, true))
 				{
-					throw new \Exception($table->getError());
+					throw new \Exception(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 				}
-			
+
+				$table->store();
+
+				// Trigger the after save event.
+				$app->triggerEvent($this->event_after_save, array($context, &$table, true));
+			}
+			catch (\Exception $e)
+			{
+				throw new \Exception($e->getMessage());
+			}
 		}
 
 		// Clean cache
@@ -242,14 +240,12 @@ class RoommanagercategoryModel extends AdminModel
 	 */
 	protected function prepareTable($table)
 	{
-		jimport('joomla.filter.output');
-
 		if (empty($table->id))
 		{
 			// Set ordering to the last item if not set
 			if (@$table->ordering === '')
 			{
-				$db = Factory::getDbo();
+				$db = $this->getDatabase();
 				$db->setQuery('SELECT MAX(ordering) FROM #__accommodation_manager_room_categories');
 				$max             = $db->loadResult();
 				$table->ordering = $max + 1;

@@ -83,7 +83,7 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 
 		if ($array['id'] == 0 && empty($array['created_by']))
 		{
-			$array['created_by'] = Factory::getUser()->id;
+			$array['created_by'] = Factory::getApplication()->getIdentity()->id;
 		}
 
 		// Support for multiple or not foreign key field: room_category_parent
@@ -114,7 +114,7 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 			$array['metadata'] = (string) $registry;
 		}
 
-		if (!Factory::getUser()->authorise('core.admin', 'com_accommodation_manager.roommanagercategory.' . $array['id']))
+		if (!Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_accommodation_manager.roommanagercategory.' . $array['id']))
 		{
 			$actions         = Access::getActionsFromFile(
 				JPATH_ADMINISTRATOR . '/components/com_accommodation_manager/access.xml',

@@ -40,7 +40,7 @@ class ModifiedbyField extends \Joomla\CMS\Form\FormField
 	{
 		// Initialize variables.
 		$html   = array();
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$html[] = '<input type="hidden" name="' . $this->name . '" value="' . $user->id . '" />';
 		if (!$this->hidden)
 		{

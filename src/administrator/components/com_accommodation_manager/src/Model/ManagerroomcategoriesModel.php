@@ -222,7 +222,7 @@ class ManagerroomcategoriesModel extends ListModel
 
 				foreach ($values as $value)
 				{
-					$db    = Factory::getDbo();
+					$db    = $this->getDatabase();
 					$query = $db->getQuery(true);
 					$query
 						->select('`#__accommodation_manager_room_categories_3743785`.`room_category_title`')

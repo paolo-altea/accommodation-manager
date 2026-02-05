@@ -147,7 +147,7 @@ class ForeignKeyField extends ListField
 		$fk_value = '';
 
 		// Load all the field options
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		// Support for multiple fields on fk_values
@@ -250,7 +250,7 @@ class ForeignKeyField extends ListField
 	protected function getOptions()
 	{
 		$options = array();
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		try
 		{
 			$db->setQuery($this->processQuery());

@@ -35,7 +35,7 @@ class Accommodation_managerHelper
 	 */
 	public static function getFiles($pk, $table, $field)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query
@@ -57,7 +57,7 @@ class Accommodation_managerHelper
 	 */
 	public static function getActions()
 	{
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$result = new CMSObject;
 
 		$assetName = 'com_accommodation_manager';

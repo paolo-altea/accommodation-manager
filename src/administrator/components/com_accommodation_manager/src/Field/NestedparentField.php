@@ -42,7 +42,7 @@ class NestedparentField extends ListField
 		$options = array();
 		$table   = $this->getAttribute('table');
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true)
 			->select('DISTINCT(a.id) AS value, a.title AS text, a.level, a.lft')
 			->from($table . ' AS a');

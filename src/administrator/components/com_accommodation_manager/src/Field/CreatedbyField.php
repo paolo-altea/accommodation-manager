@@ -50,7 +50,7 @@ class CreatedbyField extends FormField
 		}
 		else
 		{
-			$user   = Factory::getUser();
+			$user   = Factory::getApplication()->getIdentity();
 			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . $user->id . '" />';
 		}
 

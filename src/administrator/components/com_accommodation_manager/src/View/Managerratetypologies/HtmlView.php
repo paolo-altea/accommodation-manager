@@ -18,7 +18,6 @@ use \Joomla\CMS\Toolbar\ToolbarHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
 use \Joomla\CMS\Form\Form;
-use \Joomla\CMS\HTML\Helpers\Sidebar;
 /**
  * View class for a list of Managerratetypologies.
  *
@@ -62,7 +61,6 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
-		$this->sidebar = Sidebar::render();
 		parent::display($tpl);
 	}
 
@@ -155,9 +153,6 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->preferences('com_accommodation_manager');
 		}
-
-		// Set sidebar action
-		Sidebar::setAction('index.php?option=com_accommodation_manager&view=managerratetypologies');
 	}
 	
 	/**

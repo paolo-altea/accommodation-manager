@@ -83,7 +83,7 @@ class RoommanagerTable extends Table implements VersionableTableInterface, Tagga
 
 		if ($array['id'] == 0 && empty($array['created_by']))
 		{
-			$array['created_by'] = Factory::getUser()->id;
+			$array['created_by'] = Factory::getApplication()->getIdentity()->id;
 		}
 
 		// Convert room_gallery subform array to JSON
@@ -120,7 +120,7 @@ class RoommanagerTable extends Table implements VersionableTableInterface, Tagga
 			$array['metadata'] = (string) $registry;
 		}
 
-		if (!Factory::getUser()->authorise('core.admin', 'com_accommodation_manager.roommanager.' . $array['id']))
+		if (!Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_accommodation_manager.roommanager.' . $array['id']))
 		{
 			$actions         = Access::getActionsFromFile(
 				JPATH_ADMINISTRATOR . '/components/com_accommodation_manager/access.xml',
