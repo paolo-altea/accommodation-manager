@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_code` VARCHAR(255)  NOT NULL ,
 `room_surface` VARCHAR(255)  NULL  DEFAULT "",
 `room_people` VARCHAR(255)  NULL  DEFAULT "",
+`room_price_from` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_de` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_it` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_en` VARCHAR(255)  NULL  DEFAULT "",
@@ -29,8 +30,18 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_description_fr` TEXT NULL ,
 `room_description_es` TEXT NULL ,
 `room_floor_plan` VARCHAR(255)  NULL  DEFAULT "",
+`room_floor_plan_alt_de` VARCHAR(255)  NULL  DEFAULT "",
+`room_floor_plan_alt_it` VARCHAR(255)  NULL  DEFAULT "",
+`room_floor_plan_alt_en` VARCHAR(255)  NULL  DEFAULT "",
+`room_floor_plan_alt_fr` VARCHAR(255)  NULL  DEFAULT "",
+`room_floor_plan_alt_es` VARCHAR(255)  NULL  DEFAULT "",
 `room_thumbnail` VARCHAR(255)  NULL  DEFAULT "",
-`room_gallery` VARCHAR(255)  NULL  DEFAULT "",
+`room_thumbnail_alt_de` VARCHAR(255)  NULL  DEFAULT "",
+`room_thumbnail_alt_it` VARCHAR(255)  NULL  DEFAULT "",
+`room_thumbnail_alt_en` VARCHAR(255)  NULL  DEFAULT "",
+`room_thumbnail_alt_fr` VARCHAR(255)  NULL  DEFAULT "",
+`room_thumbnail_alt_es` VARCHAR(255)  NULL  DEFAULT "",
+`room_gallery` TEXT  NULL,
 `room_video` VARCHAR(255)  NULL  DEFAULT "",
 `room_pano` VARCHAR(255)  NULL  DEFAULT "",
 PRIMARY KEY (`id`)
@@ -94,7 +105,7 @@ PRIMARY KEY (`id`)
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-
+`rate_typology_title` VARCHAR(255) NOT NULL DEFAULT '',
 `ordering` INT(11)  NULL  DEFAULT 0,
 `state` TINYINT(1)  NULL  DEFAULT 1,
 `checked_out` INT(11)  UNSIGNED,

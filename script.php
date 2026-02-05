@@ -957,7 +957,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			$plugins = $parent->get('manifest')->plugins;
 		}
 
-		if (count($plugins->children()))
+		if ($plugins && count($plugins->children()))
 		{
 			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);

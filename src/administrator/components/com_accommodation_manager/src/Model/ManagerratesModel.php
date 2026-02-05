@@ -204,9 +204,12 @@ class ManagerratesModel extends ListModel
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('id'),
+				$db->quoteName('rate_typology_title'),
 				$db->quoteName('rate_typology_de'),
 				$db->quoteName('rate_typology_it'),
 				$db->quoteName('rate_typology_en'),
+				$db->quoteName('rate_typology_fr'),
+				$db->quoteName('rate_typology_es'),
 			])
 			->from($db->quoteName('#__accommodation_manager_rate_typologies'))
 			->where($db->quoteName('state') . ' = 1')

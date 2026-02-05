@@ -105,7 +105,11 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
                                 $typologyTitleField = 'rate_typology_' . $lang;
                                 $typologyTitle = !empty($typology->$typologyTitleField)
                                     ? $typology->$typologyTitleField
-                                    : (!empty($typology->rate_typology_en) ? $typology->rate_typology_en : 'Type #' . $typology->id);
+                                    : (!empty($typology->rate_typology_en)
+                                        ? $typology->rate_typology_en
+                                        : (!empty($typology->rate_typology_title)
+                                            ? $typology->rate_typology_title
+                                            : 'Type #' . $typology->id));
                                 ?>
                                 <tr>
                                     <?php if ($firstTypology) : ?>
