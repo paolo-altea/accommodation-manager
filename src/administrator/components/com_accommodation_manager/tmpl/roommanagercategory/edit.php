@@ -1,15 +1,16 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -21,6 +22,7 @@ $wa->useScript('keepalive')
 
 $app = Factory::getApplication();
 $user = $app->getIdentity();
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 ?>
 
 <form
@@ -47,55 +49,17 @@ $user = $app->getIdentity();
     </div>
     <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-    <!-- Tab Contenuti DE -->
-    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_de', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_DE')); ?>
+    <!-- Tab Contenuti per lingua -->
+    <?php foreach ($enabledLanguages as $lang) : ?>
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_' . $lang, Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_' . strtoupper($lang))); ?>
     <div class="row">
         <div class="col-12">
-            <?php echo $this->form->renderField('room_category_name_de'); ?>
-            <?php echo $this->form->renderField('room_category_description_de'); ?>
+            <?php echo $this->form->renderField('room_category_name_' . $lang); ?>
+            <?php echo $this->form->renderField('room_category_description_' . $lang); ?>
         </div>
     </div>
     <?php echo HTMLHelper::_('uitab.endTab'); ?>
-
-    <!-- Tab Contenuti IT -->
-    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_it', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_IT')); ?>
-    <div class="row">
-        <div class="col-12">
-            <?php echo $this->form->renderField('room_category_name_it'); ?>
-            <?php echo $this->form->renderField('room_category_description_it'); ?>
-        </div>
-    </div>
-    <?php echo HTMLHelper::_('uitab.endTab'); ?>
-
-    <!-- Tab Contenuti EN -->
-    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_en', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_EN')); ?>
-    <div class="row">
-        <div class="col-12">
-            <?php echo $this->form->renderField('room_category_name_en'); ?>
-            <?php echo $this->form->renderField('room_category_description_en'); ?>
-        </div>
-    </div>
-    <?php echo HTMLHelper::_('uitab.endTab'); ?>
-
-    <!-- Tab Contenuti FR -->
-    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_fr', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_FR')); ?>
-    <div class="row">
-        <div class="col-12">
-            <?php echo $this->form->renderField('room_category_name_fr'); ?>
-            <?php echo $this->form->renderField('room_category_description_fr'); ?>
-        </div>
-    </div>
-    <?php echo HTMLHelper::_('uitab.endTab'); ?>
-
-    <!-- Tab Contenuti ES -->
-    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_es', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_ES')); ?>
-    <div class="row">
-        <div class="col-12">
-            <?php echo $this->form->renderField('room_category_name_es'); ?>
-            <?php echo $this->form->renderField('room_category_description_es'); ?>
-        </div>
-    </div>
-    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+    <?php endforeach; ?>
 
     <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 

@@ -1,15 +1,16 @@
 <?php
 /**
- * @version    CVS: 3.0.0
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -19,6 +20,8 @@ $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
     ->useScript('form.validate');
 HTMLHelper::_('bootstrap.tooltip');
+
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 ?>
 
 <form
@@ -39,42 +42,18 @@ HTMLHelper::_('bootstrap.tooltip');
             </div>
 
             <div class="row">
+                <?php foreach ($enabledLanguages as $index => $lang) : ?>
                 <div class="col-md-6">
                     <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_DE'); ?></legend>
-                        <?php echo $this->form->renderField('rate_typology_de'); ?>
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_' . strtoupper($lang)); ?></legend>
+                        <?php echo $this->form->renderField('rate_typology_' . $lang); ?>
                     </fieldset>
                 </div>
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_IT'); ?></legend>
-                        <?php echo $this->form->renderField('rate_typology_it'); ?>
-                    </fieldset>
-                </div>
+                <?php if (($index + 1) % 2 === 0 && $index < count($enabledLanguages) - 1) : ?>
             </div>
-
             <div class="row">
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_EN'); ?></legend>
-                        <?php echo $this->form->renderField('rate_typology_en'); ?>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_FR'); ?></legend>
-                        <?php echo $this->form->renderField('rate_typology_fr'); ?>
-                    </fieldset>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_ES'); ?></legend>
-                        <?php echo $this->form->renderField('rate_typology_es'); ?>
-                    </fieldset>
-                </div>
+                <?php endif; ?>
+                <?php endforeach; ?>
             </div>
 
             <?php if ($this->state->params->get('save_history', 1)) : ?>

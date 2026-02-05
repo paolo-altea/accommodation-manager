@@ -36,6 +36,59 @@
         </field>
     </fieldset>
 
+    <fieldset name="languages" label="COM_ACCOMMODATION_MANAGER_CONFIG_LANGUAGES">
+        <field
+            name="lang_de"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANG_DE"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="lang_it"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANG_IT"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="lang_en"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANG_EN"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="lang_fr"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANG_FR"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="lang_es"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANG_ES"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
     <fieldset name="request_links" label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINKS">
         <field
             name="request_link_de"

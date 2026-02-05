@@ -1,15 +1,16 @@
 <?php
 /**
- * @version    CVS: 3.0.0
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -24,6 +25,8 @@ HTMLHelper::_('bootstrap.tooltip');
 $this->document->addScriptOptions('com_accommodation_manager', [
     'errorPeriodEndBeforeStart' => Text::_('COM_ACCOMMODATION_MANAGER_ERROR_PERIOD_END_BEFORE_START')
 ]);
+
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 ?>
 
 <form
@@ -52,42 +55,18 @@ $this->document->addScriptOptions('com_accommodation_manager', [
 
             <!-- Language Titles -->
             <div class="row">
+                <?php foreach ($enabledLanguages as $index => $lang) : ?>
                 <div class="col-md-6">
                     <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_DE'); ?></legend>
-                        <?php echo $this->form->renderField('period_title_de'); ?>
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_' . strtoupper($lang)); ?></legend>
+                        <?php echo $this->form->renderField('period_title_' . $lang); ?>
                     </fieldset>
                 </div>
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_IT'); ?></legend>
-                        <?php echo $this->form->renderField('period_title_it'); ?>
-                    </fieldset>
-                </div>
+                <?php if (($index + 1) % 2 === 0 && $index < count($enabledLanguages) - 1) : ?>
             </div>
-
             <div class="row">
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_EN'); ?></legend>
-                        <?php echo $this->form->renderField('period_title_en'); ?>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_FR'); ?></legend>
-                        <?php echo $this->form->renderField('period_title_fr'); ?>
-                    </fieldset>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <fieldset class="options-form">
-                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_ES'); ?></legend>
-                        <?php echo $this->form->renderField('period_title_es'); ?>
-                    </fieldset>
-                </div>
+                <?php endif; ?>
+                <?php endforeach; ?>
             </div>
 
             <?php if ($this->state->params->get('save_history', 1)) : ?>

@@ -1,15 +1,16 @@
 <?php
 /**
- * @version    CVS: 3.0.0
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -18,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('bootstrap.tooltip');
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 HTMLHelper::_('behavior.multiselect');
 
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
@@ -73,6 +75,11 @@ if ($saveOrder) {
                         <th scope="col">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_ROOMSMANAGER_ROOM_NAME', 'a.room_name', $listDirn, $listOrder); ?>
                         </th>
+                        <?php foreach ($enabledLanguages as $lang) : ?>
+                        <th scope="col" class="d-none d-md-table-cell">
+                            <?php echo HTMLHelper::_('searchtools.sort', 'Title (' . strtoupper($lang) . ')', 'a.room_title_' . $lang, $listDirn, $listOrder); ?>
+                        </th>
+                        <?php endforeach; ?>
                         <th scope="col" class="d-none d-md-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_ROOMSMANAGER_ROOM_CATEGORY', 'a.room_category', $listDirn, $listOrder); ?>
                         </th>
@@ -86,7 +93,7 @@ if ($saveOrder) {
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="8">
+                        <td colspan="<?php echo 7 + count($enabledLanguages); ?>">
                             <?php echo $this->pagination->getListFooter(); ?>
                         </td>
                     </tr>
@@ -139,6 +146,15 @@ if ($saveOrder) {
                                     <?php echo $this->escape($item->room_name); ?>
                                 <?php endif; ?>
                             </td>
+
+                            <?php foreach ($enabledLanguages as $lang) : ?>
+                            <td class="d-none d-md-table-cell">
+                                <?php
+                                $titleField = 'room_title_' . $lang;
+                                echo $this->escape($item->$titleField ?? '');
+                                ?>
+                            </td>
+                            <?php endforeach; ?>
 
                             <td class="d-none d-md-table-cell">
                                 <?php echo $this->escape($item->room_category); ?>

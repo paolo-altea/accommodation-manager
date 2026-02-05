@@ -10,6 +10,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -18,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('bootstrap.tooltip');
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 HTMLHelper::_('behavior.multiselect');
 
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
@@ -63,21 +65,11 @@ if ($saveOrder) {
                         <th scope="col">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_TITLE', 'a.rate_typology_title', $listDirn, $listOrder); ?>
                         </th>
+                        <?php foreach ($enabledLanguages as $lang) : ?>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_DE', 'a.rate_typology_de', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'Title (' . strtoupper($lang) . ')', 'a.rate_typology_' . $lang, $listDirn, $listOrder); ?>
                         </th>
-                        <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_IT', 'a.rate_typology_it', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-lg-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_EN', 'a.rate_typology_en', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-xl-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_FR', 'a.rate_typology_fr', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-xl-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_ES', 'a.rate_typology_es', $listDirn, $listOrder); ?>
-                        </th>
+                        <?php endforeach; ?>
                         <th scope="col" class="w-5 d-none d-md-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_FIELD_ID_LABEL', 'a.id', $listDirn, $listOrder); ?>
                         </th>
@@ -85,7 +77,7 @@ if ($saveOrder) {
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="10">
+                        <td colspan="<?php echo 5 + count($enabledLanguages); ?>">
                             <?php echo $this->pagination->getListFooter(); ?>
                         </td>
                     </tr>
@@ -139,25 +131,14 @@ if ($saveOrder) {
                                 <?php endif; ?>
                             </td>
 
+                            <?php foreach ($enabledLanguages as $lang) : ?>
                             <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape($item->rate_typology_de); ?>
+                                <?php
+                                $titleField = 'rate_typology_' . $lang;
+                                echo $this->escape($item->$titleField ?? '');
+                                ?>
                             </td>
-
-                            <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape($item->rate_typology_it); ?>
-                            </td>
-
-                            <td class="d-none d-lg-table-cell">
-                                <?php echo $this->escape($item->rate_typology_en); ?>
-                            </td>
-
-                            <td class="d-none d-xl-table-cell">
-                                <?php echo $this->escape($item->rate_typology_fr); ?>
-                            </td>
-
-                            <td class="d-none d-xl-table-cell">
-                                <?php echo $this->escape($item->rate_typology_es); ?>
-                            </td>
+                            <?php endforeach; ?>
 
                             <td class="d-none d-md-table-cell">
                                 <?php echo $item->id; ?>

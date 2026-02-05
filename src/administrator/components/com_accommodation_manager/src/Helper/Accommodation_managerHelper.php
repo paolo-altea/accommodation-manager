@@ -1,19 +1,19 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Helper;
-// No direct access
+
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * Accommodation_manager helper.
@@ -23,12 +23,73 @@ use \Joomla\CMS\Object\CMSObject;
 class Accommodation_managerHelper
 {
 	/**
+	 * All supported languages with their labels
+	 *
+	 * @var array
+	 */
+	public const LANGUAGES = [
+		'de' => 'Deutsch',
+		'it' => 'Italiano',
+		'en' => 'English',
+		'fr' => 'Français',
+		'es' => 'Español',
+	];
+
+	/**
+	 * Gets the enabled languages from component configuration
+	 *
+	 * @return  array  Array of enabled language codes (e.g., ['de', 'it', 'en'])
+	 *
+	 * @since   3.1.0
+	 */
+	public static function getEnabledLanguages(): array
+	{
+		$params = ComponentHelper::getParams('com_accommodation_manager');
+		$enabled = [];
+
+		foreach (array_keys(self::LANGUAGES) as $lang)
+		{
+			// Default to enabled (1) if not set
+			if ($params->get('lang_' . $lang, 1))
+			{
+				$enabled[] = $lang;
+			}
+		}
+
+		// Ensure at least one language is always enabled
+		if (empty($enabled))
+		{
+			$enabled = ['de'];
+		}
+
+		return $enabled;
+	}
+
+	/**
+	 * Gets the enabled languages with their labels
+	 *
+	 * @return  array  Associative array of enabled languages (e.g., ['de' => 'Deutsch', 'it' => 'Italiano'])
+	 *
+	 * @since   3.1.0
+	 */
+	public static function getEnabledLanguagesWithLabels(): array
+	{
+		$enabled = self::getEnabledLanguages();
+		$result = [];
+
+		foreach ($enabled as $lang)
+		{
+			$result[$lang] = self::LANGUAGES[$lang];
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Gets the files attached to an item
 	 *
 	 * @param   int     $pk     The item's id
-	 *
 	 * @param   string  $table  The table's name
-	 *
 	 * @param   string  $field  The field's name
 	 *
 	 * @return  array  The files

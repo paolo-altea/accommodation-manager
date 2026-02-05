@@ -10,6 +10,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -18,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('bootstrap.tooltip');
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 HTMLHelper::_('behavior.multiselect');
 
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
@@ -66,21 +68,11 @@ if ($saveOrder) {
                         <th scope="col">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_END', 'a.period_end', $listDirn, $listOrder); ?>
                         </th>
+                        <?php foreach ($enabledLanguages as $lang) : ?>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_DE', 'a.period_title_de', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'Title (' . strtoupper($lang) . ')', 'a.period_title_' . $lang, $listDirn, $listOrder); ?>
                         </th>
-                        <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_IT', 'a.period_title_it', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-lg-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_EN', 'a.period_title_en', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-xl-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_FR', 'a.period_title_fr', $listDirn, $listOrder); ?>
-                        </th>
-                        <th scope="col" class="d-none d-xl-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_ES', 'a.period_title_es', $listDirn, $listOrder); ?>
-                        </th>
+                        <?php endforeach; ?>
                         <th scope="col" class="w-5 d-none d-md-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_FIELD_ID_LABEL', 'a.id', $listDirn, $listOrder); ?>
                         </th>
@@ -88,7 +80,7 @@ if ($saveOrder) {
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="12">
+                        <td colspan="<?php echo 6 + count($enabledLanguages); ?>">
                             <?php echo $this->pagination->getListFooter(); ?>
                         </td>
                     </tr>
@@ -146,25 +138,14 @@ if ($saveOrder) {
                                 <?php echo !empty($item->period_end) ? HTMLHelper::_('date', $item->period_end, Text::_('DATE_FORMAT_LC4')) : '-'; ?>
                             </td>
 
+                            <?php foreach ($enabledLanguages as $lang) : ?>
                             <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape($item->period_title_de); ?>
+                                <?php
+                                $titleField = 'period_title_' . $lang;
+                                echo $this->escape($item->$titleField ?? '');
+                                ?>
                             </td>
-
-                            <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape($item->period_title_it); ?>
-                            </td>
-
-                            <td class="d-none d-lg-table-cell">
-                                <?php echo $this->escape($item->period_title_en); ?>
-                            </td>
-
-                            <td class="d-none d-xl-table-cell">
-                                <?php echo $this->escape($item->period_title_fr); ?>
-                            </td>
-
-                            <td class="d-none d-xl-table-cell">
-                                <?php echo $this->escape($item->period_title_es); ?>
-                            </td>
+                            <?php endforeach; ?>
 
                             <td class="d-none d-md-table-cell">
                                 <?php echo $item->id; ?>

@@ -10,6 +10,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -18,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('bootstrap.tooltip');
+$enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
 HTMLHelper::_('behavior.multiselect');
 
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
@@ -63,6 +65,11 @@ if ($saveOrder) {
                         <th scope="col">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERROOMCATEGORIES_ROOM_CATEGORY_TITLE', 'a.room_category_title', $listDirn, $listOrder); ?>
                         </th>
+                        <?php foreach ($enabledLanguages as $lang) : ?>
+                        <th scope="col" class="d-none d-md-table-cell">
+                            <?php echo HTMLHelper::_('searchtools.sort', 'Name (' . strtoupper($lang) . ')', 'a.room_category_name_' . $lang, $listDirn, $listOrder); ?>
+                        </th>
+                        <?php endforeach; ?>
                         <th scope="col">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_ACCOMMODATION_MANAGER_MANAGERROOMCATEGORIES_ROOM_CATEGORY_PARENT', 'a.room_category_parent', $listDirn, $listOrder); ?>
                         </th>
@@ -73,7 +80,7 @@ if ($saveOrder) {
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="<?php echo 6 + count($enabledLanguages); ?>">
                             <?php echo $this->pagination->getListFooter(); ?>
                         </td>
                     </tr>
@@ -126,6 +133,15 @@ if ($saveOrder) {
                                     <?php echo $this->escape($item->room_category_title); ?>
                                 <?php endif; ?>
                             </td>
+
+                            <?php foreach ($enabledLanguages as $lang) : ?>
+                            <td class="d-none d-md-table-cell">
+                                <?php
+                                $nameField = 'room_category_name_' . $lang;
+                                echo $this->escape($item->$nameField ?? '');
+                                ?>
+                            </td>
+                            <?php endforeach; ?>
 
                             <td>
                                 <?php if (empty($item->room_category_parent) || $item->room_category_parent === '0') : ?>
