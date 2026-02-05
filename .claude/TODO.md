@@ -129,13 +129,16 @@ Revisione una ad una delle interfacce backend per verificare usabilità e consis
 
 ### FASE 12 - Gestione lingue
 
-- [ ] **12.1** Rivedere architettura multilingua: attualmente le traduzioni sono salvate come colonne separate nel DB (`*_de`, `*_it`, `*_en`, `*_fr`, `*_es`). Valutare alternative:
-  - Mantenere approccio attuale ma renderlo configurabile (lista lingue dinamica)
-  - Usare tabelle di traduzione separate (es. `#__accommodation_manager_rooms_translations`)
-  - Integrare con sistema Associations di Joomla
-- [ ] **12.2** Rendere la lista delle lingue supportate configurabile invece di hardcoded
-- [ ] **12.3** Aggiornare form XML per generare dinamicamente i campi lingua
-- [ ] **12.4** Aggiornare template per gestire lingue dinamiche (attualmente hardcoded `$lang = substr(..., 0, 2)`)
+**Decisione**: Manteniamo l'approccio a colonne separate (`*_de`, `*_it`, `*_en`, `*_fr`, `*_es`) ma rendiamo la lista lingue configurabile. Motivi:
+- Semplicità e performance (no JOIN extra)
+- Tutte le traduzioni visibili insieme nel form
+- Lingue abbastanza fisse per uso tipico (hotel Alto Adige)
+- Aggiungere lingua = ALTER TABLE + config update (raro)
+
+- [ ] **12.1** Creare configurazione centralizzata per lista lingue supportate (es. in config.xml o costante)
+- [ ] **12.2** Aggiornare form XML per usare la lista lingue configurata
+- [ ] **12.3** Aggiornare template per usare la lista lingue configurata (rimuovere hardcoded `$lang = substr(..., 0, 2)`)
+- [ ] **12.4** Documentare procedura per aggiungere nuova lingua (SQL + config)
 
 ## In corso
 
