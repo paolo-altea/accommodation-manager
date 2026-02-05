@@ -86,6 +86,12 @@ class RoommanagerTable extends Table implements VersionableTableInterface, Tagga
 			$array['created_by'] = Factory::getUser()->id;
 		}
 
+		// Convert room_gallery subform array to JSON
+		if (isset($array['room_gallery']) && is_array($array['room_gallery']))
+		{
+			$array['room_gallery'] = json_encode($array['room_gallery']);
+		}
+
 		// Support for multiple or not foreign key field: room_category
 			if(!empty($array['room_category']))
 			{

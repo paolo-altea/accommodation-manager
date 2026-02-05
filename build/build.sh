@@ -50,6 +50,7 @@ cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/services" "$BU
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/presets" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/sql" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/assets" "$BUILD_DIR/administrator/"
+cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/layouts" "$BUILD_DIR/administrator/"
 
 # Copy administrator languages
 echo -e "${YELLOW}Copying administrator languages...${NC}"

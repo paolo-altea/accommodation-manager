@@ -71,6 +71,7 @@
             <folder>presets</folder>
             <folder>sql</folder>
             <folder>assets</folder>
+            <folder>layouts</folder>
         </files>
         <languages folder="administrator/languages">
 
