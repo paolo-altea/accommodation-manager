@@ -200,8 +200,11 @@ abstract class BaseItemModel extends AdminModel
 
 		if (empty($table->id)) {
 			if (!isset($table->ordering) || $table->ordering === '') {
-				$db = $this->getDatabase();
-				$db->setQuery('SELECT MAX(ordering) FROM ' . $db->quoteName($this->tableName));
+				$db    = $this->getDatabase();
+				$query = $db->getQuery(true)
+					->select('MAX(' . $db->quoteName('ordering') . ')')
+					->from($db->quoteName($this->tableName));
+				$db->setQuery($query);
 				$max             = $db->loadResult();
 				$table->ordering = $max + 1;
 			}

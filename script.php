@@ -7,9 +7,6 @@
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
-define('MODIFIED', 1);
-define('NOT_MODIFIED', 2);
-
 defined('_JEXEC') or die();
 
 use \Joomla\CMS\Factory;
@@ -20,12 +17,21 @@ use \Joomla\CMS\Installer\InstallerScript;
 /**
  * Updates the database structure of the component
  *
- * @version  Release: 0.2b
- * @author   Component Creator <support@component-creator.com>
- * @since    0.1b
+ * @version  Release: 3.1.0
+ * @author   Altea Software Srl <web@altea.it>
+ * @since    3.0.0
  */
 class com_accommodation_managerInstallerScript extends InstallerScript
 {
+	/**
+	 * Return status: field was modified
+	 */
+	private const MODIFIED = 1;
+
+	/**
+	 * Return status: field was not modified
+	 */
+	private const NOT_MODIFIED = 2;
 	/**
 	 * The title of the component (printed on installation and uninstallation messages)
 	 *
@@ -476,7 +482,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 				case 'add':
 					$result = $this->addField($table_name, $field);
 
-					if ($result === MODIFIED)
+					if ($result === self::MODIFIED)
 					{
 						$app->enqueueMessage(
 							Text::sprintf('Field `%s` has been successfully added', $field['field_name'])
@@ -484,7 +490,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 					}
 					else
 					{
-						if ($result !== NOT_MODIFIED)
+						if ($result !== self::NOT_MODIFIED)
 						{
 							$app->enqueueMessage(
 								Text::sprintf(
@@ -530,7 +536,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 						{
 							$result = $this->addField($table_name, $field);
 
-							if ($result === MODIFIED)
+							if ($result === self::MODIFIED)
 							{
 								$app->enqueueMessage(
 									Text::sprintf('Field `%s` has been successfully modified', $field['field_name'])
@@ -538,7 +544,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 							}
 							else
 							{
-								if ($result !== NOT_MODIFIED)
+								if ($result !== self::NOT_MODIFIED)
 								{
 									$app->enqueueMessage(
 										Text::sprintf(
@@ -554,7 +560,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 					{
 						$result = $this->addField($table_name, $field);
 
-						if ($result === MODIFIED)
+						if ($result === self::MODIFIED)
 						{
 							$app->enqueueMessage(
 								Text::sprintf('Field `%s` has been successfully modified', $field['field_name'])
@@ -562,7 +568,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 						}
 						else
 						{
-							if ($result !== NOT_MODIFIED)
+							if ($result !== self::NOT_MODIFIED)
 							{
 								$app->enqueueMessage(
 									Text::sprintf(
@@ -611,7 +617,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		{
 			$result = $this->addField($table_name, $field);
 
-			if ($result === MODIFIED)
+			if ($result === self::MODIFIED)
 			{
 				$app->enqueueMessage(
 					Text::sprintf('Field `%s` has been successfully added', $field['field_name'])
@@ -619,7 +625,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			}
 			else
 			{
-				if ($result !== NOT_MODIFIED)
+				if ($result !== self::NOT_MODIFIED)
 				{
 					$app->enqueueMessage(
 						Text::sprintf(
@@ -669,14 +675,14 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			{
 				$db->execute();
 
-				return MODIFIED;
+				return self::MODIFIED;
 			} catch (Exception $ex)
 			{
 				return $ex->getMessage();
 			}
 		}
 
-		return NOT_MODIFIED;
+		return self::NOT_MODIFIED;
 	}
 
 	/**

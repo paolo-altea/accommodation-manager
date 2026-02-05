@@ -89,17 +89,24 @@ abstract class BaseEditView extends BaseHtmlView
 		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$user       = Factory::getApplication()->getIdentity();
+		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = isset($this->item->checked_out)
 			&& $this->item->checked_out != 0
-			&& $this->item->checked_out != $user->get('id');
+			&& $this->item->checked_out != $userId;
 		$canDo      = Accommodation_managerHelper::getActions();
 		$toolbar    = Toolbar::getInstance();
+
+		// Check edit.own permission for existing items
+		$canEditOwn = $canDo->get('core.edit.own')
+			&& !empty($this->item->created_by)
+			&& $this->item->created_by == $userId;
+		$canEdit    = $canDo->get('core.edit') || $canEditOwn;
 
 		ToolbarHelper::title(Text::_($this->titleKey), 'generic');
 
 		// Build the save group button
-		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
+		if (!$checkedOut && ($canEdit || $canDo->get('core.create'))) {
 			$saveGroup = $toolbar->dropdownButton('save-group');
 
 			$saveGroup->configure(

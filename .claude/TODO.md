@@ -80,9 +80,9 @@ Revisione dei form di editing:
 
 **Decisione**: Manteniamo l'approccio a colonne separate (`*_de`, `*_it`, `*_en`, `*_fr`, `*_es`) ma rendiamo la lista lingue configurabile.
 
-- [ ] **7.1** Creare configurazione centralizzata per lista lingue supportate (es. in config.xml o costante)
-- [ ] **7.2** Aggiornare form XML per usare la lista lingue configurata
-- [ ] **7.3** Aggiornare template per usare la lista lingue configurata (rimuovere hardcoded `$lang = substr(..., 0, 2)`)
+- [x] **7.1** Creare configurazione centralizzata per lista lingue supportate (config.xml + Helper::LANGUAGES) (2026-02-05)
+- [x] **7.2** Aggiornare edit templates per usare la lista lingue configurata (tab dinamici) (2026-02-05)
+- [x] **7.3** Aggiornare list templates per usare la lista lingue configurata (colonne dinamiche) (2026-02-05)
 - [ ] **7.4** Documentare procedura per aggiungere nuova lingua (SQL + config)
 
 ### FASE 8 - Pulizia codice morto
@@ -103,13 +103,13 @@ Revisione dei form di editing:
 
 ### FASE 9 - Refactoring strutturale
 
-- [ ] **9.1** Estrarre base class comune per i 5 AdminController (duplicate/getModel/saveOrderAjax identici)
-- [ ] **9.2** Estrarre base class comune per i 5 AdminModel (getForm/loadFormData/getItem/duplicate/prepareTable identici)
-- [ ] **9.3** Estrarre base class comune per le 5 Table classes (bind/check/store/delete identici)
-- [ ] **9.4** Estrarre base class comune per le 5 list HtmlView + 5 edit HtmlView
-- [ ] **9.5** Spostare query SQL raw in `prepareTable()` a Query Builder
-- [ ] **9.6** Aggiungere check `core.edit.own` nelle edit View (attualmente solo core.edit e core.create)
-- [ ] **9.7** Valutare se le costanti globali MODIFIED/NOT_MODIFIED in script.php debbano diventare class constants
+- [x] **9.1** Estrarre base class comune per i 4 list Controller: `BaseListController` (2026-02-05)
+- [x] **9.2** Estrarre base class comune per i 4 AdminModel: `BaseItemModel` (2026-02-05)
+- [x] **9.3** Estrarre base class comune per le 4 Table classes: `BaseTable` (2026-02-05)
+- [x] **9.4** Estrarre base class comune per le 4 list HtmlView + 4 edit HtmlView: `BaseListView`, `BaseEditView` (2026-02-05)
+- [x] **9.5** Spostare query SQL raw in `prepareTable()` a Query Builder (2026-02-05)
+- [x] **9.6** Aggiungere check `core.edit.own` nelle edit View - verifica created_by per permettere edit propri item (2026-02-05)
+- [x] **9.7** Convertire costanti globali MODIFIED/NOT_MODIFIED in script.php a class constants (self::MODIFIED, self::NOT_MODIFIED) (2026-02-05)
 
 ---
 
