@@ -10,13 +10,22 @@
       <option value="-2">JTRASHED</option>
     </field>
     <field name="checked_out" type="hidden" filter="unset"/>
-    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
-    <field name="created_by" type="createdby" default="0" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" hidden="true" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_CREATED_BY"/>
-    <field name="rate_typology_de" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE"/>
-    <field name="rate_typology_it" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT"/>
-    <field name="rate_typology_en" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN"/>
-    <field name="rate_typology_fr" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR"/>
-    <field name="rate_typology_es" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" hint="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES"/>
-    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+    <field name="checked_out_time" default="NULL" type="hidden" filter="unset"/>
+    <field name="created_by" type="createdby" default="0" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" hidden="true"/>
+    <field
+      name="rate_typology_title"
+      type="text"
+      label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_TITLE"
+      description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_TITLE"
+      filter="string"
+      required="true"
+      class="form-control"
+    />
+    <field name="rate_typology_de" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_DE" class="form-control"/>
+    <field name="rate_typology_it" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_IT" class="form-control"/>
+    <field name="rate_typology_en" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_EN" class="form-control"/>
+    <field name="rate_typology_fr" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_FR" class="form-control"/>
+    <field name="rate_typology_es" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_MANAGERRATETYPOLOGY_RATE_TYPOLOGY_ES" class="form-control"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="form-control" labelclass="control-label"/>
   </fieldset>
 </form>

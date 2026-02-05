@@ -14,7 +14,7 @@ Revisione delle liste nel backend per verificare usabilità e consistenza:
 - [x] **1.2** Rate Periods - Formato date corretto (2026-02-05)
 - [x] **1.3** Rooms Manager - Lista OK, form edit rifatto (2026-02-05)
 - [x] **1.4** Room Categories - Lista riordinata colonne, Bootstrap 5 (2026-02-05)
-- [ ] **1.5** Rate Typologies - Verificare layout, campi, messaggi
+- [x] **1.5** Rate Typologies - Aggiunto rate_typology_title, Bootstrap 5 responsive (2026-02-05)
 
 ### FASE 2 - Interfacce Admin (Form Edit)
 
@@ -30,7 +30,7 @@ Revisione dei form di editing:
   - [x] **2.1.7** Eseguire SQL update per aggiungere nuove colonne al database (2026-02-05)
 - [ ] **2.2** Form edit Rate Period - Verificare campi, validazione, UX
 - [x] **2.3** Form edit Room Category - Bootstrap 5, tab per lingua, sidebar stato (2026-02-05)
-- [ ] **2.4** Form edit Rate Typology - Verificare campi, validazione, UX
+- [x] **2.4** Form edit Rate Typology - Aggiunto rate_typology_title obbligatorio (2026-02-05)
 
 ### FASE 3 - Funzionalità rotte
 
@@ -136,7 +136,6 @@ Revisione dei form di editing:
 - [x] **10.13** Aggiungere filtro per categoria in Rooms list (2026-02-05)
 - [x] **10.15** Aggiungere filtro per parent category in Room Categories list (2026-02-05)
 - [x] **10.16** Mostrare "No Parent" invece di "0" nella colonna Parent della lista Room Categories (2026-02-05)
-- [ ] **10.14** Aggiungere filtro per room in Rates list
 
 ### FASE 11 - Build e packaging
 
