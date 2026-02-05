@@ -22,7 +22,6 @@ use Joomla\CMS\Tag\TaggableTableTrait;
 use \Joomla\Database\DatabaseDriver;
 use \Joomla\CMS\Filter\OutputFilter;
 use \Joomla\CMS\Filesystem\File;
-use \Joomla\Registry\Registry;
 use \Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use \Joomla\CMS\Helper\ContentHelper;
 
@@ -75,12 +74,6 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 	 */
 	public function bind($array, $ignore = '')
 	{
-		$date = Factory::getDate();
-		$task = Factory::getApplication()->input->get('task');
-		
-		$input = Factory::getApplication()->input;
-		$task = $input->getString('task', '');
-
 		if ($array['id'] == 0 && empty($array['created_by']))
 		{
 			$array['created_by'] = Factory::getApplication()->getIdentity()->id;
@@ -99,20 +92,6 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 			else {
 				$array['room_category_parent'] = 0;
 			}
-
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
-		}
-
-		if (isset($array['metadata']) && is_array($array['metadata']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
-		}
 
 		if (!Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_accommodation_manager.roommanagercategory.' . $array['id']))
 		{
@@ -141,23 +120,6 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 		}
 
 		return parent::bind($array, $ignore);
-	}
-
-	/**
-	 * Method to store a row in the database from the Table instance properties.
-	 *
-	 * If a primary key value is set the row with that primary key value will be updated with the instance property values.
-	 * If no primary key value is set a new row will be inserted into the database with the properties from the Table instance.
-	 *
-	 * @param   boolean  $updateNulls  True to update fields even if they are null.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   2.0.1
-	 */
-	public function store($updateNulls = true)
-	{
-		return parent::store($updateNulls);
 	}
 
 	/**
@@ -251,21 +213,4 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 		return $assetParentId;
 	}
 
-	//XXX_CUSTOM_TABLE_FUNCTION
-
-	
-    /**
-     * Delete a record by id
-     *
-     * @param   mixed  $pk  Primary key value to delete. Optional
-     *
-     * @return bool
-     */
-    public function delete($pk = null)
-    {
-        $this->load($pk);
-        $result = parent::delete($pk);
-        
-        return $result;
-    }
 }

@@ -41,12 +41,12 @@ Revisione dei form di editing:
 
 ### FASE 4 - API deprecate Joomla 3 → Joomla 5
 
-- [ ] **4.1** Sostituire `Factory::getUser()` con `$this->getCurrentUser()` o `Factory::getApplication()->getIdentity()` in tutti i Model, View, Table
-- [ ] **4.2** Sostituire `Factory::getDbo()` con dependency injection (`$this->getDatabase()`) in tutti i Model e Table
-- [ ] **4.3** Rimuovere `jimport('joomla.filter.output')` da tutti i 5 AdminModel (no-op in J5)
-- [ ] **4.4** Rimuovere uso di `Sidebar` HTML Helper da tutte le list View (deprecato in J4+)
-- [ ] **4.5** Sostituire `$table->getError()` con try/catch exceptions nei metodi `duplicate()` di tutti i controller
-- [ ] **4.6** Aggiornare `checked_out_time` default da `"0000-00-00 00:00:00"` a `NULL` in tutti i form XML
+- [x] **4.1** Sostituire `Factory::getUser()` con `Factory::getApplication()->getIdentity()` in tutti i file admin (2026-02-05)
+- [x] **4.2** Sostituire `Factory::getDbo()` con `$this->getDatabase()` o `Factory::getContainer()->get('DatabaseDriver')` (2026-02-05)
+- [x] **4.3** Rimuovere `jimport('joomla.filter.output')` da tutti i 4 AdminModel (2026-02-05)
+- [x] **4.4** Rimuovere uso di `Sidebar` HTML Helper da tutte le 4 list View (2026-02-05)
+- [x] **4.5** Sostituire `$table->getError()` con try/catch nei metodi `duplicate()` dei 4 AdminModel (2026-02-05)
+- [x] **4.6** Già OK - SQL usa `DEFAULT NULL` per checked_out_time (2026-02-05)
 
 ### FASE 5 - Database schema
 
@@ -87,19 +87,19 @@ Revisione dei form di editing:
 
 ### FASE 8 - Pulizia codice morto
 
-- [ ] **8.1** Rimuovere 5 Field classes orfane (mai usate nei form XML): `ModifiedbyField.php`, `TimecreatedField.php`, `TimeupdatedField.php`, `NestedparentField.php`, `FilemultipleField.php` - sia da admin che da site
-- [ ] **8.2** Rimuovere `listhelper.php` (nessun namespace, naming J3, non autoloadable in J5)
-- [ ] **8.3** Rimuovere `getSortFields()` da tutte le 5 list View (mai chiamato)
-- [ ] **8.4** Rimuovere variabile `$date` inutilizzata da tutti i 5 Table bind()
-- [ ] **8.5** Rimuovere doppia assegnazione `$task` da tutti i 5 Table bind()
-- [ ] **8.6** Rimuovere placeholder `//XXX_CUSTOM_TABLE_FUNCTION` da tutte le 5 Table classes
-- [ ] **8.7** Rimuovere tutti gli import `use` inutilizzati (SiteApplication, Multilanguage, Route, Uri, TagsHelper, ParameterType, ArrayHelper, Text in ListModel, OutputFilter, File, ContentHelper)
-- [ ] **8.8** Rimuovere override `store()` inutile da tutte le Table (chiama solo parent con default)
-- [ ] **8.9** Rimuovere override `delete()` inutile da tutte le Table (load + parent::delete senza logica aggiuntiva)
-- [ ] **8.10** Rimuovere binding `params`/`metadata` da Table bind() (colonne inesistenti nel DB)
-- [ ] **8.11** Rimuovere `$app` inutilizzato da `getForm()` in tutti i 5 AdminModel
-- [ ] **8.12** Sostituire `@$table->ordering` (error suppression) con check esplicito in tutti i AdminModel prepareTable()
-- [ ] **8.13** Rimuovere tutti i file `index.html` (convenzione Joomla 3, non necessaria)
+- [x] **8.1** Rimuovere 5 Field classes orfane (mai usate nei form XML): `ModifiedbyField.php`, `TimecreatedField.php`, `TimeupdatedField.php`, `NestedparentField.php`, `FilemultipleField.php` - sia da admin che da site (2026-02-05)
+- [x] **8.2** Rimuovere `listhelper.php` - NON PRESENTE (già rimosso o mai esistito) (2026-02-05)
+- [x] **8.3** Rimuovere `getSortFields()` da tutte le 4 list View (2026-02-05)
+- [x] **8.4** Rimuovere variabile `$date` inutilizzata da tutti i 4 Table bind() (2026-02-05)
+- [x] **8.5** Rimuovere doppia assegnazione `$task` da tutti i 4 Table bind() (2026-02-05)
+- [x] **8.6** Rimuovere placeholder `//XXX_CUSTOM_TABLE_FUNCTION` da tutte le 4 Table classes (2026-02-05)
+- [x] **8.7** Rimuovere import `use` inutilizzati: TagsHelper, ParameterType, ArrayHelper, Text, Form, Accommodation_managerHelper (2026-02-05)
+- [x] **8.8** Rimuovere override `store()` inutile da tutte le Table (chiama solo parent con default) (2026-02-05)
+- [x] **8.9** Rimuovere override `delete()` inutile da tutte le Table (load + parent::delete senza logica aggiuntiva) (2026-02-05)
+- [x] **8.10** Rimuovere binding `params`/`metadata` da Table bind() (colonne inesistenti nel DB) + import Registry (2026-02-05)
+- [x] **8.11** Rimuovere `$app` inutilizzato da `getForm()` in tutti i 4 AdminModel (2026-02-05)
+- [x] **8.12** Sostituire `@$table->ordering` (error suppression) con check esplicito in tutti i AdminModel prepareTable() (2026-02-05)
+- [x] **8.13** Rimuovere tutti i 12 file `index.html` (convenzione Joomla 3, non necessaria) (2026-02-05)
 
 ### FASE 9 - Refactoring strutturale
 

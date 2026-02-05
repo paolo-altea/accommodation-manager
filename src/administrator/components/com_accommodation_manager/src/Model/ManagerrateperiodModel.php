@@ -76,9 +76,6 @@ class ManagerrateperiodModel extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = Factory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm(
 								'com_accommodation_manager.managerrateperiod', 
@@ -230,7 +227,7 @@ class ManagerrateperiodModel extends AdminModel
 		if (empty($table->id))
 		{
 			// Set ordering to the last item if not set
-			if (@$table->ordering === '')
+			if (!isset($table->ordering) || $table->ordering === '')
 			{
 				$db = $this->getDatabase();
 				$db->setQuery('SELECT MAX(ordering) FROM #__accommodation_manager_rate_periods');
