@@ -50,21 +50,12 @@ if ($saveOrder)
 			<div id="j-main-container" class="j-main-container">
 			<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 
-				<?php
-				// Check if categories exist
-				$db = Factory::getContainer()->get('DatabaseDriver');
-				$query = $db->getQuery(true)
-					->select('COUNT(*)')
-					->from($db->quoteName('#__accommodation_manager_room_categories'))
-					->where($db->quoteName('state') . ' = 1');
-				$categoriesCount = (int) $db->setQuery($query)->loadResult();
-
-				if ($categoriesCount === 0) : ?>
+				<?php if (!$this->hasCategories) : ?>
 					<div class="alert alert-warning">
 						<span class="icon-warning-circle" aria-hidden="true"></span>
-						<?php echo Text::_('COM_ACCOMMODATION_MANAGER_NO_ROOM_CATEGORIES_WARNING'); ?>
-						<a href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=managerroomcategory&layout=edit'); ?>" class="alert-link">
-							<?php echo Text::_('COM_ACCOMMODATION_MANAGER_CREATE_ROOM_CATEGORY'); ?>
+						<?php echo Text::_('COM_ACCOMMODATION_MANAGER_NO_CATEGORIES_DESC'); ?>
+						<a href="<?php echo Route::_('index.php?option=com_accommodation_manager&task=roommanagercategory.add'); ?>" class="alert-link">
+							<?php echo Text::_('COM_ACCOMMODATION_MANAGER_CREATE_CATEGORY'); ?>
 						</a>
 					</div>
 				<?php endif; ?>

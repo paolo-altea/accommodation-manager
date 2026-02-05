@@ -130,10 +130,9 @@ class RoomsmanagerModel extends ListModel
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.room_category');
 
-		
 		return parent::getStoreId($id);
-		
 	}
 
 	/**
@@ -196,7 +195,15 @@ class RoomsmanagerModel extends ListModel
 				$query->where('( a.room_name LIKE ' . $search . ' )');
 			}
 		}
-		
+
+		// Filter by category
+		$category = $this->getState('filter.room_category');
+
+		if (is_numeric($category))
+		{
+			$query->where('a.room_category = ' . (int) $category);
+		}
+
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.ordering', "a.id");
 		$orderDirn = $this->state->get('list.direction', "ASC");

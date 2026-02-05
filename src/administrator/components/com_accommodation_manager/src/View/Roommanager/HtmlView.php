@@ -31,6 +31,13 @@ class HtmlView extends BaseHtmlView
 	protected $form;
 
 	/**
+	 * Flag indicating if categories exist
+	 *
+	 * @var bool
+	 */
+	protected $hasCategories = false;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  Template name
@@ -45,6 +52,9 @@ class HtmlView extends BaseHtmlView
 		$this->item  = $this->get('Item');
 		$this->form  = $this->get('Form');
 
+		// Check if categories exist
+		$this->hasCategories = $this->checkCategoriesExist();
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -53,6 +63,23 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 		parent::display($tpl);
+	}
+
+	/**
+	 * Check if at least one room category exists
+	 *
+	 * @return bool
+	 */
+	protected function checkCategoriesExist()
+	{
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->quoteName('#__accommodation_manager_room_categories'))
+			->where($db->quoteName('state') . ' >= 0');
+		$db->setQuery($query);
+
+		return (int) $db->loadResult() > 0;
 	}
 
 	/**

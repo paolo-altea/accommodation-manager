@@ -10,64 +10,102 @@
 // No direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Uri\Uri;
-use \Joomla\CMS\Router\Route;
-use \Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 
-
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
-	->useScript('form.validate');
-HTMLHelper::_('bootstrap.tooltip');
+    ->useScript('form.validate');
+
+$app = Factory::getApplication();
+$user = $app->getIdentity();
 ?>
 
 <form
-	action="<?php echo Route::_('index.php?option=com_accommodation_manager&layout=edit&id=' . (int) $this->item->id); ?>"
-	method="post" enctype="multipart/form-data" name="adminForm" id="roommanagercategory-form" class="form-validate form-horizontal">
+    action="<?php echo Route::_('index.php?option=com_accommodation_manager&layout=edit&id=' . (int) $this->item->id); ?>"
+    method="post" enctype="multipart/form-data" name="adminForm" id="roommanagercategory-form" class="form-validate">
 
-	
-	<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'roommanagercategory')); ?>
-	<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'roommanagercategory', Text::_('COM_ACCOMMODATION_MANAGER_TAB_ROOMMANAGERCATEGORY', true)); ?>
-	<div class="row-fluid">
-		<div class="span10 form-horizontal">
-			<fieldset class="adminform">
-				<legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_FIELDSET_ROOMMANAGERCATEGORY'); ?></legend>
-				<?php echo $this->form->renderField('room_category_title'); ?>
-				<?php echo $this->form->renderField('room_category_parent'); ?>
-				<?php echo $this->form->renderField('room_category_name_de'); ?>
-				<?php echo $this->form->renderField('room_category_name_it'); ?>
-				<?php echo $this->form->renderField('room_category_name_en'); ?>
-				<?php echo $this->form->renderField('room_category_name_fr'); ?>
-				<?php echo $this->form->renderField('room_category_name_es'); ?>
-				<?php echo $this->form->renderField('room_category_description_de'); ?>
-				<?php echo $this->form->renderField('room_category_description_it'); ?>
-				<?php echo $this->form->renderField('room_category_description_en'); ?>
-				<?php echo $this->form->renderField('room_category_description_fr'); ?>
-				<?php echo $this->form->renderField('room_category_description_es'); ?>
-				<?php if ($this->state->params->get('save_history', 1)) : ?>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('version_note'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('version_note'); ?></div>
-					</div>
-				<?php endif; ?>
-			</fieldset>
-		</div>
-	</div>
-	<?php echo HTMLHelper::_('uitab.endTab'); ?>
-	<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
-	<input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
-	<input type="hidden" name="jform[state]" value="<?php echo $this->item->state; ?>" />
-	<input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
-	<input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
-	<?php echo $this->form->renderField('created_by'); ?>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'base', 'recall' => true, 'breakpoint' => 768]); ?>
 
-	
-	<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+    <!-- Tab Dati Base -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'base', Text::_('COM_ACCOMMODATION_MANAGER_TAB_BASE')); ?>
+    <div class="row">
+        <div class="col-lg-9">
+            <?php echo $this->form->renderField('room_category_title'); ?>
+            <?php echo $this->form->renderField('room_category_parent'); ?>
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <?php echo $this->form->renderField('state'); ?>
+                    <?php echo $this->form->renderField('id'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-	<input type="hidden" name="task" value=""/>
-	<?php echo HTMLHelper::_('form.token'); ?>
+    <!-- Tab Contenuti DE -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_de', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_DE')); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $this->form->renderField('room_category_name_de'); ?>
+            <?php echo $this->form->renderField('room_category_description_de'); ?>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <!-- Tab Contenuti IT -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_it', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_IT')); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $this->form->renderField('room_category_name_it'); ?>
+            <?php echo $this->form->renderField('room_category_description_it'); ?>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <!-- Tab Contenuti EN -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_en', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_EN')); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $this->form->renderField('room_category_name_en'); ?>
+            <?php echo $this->form->renderField('room_category_description_en'); ?>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <!-- Tab Contenuti FR -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_fr', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_FR')); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $this->form->renderField('room_category_name_fr'); ?>
+            <?php echo $this->form->renderField('room_category_description_fr'); ?>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <!-- Tab Contenuti ES -->
+    <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'content_es', Text::_('COM_ACCOMMODATION_MANAGER_TAB_CONTENT_ES')); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $this->form->renderField('room_category_name_es'); ?>
+            <?php echo $this->form->renderField('room_category_description_es'); ?>
+        </div>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+
+    <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
+    <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
+    <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
+    <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
+    <?php echo $this->form->renderField('created_by'); ?>
+
+    <input type="hidden" name="task" value=""/>
+    <?php echo HTMLHelper::_('form.token'); ?>
 
 </form>

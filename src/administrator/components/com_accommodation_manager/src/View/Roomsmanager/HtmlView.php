@@ -19,6 +19,7 @@ use \Joomla\CMS\Language\Text;
 use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
 use \Joomla\CMS\Form\Form;
 use \Joomla\CMS\HTML\Helpers\Sidebar;
+use \Joomla\CMS\Factory;
 /**
  * View class for a list of Roomsmanager.
  *
@@ -38,6 +39,11 @@ class HtmlView extends BaseHtmlView
 	protected $transitions = [];
 
 	/**
+	 * @var  bool  Flag indicating if categories exist
+	 */
+	protected $hasCategories = false;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  Template name
@@ -54,6 +60,9 @@ class HtmlView extends BaseHtmlView
 		$this->filterForm = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
+		// Check if categories exist
+		$this->hasCategories = $this->checkCategoriesExist();
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -64,6 +73,23 @@ class HtmlView extends BaseHtmlView
 
 		$this->sidebar = Sidebar::render();
 		parent::display($tpl);
+	}
+
+	/**
+	 * Check if at least one room category exists
+	 *
+	 * @return bool
+	 */
+	protected function checkCategoriesExist()
+	{
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->quoteName('#__accommodation_manager_room_categories'))
+			->where($db->quoteName('state') . ' >= 0');
+		$db->setQuery($query);
+
+		return (int) $db->loadResult() > 0;
 	}
 
 	/**
@@ -82,10 +108,10 @@ class HtmlView extends BaseHtmlView
 
 		$toolbar = Toolbar::getInstance('toolbar');
 
-		// Check if the form exists before showing the add/edit buttons
+		// Check if the form exists and categories exist before showing the add button
 		$formPath = JPATH_COMPONENT_ADMINISTRATOR . '/src/View/Roomsmanager';
 
-		if (file_exists($formPath))
+		if (file_exists($formPath) && $this->hasCategories)
 		{
 			if ($canDo->get('core.create'))
 			{

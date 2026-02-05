@@ -14,7 +14,20 @@
             <option value="">JOPTION_SELECT_PUBLISHED</option>
         </field>
 
-        
+        <field name="room_category_parent"
+               type="sql"
+               label="COM_ACCOMMODATION_MANAGER_FILTER_PARENT"
+               onchange="this.form.submit();"
+               sql_select="id, room_category_title"
+               sql_from="#__accommodation_manager_room_categories"
+               sql_filter="state"
+               sql_default_state="1"
+               key_field="id"
+               value_field="room_category_title"
+        >
+            <option value="">COM_ACCOMMODATION_MANAGER_FILTER_SELECT_PARENT</option>
+            <option value="0">COM_ACCOMMODATION_MANAGER_FILTER_NO_PARENT</option>
+        </field>
 
     </fields>
 
