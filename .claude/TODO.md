@@ -28,7 +28,7 @@ Revisione dei form di editing:
   - [x] **2.1.5** Convertire room_gallery in subform ripetibile (media, media_mobile, alt_de/it/en/fr/es) (2026-02-05)
   - [x] **2.1.6** Riorganizzare layout form (tab per sezione/lingua, sidebar stato) (2026-02-05)
   - [x] **2.1.7** Eseguire SQL update per aggiungere nuove colonne al database (2026-02-05)
-- [ ] **2.2** Form edit Rate Period - Verificare campi, validazione, UX
+- [x] **2.2** Form edit Rate Period - Bootstrap 5, validazione date start/end (2026-02-05)
 - [x] **2.3** Form edit Room Category - Bootstrap 5, tab per lingua, sidebar stato (2026-02-05)
 - [x] **2.4** Form edit Rate Typology - Aggiunto rate_typology_title obbligatorio (2026-02-05)
 

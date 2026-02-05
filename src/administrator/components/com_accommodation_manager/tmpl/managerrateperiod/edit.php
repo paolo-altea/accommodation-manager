@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    CVS: 3.0.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
  * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
@@ -10,59 +10,141 @@
 // No direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Uri\Uri;
-use \Joomla\CMS\Router\Route;
-use \Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 
-
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
-	->useScript('form.validate');
+    ->useScript('form.validate');
 HTMLHelper::_('bootstrap.tooltip');
+
+// Add language string for JS
+$this->document->addScriptOptions('com_accommodation_manager', [
+    'errorPeriodEndBeforeStart' => Text::_('COM_ACCOMMODATION_MANAGER_ERROR_PERIOD_END_BEFORE_START')
+]);
 ?>
 
 <form
-	action="<?php echo Route::_('index.php?option=com_accommodation_manager&layout=edit&id=' . (int) $this->item->id); ?>"
-	method="post" enctype="multipart/form-data" name="adminForm" id="managerrateperiod-form" class="form-validate form-horizontal">
+    action="<?php echo Route::_('index.php?option=com_accommodation_manager&layout=edit&id=' . (int) $this->item->id); ?>"
+    method="post" enctype="multipart/form-data" name="adminForm" id="managerrateperiod-form" class="form-validate">
 
-	
-	<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'managerrateperiod')); ?>
-	<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'managerrateperiod', Text::_('COM_ACCOMMODATION_MANAGER_TAB_MANAGERRATEPERIOD', true)); ?>
-	<div class="row-fluid">
-		<div class="span10 form-horizontal">
-			<fieldset class="adminform">
-				<legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_FIELDSET_MANAGERRATEPERIOD'); ?></legend>
-				<?php echo $this->form->renderField('period_start'); ?>
-				<?php echo $this->form->renderField('period_end'); ?>
-				<?php echo $this->form->renderField('period_title_de'); ?>
-				<?php echo $this->form->renderField('period_title_it'); ?>
-				<?php echo $this->form->renderField('period_title_en'); ?>
-				<?php echo $this->form->renderField('period_title_fr'); ?>
-				<?php echo $this->form->renderField('period_title_es'); ?>
-				<?php if ($this->state->params->get('save_history', 1)) : ?>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('version_note'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('version_note'); ?></div>
-					</div>
-				<?php endif; ?>
-			</fieldset>
-		</div>
-	</div>
-	<?php echo HTMLHelper::_('uitab.endTab'); ?>
-	<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
-	<input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
-	<input type="hidden" name="jform[state]" value="<?php echo $this->item->state; ?>" />
-	<input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
-	<input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
-	<?php echo $this->form->renderField('created_by'); ?>
+    <div class="row">
+        <div class="col-lg-9">
+            <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'general', 'recall' => true, 'breakpoint' => 768]); ?>
 
-	
-	<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_ACCOMMODATION_MANAGER_TAB_MANAGERRATEPERIOD')); ?>
 
-	<input type="hidden" name="task" value=""/>
-	<?php echo HTMLHelper::_('form.token'); ?>
+            <!-- Date Range -->
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <?php echo $this->form->renderField('period_start'); ?>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <?php echo $this->form->renderField('period_end'); ?>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- Language Titles -->
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_DE'); ?></legend>
+                        <?php echo $this->form->renderField('period_title_de'); ?>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_IT'); ?></legend>
+                        <?php echo $this->form->renderField('period_title_it'); ?>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_EN'); ?></legend>
+                        <?php echo $this->form->renderField('period_title_en'); ?>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_FR'); ?></legend>
+                        <?php echo $this->form->renderField('period_title_fr'); ?>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset class="options-form">
+                        <legend><?php echo Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_ES'); ?></legend>
+                        <?php echo $this->form->renderField('period_title_es'); ?>
+                    </fieldset>
+                </div>
+            </div>
+
+            <?php if ($this->state->params->get('save_history', 1)) : ?>
+            <div class="row">
+                <div class="col-12">
+                    <?php echo $this->form->renderField('version_note'); ?>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+            <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <?php echo $this->form->renderField('state'); ?>
+                    <?php echo $this->form->renderField('created_by'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
+    <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
+    <input type="hidden" name="jform[checked_out]" value="<?php echo isset($this->item->checked_out) ? $this->item->checked_out : ''; ?>" />
+    <input type="hidden" name="jform[checked_out_time]" value="<?php echo isset($this->item->checked_out_time) ? $this->item->checked_out_time : ''; ?>" />
+
+    <input type="hidden" name="task" value=""/>
+    <?php echo HTMLHelper::_('form.token'); ?>
 
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('managerrateperiod-form');
+
+    form.addEventListener('submit', function(e) {
+        var startField = document.getElementById('jform_period_start');
+        var endField = document.getElementById('jform_period_end');
+
+        if (startField && endField && startField.value && endField.value) {
+            var startDate = new Date(startField.value);
+            var endDate = new Date(endField.value);
+
+            if (endDate < startDate) {
+                e.preventDefault();
+                e.stopPropagation();
+                var options = Joomla.getOptions('com_accommodation_manager');
+                Joomla.renderMessages({
+                    'error': [options.errorPeriodEndBeforeStart]
+                });
+                endField.focus();
+                return false;
+            }
+        }
+    });
+});
+</script>

@@ -83,7 +83,7 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface,
 
 		if ($array['id'] == 0 && empty($array['created_by']))
 		{
-			$array['created_by'] = Factory::getUser()->id;
+			$array['created_by'] = Factory::getApplication()->getIdentity()->id;
 		}
 
 		// Support for empty date field: period_start
@@ -114,7 +114,7 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface,
 			$array['metadata'] = (string) $registry;
 		}
 
-		if (!Factory::getUser()->authorise('core.admin', 'com_accommodation_manager.managerrateperiod.' . $array['id']))
+		if (!Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_accommodation_manager.managerrateperiod.' . $array['id']))
 		{
 			$actions         = Access::getActionsFromFile(
 				JPATH_ADMINISTRATOR . '/components/com_accommodation_manager/access.xml',
@@ -201,8 +201,16 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface,
 		{
 			$this->ordering = self::getNextOrder();
 		}
-		
-		
+
+		// Validate period_end >= period_start
+		if (!empty($this->period_start) && !empty($this->period_end))
+		{
+			if (strtotime($this->period_end) < strtotime($this->period_start))
+			{
+				$this->setError(Text::_('COM_ACCOMMODATION_MANAGER_ERROR_PERIOD_END_BEFORE_START'));
+				return false;
+			}
+		}
 
 		return parent::check();
 	}
