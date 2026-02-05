@@ -17,7 +17,6 @@ use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Toolbar\ToolbarHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
-use \Joomla\CMS\Form\Form;
 /**
  * View class for a list of Managerratetypologies.
  *
@@ -153,25 +152,6 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->preferences('com_accommodation_manager');
 		}
-	}
-	
-	/**
-	 * Method to order fields 
-	 *
-	 * @return void 
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'a.`id`' => Text::_('JGRID_HEADING_ID'),
-			'a.`ordering`' => Text::_('JGRID_HEADING_ORDERING'),
-			'a.`state`' => Text::_('JSTATUS'),
-			'a.`rate_typology_de`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_DE'),
-			'a.`rate_typology_it`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_IT'),
-			'a.`rate_typology_en`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_EN'),
-			'a.`rate_typology_fr`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_FR'),
-			'a.`rate_typology_es`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATETYPOLOGIES_RATE_TYPOLOGY_ES'),
-		);
 	}
 
 	/**

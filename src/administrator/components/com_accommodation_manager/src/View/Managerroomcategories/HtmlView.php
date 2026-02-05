@@ -17,7 +17,6 @@ use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Toolbar\ToolbarHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
-use \Joomla\CMS\Form\Form;
 /**
  * View class for a list of Managerroomcategories.
  *
@@ -153,22 +152,6 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->preferences('com_accommodation_manager');
 		}
-	}
-	
-	/**
-	 * Method to order fields 
-	 *
-	 * @return void 
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'a.`id`' => Text::_('JGRID_HEADING_ID'),
-			'a.`ordering`' => Text::_('JGRID_HEADING_ORDERING'),
-			'a.`state`' => Text::_('JSTATUS'),
-			'a.`room_category_title`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERROOMCATEGORIES_ROOM_CATEGORY_TITLE'),
-			'a.`room_category_parent`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERROOMCATEGORIES_ROOM_CATEGORY_PARENT'),
-		);
 	}
 
 	/**

@@ -17,7 +17,6 @@ use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Toolbar\ToolbarHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
-use \Joomla\CMS\Form\Form;
 /**
  * View class for a list of Managerrateperiods.
  *
@@ -153,27 +152,6 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->preferences('com_accommodation_manager');
 		}
-	}
-	
-	/**
-	 * Method to order fields 
-	 *
-	 * @return void 
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'a.`id`' => Text::_('JGRID_HEADING_ID'),
-			'a.`ordering`' => Text::_('JGRID_HEADING_ORDERING'),
-			'a.`state`' => Text::_('JSTATUS'),
-			'a.`period_start`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_START'),
-			'a.`period_end`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_END'),
-			'a.`period_title_de`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_DE'),
-			'a.`period_title_it`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_IT'),
-			'a.`period_title_en`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_EN'),
-			'a.`period_title_fr`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_FR'),
-			'a.`period_title_es`' => Text::_('COM_ACCOMMODATION_MANAGER_MANAGERRATEPERIODS_PERIOD_TITLE_ES'),
-		);
 	}
 
 	/**
