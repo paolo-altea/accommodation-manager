@@ -1,51 +1,38 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Table;
-// No direct access
+
 defined('_JEXEC') or die;
 
-use \Joomla\Utilities\ArrayHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Access\Access;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Table\Table as Table;
-use \Joomla\CMS\Versioning\VersionableTableInterface;
-use Joomla\CMS\Tag\TaggableTableInterface;
-use Joomla\CMS\Tag\TaggableTableTrait;
-use \Joomla\Database\DatabaseDriver;
-use \Joomla\CMS\Filter\OutputFilter;
-use \Joomla\CMS\Filesystem\File;
-use \Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
-use \Joomla\CMS\Helper\ContentHelper;
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseDriver;
 
 /**
  * Managerratetypology table
  *
  * @since 2.0.1
  */
-class ManagerratetypologyTable extends Table implements VersionableTableInterface, TaggableTableInterface
+class ManagerratetypologyTable extends Table implements VersionableTableInterface
 {
-	use TaggableTableTrait;
-	
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabase  &$db  A database connector object
+	 * @param   DatabaseDriver  $db  A database connector object
 	 */
 	public function __construct(DatabaseDriver $db)
 	{
 		$this->typeAlias = 'com_accommodation_manager.managerratetypology';
 		parent::__construct('#__accommodation_manager_rate_typologies', 'id', $db);
 		$this->setColumnAlias('published', 'state');
-		
 	}
 
 	/**
@@ -74,67 +61,23 @@ class ManagerratetypologyTable extends Table implements VersionableTableInterfac
 	 */
 	public function bind($array, $ignore = '')
 	{
-		if ($array['id'] == 0 && empty($array['created_by']))
-		{
-			$array['created_by'] = Factory::getApplication()->getIdentity()->id;
-		}
+		$date = Factory::getDate()->toSql();
+		$user = Factory::getApplication()->getIdentity();
 
-		if (!Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_accommodation_manager.managerratetypology.' . $array['id']))
-		{
-			$actions         = Access::getActionsFromFile(
-				JPATH_ADMINISTRATOR . '/components/com_accommodation_manager/access.xml',
-				"/access/section[@name='managerratetypology']/"
-			);
-			$default_actions = Access::getAssetRules('com_accommodation_manager.managerratetypology.' . $array['id'])->getData();
-			$array_jaccess   = array();
-
-			foreach ($actions as $action)
-			{
-				if (key_exists($action->name, $default_actions))
-				{
-					$array_jaccess[$action->name] = $default_actions[$action->name];
-				}
+		// Handle created/modified dates and users
+		if ($array['id'] == 0) {
+			if (empty($array['created_by'])) {
+				$array['created_by'] = $user->id;
 			}
-
-			$array['rules'] = $this->JAccessRulestoArray($array_jaccess);
-		}
-
-		// Bind the rules for ACL where supported.
-		if (isset($array['rules']) && is_array($array['rules']))
-		{
-			$this->setRules($array['rules']);
+			if (empty($array['created'])) {
+				$array['created'] = $date;
+			}
+		} else {
+			$array['modified_by'] = $user->id;
+			$array['modified'] = $date;
 		}
 
 		return parent::bind($array, $ignore);
-	}
-
-	/**
-	 * This function convert an array of Access objects into an rules array.
-	 *
-	 * @param   array  $jaccessrules  An array of Access objects.
-	 *
-	 * @return  array
-	 */
-	private function JAccessRulestoArray($jaccessrules)
-	{
-		$rules = array();
-
-		foreach ($jaccessrules as $action => $jaccess)
-		{
-			$actions = array();
-
-			if ($jaccess)
-			{
-				foreach ($jaccess->getData() as $group => $allow)
-				{
-					$actions[$group] = ((bool)$allow);
-				}
-			}
-
-			$rules[$action] = $actions;
-		}
-
-		return $rules;
 	}
 
 	/**
@@ -145,58 +88,10 @@ class ManagerratetypologyTable extends Table implements VersionableTableInterfac
 	public function check()
 	{
 		// If there is an ordering column and this is a new row then get the next ordering value
-		if (property_exists($this, 'ordering') && $this->id == 0)
-		{
+		if (property_exists($this, 'ordering') && $this->id == 0) {
 			$this->ordering = self::getNextOrder();
 		}
-		
-		
 
 		return parent::check();
 	}
-
-	/**
-	 * Define a namespaced asset name for inclusion in the #__assets table
-	 *
-	 * @return string The asset name
-	 *
-	 * @see Table::_getAssetName
-	 */
-	protected function _getAssetName()
-	{
-		$k = $this->_tbl_key;
-
-		return $this->typeAlias . '.' . (int) $this->$k;
-	}
-
-	/**
-	 * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
-	 *
-	 * @param   Table   $table  Table name
-	 * @param   integer  $id     Id
-	 *
-	 * @see Table::_getAssetParentId
-	 *
-	 * @return mixed The id on success, false on failure.
-	 */
-	protected function _getAssetParentId($table = null, $id = null)
-	{
-		// We will retrieve the parent-asset from the Asset-table
-		$assetParent = Table::getInstance('Asset');
-
-		// Default: if no asset-parent can be found we take the global asset
-		$assetParentId = $assetParent->getRootId();
-
-		// The item has the component as asset-parent
-		$assetParent->loadByName('com_accommodation_manager');
-
-		// Return the found asset-parent-id
-		if ($assetParent->id)
-		{
-			$assetParentId = $assetParent->id;
-		}
-
-		return $assetParentId;
-	}
-
 }

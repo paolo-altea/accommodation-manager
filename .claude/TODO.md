@@ -55,19 +55,19 @@ Revisione dei form di editing:
   - `rooms.room_surface`: VARCHAR(255) → VARCHAR(50) (mantiene VARCHAR per valori range "20-24")
   - `rooms.room_people`: VARCHAR(255) → VARCHAR(20) (mantiene VARCHAR per valori range "2-4")
   - `rate_periods.period_start/period_end`: DATETIME → DATE
-- [ ] **5.2** Aggiungere colonne Joomla standard mancanti a tutte le tabelle: `created` (DATETIME), `modified` (DATETIME), `modified_by` (INT)
-- [ ] **5.3** Aggiungere `asset_id` alle 4 tabelle che non ce l'hanno (room_categories, rate_periods, rates, rate_typologies) oppure rimuovere il codice ACL inutile dalle relative Table classes
-- [ ] **5.4** Aggiungere colonna `version_note` a tutte le tabelle (richiesta da VersionableTableInterface nei form e nelle Table classes) oppure rimuovere l'interfaccia
+- [x] **5.2** Aggiunte colonne `created`, `modified`, `modified_by` a tutte le 5 tabelle (2026-02-05)
+- [x] **5.3** Rimosso codice ACL inutile dalle 4 Table classes (non serve controllo granulare) (2026-02-05)
+- [x] **5.4** Aggiunta colonna `version_note` a tutte le 5 tabelle per supporto versioning (2026-02-05)
 - [x] **5.5** Aggiungere indici secondari (2026-02-05):
   - `rooms`: idx_room_category, idx_state_ordering ✓
   - `room_categories`: idx_room_category_parent, idx_state_ordering ✓
   - `rates`: idx_room_id, idx_period_id, idx_typology_id, idx_state ✓
   - `rate_periods`: idx_state_ordering ✓
   - `rate_typologies`: idx_state_ordering ✓
-- [ ] **5.6** Sincronizzare install SQL col DB reale: `room_floor_plan` e `room_thumbnail` (VARCHAR vs TEXT) - decidere quale tipo tenere e allineare
-- [ ] **5.7** Aggiornare collation da `utf8mb3_general_ci` a `utf8mb4_unicode_ci`
+- [x] **5.6** Verificato: `room_floor_plan` e `room_thumbnail` sono già VARCHAR(255) - OK (2026-02-05)
+- [x] **5.7** Aggiornata collation a `utf8mb4_unicode_ci` in install e update SQL (2026-02-05)
 - [x] **5.8** Creare sistema update SQL funzionale: creato `sql/updates/mysql/3.1.0.sql` (2026-02-05)
-- [ ] **5.9** Aggiungere cleanup in uninstall SQL: rimuovere entries da `#__content_types`, `#__assets`, `#__ucm_content`
+- [x] **5.9** Aggiunto cleanup in uninstall SQL: content_types, assets, ucm_content, action_logs (2026-02-05)
 
 ### FASE 6 - Performance
 

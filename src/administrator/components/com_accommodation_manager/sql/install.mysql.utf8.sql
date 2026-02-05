@@ -8,6 +8,10 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
+`created` DATETIME NULL DEFAULT NULL,
+`modified_by` INT(11) NULL DEFAULT 0,
+`modified` DATETIME NULL DEFAULT NULL,
+`version_note` VARCHAR(255) NULL DEFAULT '',
 `room_name` VARCHAR(255)  NOT NULL ,
 `room_category` INT(10)  NOT NULL  DEFAULT 0,
 `room_code` VARCHAR(255)  NOT NULL ,
@@ -47,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 PRIMARY KEY (`id`),
 INDEX `idx_room_category` (`room_category`),
 INDEX `idx_state_ordering` (`state`, `ordering`)
-) DEFAULT COLLATE=utf8_general_ci;
+) DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_room_categories` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -57,6 +61,10 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_room_categories` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
+`created` DATETIME NULL DEFAULT NULL,
+`modified_by` INT(11) NULL DEFAULT 0,
+`modified` DATETIME NULL DEFAULT NULL,
+`version_note` VARCHAR(255) NULL DEFAULT '',
 `room_category_title` VARCHAR(255)  NOT NULL ,
 `room_category_parent` INT(10)  NULL  DEFAULT 0,
 `room_category_name_de` VARCHAR(255)  NULL  DEFAULT "",
@@ -72,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_room_categories` (
 PRIMARY KEY (`id`),
 INDEX `idx_room_category_parent` (`room_category_parent`),
 INDEX `idx_state_ordering` (`state`, `ordering`)
-) DEFAULT COLLATE=utf8_general_ci;
+) DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_periods` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -82,6 +90,10 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_periods` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
+`created` DATETIME NULL DEFAULT NULL,
+`modified_by` INT(11) NULL DEFAULT 0,
+`modified` DATETIME NULL DEFAULT NULL,
+`version_note` VARCHAR(255) NULL DEFAULT '',
 `period_start` DATE NOT NULL ,
 `period_end` DATE NOT NULL ,
 `period_title_de` VARCHAR(255)  NULL  DEFAULT "",
@@ -91,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_periods` (
 `period_title_es` VARCHAR(255)  NULL  DEFAULT "",
 PRIMARY KEY (`id`),
 INDEX `idx_state_ordering` (`state`, `ordering`)
-) DEFAULT COLLATE=utf8_general_ci;
+) DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rates` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -101,6 +113,10 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rates` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
+`created` DATETIME NULL DEFAULT NULL,
+`modified_by` INT(11) NULL DEFAULT 0,
+`modified` DATETIME NULL DEFAULT NULL,
+`version_note` VARCHAR(255) NULL DEFAULT '',
 `room_id` INT(10)  NOT NULL  DEFAULT 0,
 `period_id` INT(10)  NOT NULL  DEFAULT 0,
 `typology_id` INT(10)  NOT NULL  DEFAULT 0,
@@ -110,7 +126,7 @@ INDEX `idx_room_id` (`room_id`),
 INDEX `idx_period_id` (`period_id`),
 INDEX `idx_typology_id` (`typology_id`),
 INDEX `idx_state` (`state`)
-) DEFAULT COLLATE=utf8_general_ci;
+) DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -120,6 +136,10 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
+`created` DATETIME NULL DEFAULT NULL,
+`modified_by` INT(11) NULL DEFAULT 0,
+`modified` DATETIME NULL DEFAULT NULL,
+`version_note` VARCHAR(255) NULL DEFAULT '',
 `rate_typology_de` VARCHAR(255)  NULL  DEFAULT "",
 `rate_typology_it` VARCHAR(255)  NULL  DEFAULT "",
 `rate_typology_en` VARCHAR(255)  NULL  DEFAULT "",
@@ -127,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
 `rate_typology_es` VARCHAR(255)  NULL  DEFAULT "",
 PRIMARY KEY (`id`),
 INDEX `idx_state_ordering` (`state`, `ordering`)
-) DEFAULT COLLATE=utf8_general_ci;
+) DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `content_history_options`)

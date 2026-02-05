@@ -26,3 +26,36 @@ ALTER TABLE `#__accommodation_manager_room_categories` ADD INDEX `idx_state_orde
 ALTER TABLE `#__accommodation_manager_rate_periods` ADD INDEX `idx_state_ordering` (`state`, `ordering`);
 ALTER TABLE `#__accommodation_manager_rates` ADD INDEX `idx_state` (`state`);
 ALTER TABLE `#__accommodation_manager_rate_typologies` ADD INDEX `idx_state_ordering` (`state`, `ordering`);
+
+-- Add Joomla standard columns for tracking and versioning
+ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `modified_by` INT(11) NULL DEFAULT 0 AFTER `created`;
+ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `modified` DATETIME NULL DEFAULT NULL AFTER `modified_by`;
+ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `version_note` VARCHAR(255) NULL DEFAULT '' AFTER `modified`;
+
+ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `modified_by` INT(11) NULL DEFAULT 0 AFTER `created`;
+ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `modified` DATETIME NULL DEFAULT NULL AFTER `modified_by`;
+ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `version_note` VARCHAR(255) NULL DEFAULT '' AFTER `modified`;
+
+ALTER TABLE `#__accommodation_manager_rate_periods` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `#__accommodation_manager_rate_periods` ADD COLUMN `modified_by` INT(11) NULL DEFAULT 0 AFTER `created`;
+ALTER TABLE `#__accommodation_manager_rate_periods` ADD COLUMN `modified` DATETIME NULL DEFAULT NULL AFTER `modified_by`;
+ALTER TABLE `#__accommodation_manager_rate_periods` ADD COLUMN `version_note` VARCHAR(255) NULL DEFAULT '' AFTER `modified`;
+
+ALTER TABLE `#__accommodation_manager_rates` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `#__accommodation_manager_rates` ADD COLUMN `modified_by` INT(11) NULL DEFAULT 0 AFTER `created`;
+ALTER TABLE `#__accommodation_manager_rates` ADD COLUMN `modified` DATETIME NULL DEFAULT NULL AFTER `modified_by`;
+ALTER TABLE `#__accommodation_manager_rates` ADD COLUMN `version_note` VARCHAR(255) NULL DEFAULT '' AFTER `modified`;
+
+ALTER TABLE `#__accommodation_manager_rate_typologies` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `created_by`;
+ALTER TABLE `#__accommodation_manager_rate_typologies` ADD COLUMN `modified_by` INT(11) NULL DEFAULT 0 AFTER `created`;
+ALTER TABLE `#__accommodation_manager_rate_typologies` ADD COLUMN `modified` DATETIME NULL DEFAULT NULL AFTER `modified_by`;
+ALTER TABLE `#__accommodation_manager_rate_typologies` ADD COLUMN `version_note` VARCHAR(255) NULL DEFAULT '' AFTER `modified`;
+
+-- Update collation to utf8mb4 for emoji and special character support
+ALTER TABLE `#__accommodation_manager_rooms` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `#__accommodation_manager_room_categories` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `#__accommodation_manager_rate_periods` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `#__accommodation_manager_rates` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `#__accommodation_manager_rate_typologies` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
