@@ -1,83 +1,62 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\View\Roomsmanager;
-// No direct access
-defined('_JEXEC') or die;
 
-use \Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use \Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
-use \Joomla\CMS\Toolbar\Toolbar;
-use \Joomla\CMS\Toolbar\ToolbarHelper;
-use \Joomla\CMS\Language\Text;
-use \Joomla\Component\Content\Administrator\Extension\ContentComponent;
-use \Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
+
+use Accomodationmanager\Component\Accommodation_manager\Administrator\View\BaseListView;
+use Joomla\CMS\Factory;
+
 /**
  * View class for a list of Roomsmanager.
  *
- * @since  2.0.1
+ * @since  3.1.0
  */
-class HtmlView extends BaseHtmlView
+class HtmlView extends BaseListView
 {
-	protected $items;
-
-	protected $pagination;
-
-	protected $state;
+	protected string $taskPrefix = 'roomsmanager';
+	protected string $addTask = 'roommanager.add';
+	protected string $titleKey = 'COM_ACCOMMODATION_MANAGER_TITLE_ROOMSMANAGER';
 
 	/**
-	 * @var  array  Workflow transitions (empty if workflows not used)
+	 * Flag indicating if categories exist
+	 *
+	 * @var    bool
+	 * @since  3.1.0
 	 */
-	protected $transitions = [];
-
-	/**
-	 * @var  bool  Flag indicating if categories exist
-	 */
-	protected $hasCategories = false;
+	public $hasCategories = false;
 
 	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  Template name
 	 *
-	 * @return void
+	 * @return  void
 	 *
-	 * @throws Exception
+	 * @throws  \Exception
+	 * @since   3.1.0
 	 */
 	public function display($tpl = null)
 	{
-		$this->state = $this->get('State');
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->filterForm = $this->get('FilterForm');
-		$this->activeFilters = $this->get('ActiveFilters');
-
-		// Check if categories exist
 		$this->hasCategories = $this->checkCategoriesExist();
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			throw new \Exception(implode("\n", $errors));
-		}
-
-		$this->addToolbar();
-
 		parent::display($tpl);
 	}
 
 	/**
 	 * Check if at least one room category exists
 	 *
-	 * @return bool
+	 * @return  bool
+	 *
+	 * @since   3.1.0
 	 */
-	protected function checkCategoriesExist()
+	protected function checkCategoriesExist(): bool
 	{
 		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true)
@@ -90,105 +69,15 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Add the page title and toolbar.
+	 * Check if the add button should be shown.
+	 * Requires at least one category to exist.
 	 *
-	 * @return  void
+	 * @return  bool
 	 *
-	 * @since   2.0.1
+	 * @since   3.1.0
 	 */
-	protected function addToolbar()
+	protected function canAdd(): bool
 	{
-		$state = $this->get('State');
-		$canDo = Accommodation_managerHelper::getActions();
-
-		ToolbarHelper::title(Text::_('COM_ACCOMMODATION_MANAGER_TITLE_ROOMSMANAGER'), "generic");
-
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Check if the form exists and categories exist before showing the add button
-		$formPath = JPATH_COMPONENT_ADMINISTRATOR . '/src/View/Roomsmanager';
-
-		if (file_exists($formPath) && $this->hasCategories)
-		{
-			if ($canDo->get('core.create'))
-			{
-				$toolbar->addNew('roommanager.add');
-			}
-		}
-
-		if ($canDo->get('core.edit.state')  || count($this->transitions))
-		{
-			$dropdown = $toolbar->dropdownButton('status-group')
-				->text('JTOOLBAR_CHANGE_STATUS')
-				->toggleSplit(false)
-				->icon('fas fa-ellipsis-h')
-				->buttonClass('btn btn-action')
-				->listCheck(true);
-
-			$childBar = $dropdown->getChildToolbar();
-
-			if (isset($this->items[0]->state))
-			{
-				$childBar->publish('roomsmanager.publish')->listCheck(true);
-				$childBar->unpublish('roomsmanager.unpublish')->listCheck(true);
-				$childBar->archive('roomsmanager.archive')->listCheck(true);
-			}
-			elseif (isset($this->items[0]))
-			{
-				// If this component does not use state then show a direct delete button as we can not trash
-				$toolbar->delete('roomsmanager.delete')
-				->text('JTOOLBAR_EMPTY_TRASH')
-				->message('JGLOBAL_CONFIRM_DELETE')
-				->listCheck(true);
-			}
-
-			$childBar->standardButton('duplicate')
-				->text('JTOOLBAR_DUPLICATE')
-				->icon('fas fa-copy')
-				->task('roomsmanager.duplicate')
-				->listCheck(true);
-
-			if (isset($this->items[0]->checked_out))
-			{
-				$childBar->checkin('roomsmanager.checkin')->listCheck(true);
-			}
-
-			if (isset($this->items[0]->state))
-			{
-				$childBar->trash('roomsmanager.trash')->listCheck(true);
-			}
-		}
-
-		
-
-		// Show trash and delete for components that uses the state field
-		if (isset($this->items[0]->state))
-		{
-
-			if ($this->state->get('filter.state') == ContentComponent::CONDITION_TRASHED && $canDo->get('core.delete'))
-			{
-				$toolbar->delete('roomsmanager.delete')
-					->text('JTOOLBAR_EMPTY_TRASH')
-					->message('JGLOBAL_CONFIRM_DELETE')
-					->listCheck(true);
-			}
-		}
-
-		if ($canDo->get('core.admin'))
-		{
-			$toolbar->preferences('com_accommodation_manager');
-		}
-	}
-
-	/**
-	 * Check if state is set
-	 *
-	 * @param   mixed  $state  State
-	 *
-	 * @return bool
-	 */
-	public function getState($state)
-	{
-		return isset($this->state->{$state}) ? $this->state->{$state} : false;
+		return $this->hasCategories;
 	}
 }

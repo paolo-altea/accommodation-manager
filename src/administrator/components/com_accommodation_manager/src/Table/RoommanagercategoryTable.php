@@ -9,19 +9,16 @@
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Table;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseDriver;
 
 /**
  * Roommanagercategory table
  *
- * @since 2.0.1
+ * @since  3.1.0
  */
-class RoommanagercategoryTable extends Table implements VersionableTableInterface
+class RoommanagercategoryTable extends BaseTable
 {
 	/**
 	 * Constructor
@@ -36,47 +33,16 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 	}
 
 	/**
-	 * Get the type alias for the history table
+	 * Process entity-specific fields in bind().
 	 *
-	 * @return  string  The alias as described above
+	 * @param   array  &$array  The data array
 	 *
-	 * @since   2.0.1
+	 * @return  void
+	 *
+	 * @since   3.1.0
 	 */
-	public function getTypeAlias()
+	protected function processBind(array &$array): void
 	{
-		return $this->typeAlias;
-	}
-
-	/**
-	 * Overloaded bind function to pre-process the params.
-	 *
-	 * @param   array  $array   Named array
-	 * @param   mixed  $ignore  Optional array or list of parameters to ignore
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     Table:bind
-	 * @since   2.0.1
-	 * @throws  \InvalidArgumentException
-	 */
-	public function bind($array, $ignore = '')
-	{
-		$date = Factory::getDate()->toSql();
-		$user = Factory::getApplication()->getIdentity();
-
-		// Handle created/modified dates and users
-		if ($array['id'] == 0) {
-			if (empty($array['created_by'])) {
-				$array['created_by'] = $user->id;
-			}
-			if (empty($array['created'])) {
-				$array['created'] = $date;
-			}
-		} else {
-			$array['modified_by'] = $user->id;
-			$array['modified'] = $date;
-		}
-
 		// Support for foreign key field: room_category_parent
 		if (!empty($array['room_category_parent'])) {
 			if (is_array($array['room_category_parent'])) {
@@ -87,22 +53,5 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 		} else {
 			$array['room_category_parent'] = 0;
 		}
-
-		return parent::bind($array, $ignore);
-	}
-
-	/**
-	 * Overloaded check function
-	 *
-	 * @return bool
-	 */
-	public function check()
-	{
-		// If there is an ordering column and this is a new row then get the next ordering value
-		if (property_exists($this, 'ordering') && $this->id == 0) {
-			$this->ordering = self::getNextOrder();
-		}
-
-		return parent::check();
 	}
 }

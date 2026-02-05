@@ -9,20 +9,17 @@
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Table;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseDriver;
 
 /**
  * Managerrateperiod table
  *
- * @since 2.0.1
+ * @since  3.1.0
  */
-class ManagerrateperiodTable extends Table implements VersionableTableInterface
+class ManagerrateperiodTable extends BaseTable
 {
 	/**
 	 * Constructor
@@ -37,47 +34,16 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface
 	}
 
 	/**
-	 * Get the type alias for the history table
+	 * Process entity-specific fields in bind().
 	 *
-	 * @return  string  The alias as described above
+	 * @param   array  &$array  The data array
 	 *
-	 * @since   2.0.1
+	 * @return  void
+	 *
+	 * @since   3.1.0
 	 */
-	public function getTypeAlias()
+	protected function processBind(array &$array): void
 	{
-		return $this->typeAlias;
-	}
-
-	/**
-	 * Overloaded bind function to pre-process the params.
-	 *
-	 * @param   array  $array   Named array
-	 * @param   mixed  $ignore  Optional array or list of parameters to ignore
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     Table:bind
-	 * @since   2.0.1
-	 * @throws  \InvalidArgumentException
-	 */
-	public function bind($array, $ignore = '')
-	{
-		$date = Factory::getDate()->toSql();
-		$user = Factory::getApplication()->getIdentity();
-
-		// Handle created/modified dates and users
-		if ($array['id'] == 0) {
-			if (empty($array['created_by'])) {
-				$array['created_by'] = $user->id;
-			}
-			if (empty($array['created'])) {
-				$array['created'] = $date;
-			}
-		} else {
-			$array['modified_by'] = $user->id;
-			$array['modified'] = $date;
-		}
-
 		// Support for empty date field: period_start
 		if ($array['period_start'] == '0000-00-00' || empty($array['period_start'])) {
 			$array['period_start'] = null;
@@ -89,22 +55,17 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface
 			$array['period_end'] = null;
 			$this->period_end = null;
 		}
-
-		return parent::bind($array, $ignore);
 	}
 
 	/**
-	 * Overloaded check function
+	 * Perform additional validation in check().
 	 *
-	 * @return bool
+	 * @return  bool  True if validation passes, false otherwise
+	 *
+	 * @since   3.1.0
 	 */
-	public function check()
+	protected function processCheck(): bool
 	{
-		// If there is an ordering column and this is a new row then get the next ordering value
-		if (property_exists($this, 'ordering') && $this->id == 0) {
-			$this->ordering = self::getNextOrder();
-		}
-
 		// Validate period_end >= period_start
 		if (!empty($this->period_start) && !empty($this->period_end)) {
 			if (strtotime($this->period_end) < strtotime($this->period_start)) {
@@ -113,6 +74,6 @@ class ManagerrateperiodTable extends Table implements VersionableTableInterface
 			}
 		}
 
-		return parent::check();
+		return true;
 	}
 }
