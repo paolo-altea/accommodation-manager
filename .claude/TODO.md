@@ -72,9 +72,9 @@ Revisione dei form di editing:
 ### FASE 6 - Performance
 
 - [x] **6.1** ~~Eliminare N+1 queries in `ManagerratesModel::getItems()`~~ - Risolto: griglia usa query dedicate (getPeriods/getRooms/getTypologies/getRatesGrid), rimosso getListQuery/getItems (2026-02-05)
-- [ ] **6.2** Eliminare N+1 queries in `RoomsmanagerModel::getItems()` - query separata per ogni room per risolvere room_category. Usare JOIN.
-- [ ] **6.3** Eliminare N+1 queries in `ManagerroomcategoriesModel::getItems()` - query separata per ogni categoria per risolvere parent. Usare JOIN.
-- [ ] **6.4** Rimuovere jQuery dependency da `joomla.asset.json` - usare vanilla JS
+- [x] **6.2** Eliminare N+1 queries in `RoomsmanagerModel::getItems()` - Usato valore già recuperato dal JOIN invece di N query (2026-02-05)
+- [x] **6.3** Eliminare N+1 queries in `ManagerroomcategoriesModel::getItems()` - Usato valore già recuperato dal JOIN invece di N query (2026-02-05)
+- [x] **6.4** Rimuovere jQuery dependency da `joomla.asset.json` - admin.js era già vanilla JS, rimossa dipendenza + aggiornata versione a 3.0.0 (2026-02-05)
 
 ### FASE 7 - Gestione lingue
 

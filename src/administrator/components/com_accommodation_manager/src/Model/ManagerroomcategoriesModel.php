@@ -206,34 +206,13 @@ class ManagerroomcategoriesModel extends ListModel
 	public function getItems()
 	{
 		$items = parent::getItems();
-		
+
+		// Use the already-joined parent title from getListQuery()
 		foreach ($items as $oneItem)
 		{
-
-			if (isset($oneItem->room_category_parent))
+			if (isset($oneItem->room_category_parent) && isset($oneItem->managerroomcategories_fk_value_3743785))
 			{
-				$values    = explode(',', $oneItem->room_category_parent);
-				$textValue = array();
-
-				foreach ($values as $value)
-				{
-					$db    = $this->getDatabase();
-					$query = $db->getQuery(true);
-					$query
-						->select('`#__accommodation_manager_room_categories_3743785`.`room_category_title`')
-						->from($db->quoteName('#__accommodation_manager_room_categories', '#__accommodation_manager_room_categories_3743785'))
-						->where($db->quoteName('#__accommodation_manager_room_categories_3743785.id') . ' = '. $db->quote($db->escape($value)));
-
-					$db->setQuery($query);
-					$results = $db->loadObject();
-
-					if ($results)
-					{
-						$textValue[] = $results->room_category_title;
-					}
-				}
-
-				$oneItem->room_category_parent = !empty($textValue) ? implode(', ', $textValue) : $oneItem->room_category_parent;
+				$oneItem->room_category_parent = $oneItem->managerroomcategories_fk_value_3743785;
 			}
 		}
 
