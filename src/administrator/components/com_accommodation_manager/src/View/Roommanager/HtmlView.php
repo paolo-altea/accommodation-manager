@@ -1,21 +1,22 @@
 <?php
 /**
- * @version    CVS: 2.0.1
+ * @version    3.1.0
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
- * @copyright  Copyright (C) 2019. Tutti i diritti riservati.
+ * @copyright  Copyright (C) 2024. Tutti i diritti riservati.
  * @license    GNU General Public License versione 2 o successiva; vedi LICENSE.txt
  */
 
 namespace Accomodationmanager\Component\Accommodation_manager\Administrator\View\Roommanager;
-// No direct access
+
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use \Joomla\CMS\Toolbar\ToolbarHelper;
-use \Joomla\CMS\Factory;
-use \Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
-use \Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * View class for a single Roommanager.
@@ -44,7 +45,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @return void
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -86,8 +87,6 @@ class HtmlView extends BaseHtmlView
 	 * Add the page title and toolbar.
 	 *
 	 * @return void
-	 *
-	 * @throws Exception
 	 */
 	protected function addToolbar()
 	{
@@ -95,50 +94,55 @@ class HtmlView extends BaseHtmlView
 
 		$user  = Factory::getApplication()->getIdentity();
 		$isNew = ($this->item->id == 0);
-
-		if (isset($this->item->checked_out))
-		{
-			$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
-		}
-		else
-		{
-			$checkedOut = false;
-		}
-
+		$checkedOut = isset($this->item->checked_out) && $this->item->checked_out != 0 && $this->item->checked_out != $user->get('id');
 		$canDo = Accommodation_managerHelper::getActions();
+		$toolbar = Toolbar::getInstance();
 
-		ToolbarHelper::title(Text::_('COM_ACCOMMODATION_MANAGER_TITLE_ROOMMANAGER'), "generic");
+		ToolbarHelper::title(Text::_('COM_ACCOMMODATION_MANAGER_TITLE_ROOMMANAGER'), 'generic');
 
-		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit') || ($canDo->get('core.create'))))
+		// Build the save group button
+		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create')))
 		{
-			ToolbarHelper::apply('roommanager.apply', 'JTOOLBAR_APPLY');
-			ToolbarHelper::save('roommanager.save', 'JTOOLBAR_SAVE');
-		}
+			$saveGroup = $toolbar->dropdownButton('save-group');
 
-		if (!$checkedOut && ($canDo->get('core.create')))
-		{
-			ToolbarHelper::custom('roommanager.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-		}
+			$saveGroup->configure(
+				function (Toolbar $childBar) use ($canDo, $checkedOut, $isNew)
+				{
+					// Save (apply)
+					$childBar->apply('roommanager.apply');
 
-		// If an existing item, can save to a copy.
-		if (!$isNew && $canDo->get('core.create'))
-		{
-			ToolbarHelper::custom('roommanager.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+					// Save & Close
+					$childBar->save('roommanager.save');
+
+					// Save & New
+					if ($canDo->get('core.create'))
+					{
+						$childBar->save2new('roommanager.save2new');
+					}
+
+					// Save as Copy
+					if (!$isNew && $canDo->get('core.create'))
+					{
+						$childBar->save2copy('roommanager.save2copy');
+					}
+				}
+			);
 		}
 
 		// Button for version control
-		if ($this->state->params->get('save_history', 1) && $user->authorise('core.edit')) {
+		if ($this->state->params->get('save_history', 1) && $user->authorise('core.edit') && !$isNew)
+		{
 			ToolbarHelper::versions('com_accommodation_manager.roommanager', $this->item->id);
 		}
 
-		if (empty($this->item->id))
+		// Cancel/Close button
+		if ($isNew)
 		{
-			ToolbarHelper::cancel('roommanager.cancel', 'JTOOLBAR_CANCEL');
+			$toolbar->cancel('roommanager.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
-			ToolbarHelper::cancel('roommanager.cancel', 'JTOOLBAR_CLOSE');
+			$toolbar->cancel('roommanager.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 }
