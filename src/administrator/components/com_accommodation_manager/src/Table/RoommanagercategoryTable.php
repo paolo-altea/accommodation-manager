@@ -92,7 +92,7 @@ class RoommanagercategoryTable extends Table implements VersionableTableInterfac
 				if(is_array($array['room_category_parent'])){
 					$array['room_category_parent'] = implode(',',$array['room_category_parent']);
 				}
-				else if(strrpos($array['room_category_parent'], ',') != false){
+				else if(strrpos($array['room_category_parent'], ',') !== false){
 					$array['room_category_parent'] = explode(',',$array['room_category_parent']);
 				}
 			}

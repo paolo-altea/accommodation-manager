@@ -92,7 +92,7 @@ class RoommanagerTable extends Table implements VersionableTableInterface, Tagga
 				if(is_array($array['room_category'])){
 					$array['room_category'] = implode(',',$array['room_category']);
 				}
-				else if(strrpos($array['room_category'], ',') != false){
+				else if(strrpos($array['room_category'], ',') !== false){
 					$array['room_category'] = explode(',',$array['room_category']);
 				}
 			}

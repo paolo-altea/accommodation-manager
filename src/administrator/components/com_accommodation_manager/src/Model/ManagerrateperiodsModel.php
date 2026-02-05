@@ -172,7 +172,7 @@ class ManagerrateperiodsModel extends ListModel
 			else
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				
+				$query->where('(a.period_title_de LIKE ' . $search . ' OR a.period_title_it LIKE ' . $search . ' OR a.period_title_en LIKE ' . $search . ' OR a.period_start LIKE ' . $search . ' OR a.period_end LIKE ' . $search . ')');
 			}
 		}
 		

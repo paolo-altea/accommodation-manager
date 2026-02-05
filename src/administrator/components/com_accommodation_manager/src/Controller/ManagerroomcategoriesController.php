@@ -46,7 +46,7 @@ class ManagerroomcategoriesController extends AdminController
 		{
 			if (empty($pks))
 			{
-				throw new \Exception(Text::_('COM_ACCOMMODATION_MANAGER_NO_ELEMENT_SELECTED'));
+				throw new \Exception(Text::_('COM_ACCOMMODATION_MANAGER_NO_ITEM_SELECTED'));
 			}
 
 			ArrayHelper::toInteger($pks);

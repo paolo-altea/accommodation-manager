@@ -170,7 +170,7 @@ class ManagerratetypologiesModel extends ListModel
 			else
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				
+				$query->where('(a.rate_typology_title LIKE ' . $search . ' OR a.rate_typology_de LIKE ' . $search . ' OR a.rate_typology_it LIKE ' . $search . ' OR a.rate_typology_en LIKE ' . $search . ')');
 			}
 		}
 		

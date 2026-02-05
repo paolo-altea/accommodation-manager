@@ -34,10 +34,10 @@ Revisione dei form di editing:
 
 ### FASE 3 - Funzionalità rotte
 
-- [ ] **3.1** Fixare ricerca testo rotta in 4 ListModel: `$search` viene preparato ma `$query->where()` mai chiamato. File: `ManagerroomcategoriesModel`, `ManagerratesModel`, `ManagerrateperiodsModel`, `ManagerratetypologiesModel`
+- [x] **3.1** Fixare ricerca testo in ListModel: aggiunto WHERE mancante in ManagerrateperiodsModel e ManagerratetypologiesModel (2026-02-05)
 - [x] **3.2** ~~Fixare ForeignKey fields in `managerrate.xml`~~ - Rimosso: form edit singola rate non usato, rates si modificano nella griglia (2026-02-05)
-- [ ] **3.3** Fixare bug `strrpos()` in Table bind(): `!= false` -> `!== false` (fallisce se comma è a posizione 0). File: RoommanagerTable, RoommanagercategoryTable, ManagerrateTable
-- [ ] **3.4** Aggiungere language key mancante `COM_ACCOMMODATION_MANAGER_NO_ELEMENT_SELECTED` in tutti i file .ini (usata in 5 controller)
+- [x] **3.3** Fixare bug `strrpos()` in Table bind(): `!= false` -> `!== false` in RoommanagerTable e RoommanagercategoryTable (2026-02-05)
+- [x] **3.4** Uniformare language key: controller usavano `NO_ELEMENT_SELECTED`, cambiato in `NO_ITEM_SELECTED` che già esiste (2026-02-05)
 
 ### FASE 4 - API deprecate Joomla 3 → Joomla 5
 
