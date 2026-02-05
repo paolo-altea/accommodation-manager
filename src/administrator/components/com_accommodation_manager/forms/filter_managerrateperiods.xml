@@ -2,7 +2,7 @@
 <form>
     <fields name="filter">
         <field name="search" type="text" description="COM_ACCOMMODATION_MANAGER_SEARCH_FILTER_SUBMIT"
-               label="COM_USERS_FILTER_SEARCH_DESC"
+               label="JGLOBAL_FILTER_SEARCH_DESC"
                class="js-stools-search-string" />
 
         <field name="state"

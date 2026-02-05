@@ -50,23 +50,23 @@ Revisione dei form di editing:
 
 ### FASE 5 - Database schema
 
-- [ ] **5.1** Fixare tipi colonna sbagliati:
-  - `rates.rate`: VARCHAR(255) → DECIMAL(10,2)
-  - `rooms.room_surface`: VARCHAR(255) → DECIMAL(8,2)
-  - `rooms.room_people`: VARCHAR(255) → SMALLINT
+- [x] **5.1** Fixare tipi colonna sbagliati (2026-02-05):
+  - `rates.rate`: VARCHAR(255) → DECIMAL(10,2) NULL (NULL = non disponibile)
+  - `rooms.room_surface`: VARCHAR(255) → VARCHAR(50) (mantiene VARCHAR per valori range "20-24")
+  - `rooms.room_people`: VARCHAR(255) → VARCHAR(20) (mantiene VARCHAR per valori range "2-4")
   - `rate_periods.period_start/period_end`: DATETIME → DATE
 - [ ] **5.2** Aggiungere colonne Joomla standard mancanti a tutte le tabelle: `created` (DATETIME), `modified` (DATETIME), `modified_by` (INT)
 - [ ] **5.3** Aggiungere `asset_id` alle 4 tabelle che non ce l'hanno (room_categories, rate_periods, rates, rate_typologies) oppure rimuovere il codice ACL inutile dalle relative Table classes
 - [ ] **5.4** Aggiungere colonna `version_note` a tutte le tabelle (richiesta da VersionableTableInterface nei form e nelle Table classes) oppure rimuovere l'interfaccia
-- [ ] **5.5** Aggiungere indici secondari:
-  - `rooms`: INDEX su `room_category`, `state`, `created_by`, `checked_out`
-  - `room_categories`: INDEX su `room_category_parent`, `state`
-  - `rates`: INDEX su `room_id`, `period_id`, `typology_id`, `state` + INDEX composto `(room_id, period_id, typology_id)`
-  - `rate_periods`: INDEX su `state`, `(period_start, period_end)`
-  - `rate_typologies`: INDEX su `state`
+- [x] **5.5** Aggiungere indici secondari (2026-02-05):
+  - `rooms`: idx_room_category, idx_state_ordering ✓
+  - `room_categories`: idx_room_category_parent, idx_state_ordering ✓
+  - `rates`: idx_room_id, idx_period_id, idx_typology_id, idx_state ✓
+  - `rate_periods`: idx_state_ordering ✓
+  - `rate_typologies`: idx_state_ordering ✓
 - [ ] **5.6** Sincronizzare install SQL col DB reale: `room_floor_plan` e `room_thumbnail` (VARCHAR vs TEXT) - decidere quale tipo tenere e allineare
 - [ ] **5.7** Aggiornare collation da `utf8mb3_general_ci` a `utf8mb4_unicode_ci`
-- [ ] **5.8** Creare sistema update SQL funzionale con version markers (attuale non ha marker, referenzia path Joomla 3)
+- [x] **5.8** Creare sistema update SQL funzionale: creato `sql/updates/mysql/3.1.0.sql` (2026-02-05)
 - [ ] **5.9** Aggiungere cleanup in uninstall SQL: rimuovere entries da `#__content_types`, `#__assets`, `#__ucm_content`
 
 ### FASE 6 - Performance
@@ -119,23 +119,22 @@ Revisione dei form di editing:
 
 ### FASE 10 - Manifest e configurazione
 
-- [ ] **10.1** Rimuovere manifest duplicato da `src/administrator/components/com_accommodation_manager/accommodation_manager.xml` (quello vero è alla root)
-- [ ] **10.2** Rimuovere `script.php` duplicato dalla cartella admin (quello vero è alla root)
-- [ ] **10.3** Fixare `creationDate` nel manifest: contiene "2.1.1" (versione) anziché una data reale
-- [ ] **10.4** Allineare versioni: manifest 2.1.1, joomla.asset.json "CVS: 2.0.1" - unificare
-- [ ] **10.5** Aggiornare `version="4.0"` a `version="5.0"` nel tag `<extension>` del manifest
-- [ ] **10.6** Rimuovere o riscrivere `presets/content.xml` (copia letterale del preset com_content, irrilevante)
-- [ ] **10.7** Pulire `config.xml`: rimuovere fieldset vuoto e blocco commentato boilerplate
-- [ ] **10.8** Aggiungere in `config.xml` campi link multilingua:
-  - Link richiesta (request_link_de, request_link_it, request_link_en, request_link_fr, request_link_es)
-  - Link booking (booking_link_de, booking_link_it, booking_link_en, booking_link_fr, booking_link_es)
-- [ ] **10.9** Fixare `joomla.asset.json`: rimuovere prefisso "CVS:", aggiornare versione
-- [ ] **10.10** Aggiungere sezioni ACL mancanti in `access.xml` per le altre 4 entità (o decidere di non supportare ACL granulare)
-- [ ] **10.11** Fixare language key errata nei filter form: `COM_USERS_FILTER_SEARCH_DESC` → `COM_ACCOMMODATION_MANAGER_FILTER_SEARCH_DESC`
-- [ ] **10.12** Rimuovere language key duplicata `COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION` in com_accommodation_manager.ini
+- [x] **10.1** Rimuovere manifest duplicato da `src/administrator/components/com_accommodation_manager/accommodation_manager.xml` (2026-02-05)
+- [x] **10.2** Rimuovere `script.php` duplicato dalla cartella admin (2026-02-05)
+- [x] **10.3** Fixare `creationDate` nel manifest: 2.1.1 → 2026-02 (2026-02-05)
+- [x] **10.4** Allineare versioni: manifest e joomla.asset.json → 3.1.0 (2026-02-05)
+- [x] **10.5** Aggiornare `version="4.0"` a `version="5.0"` nel tag `<extension>` del manifest (2026-02-05)
+- [x] **10.6** Rimossa cartella `presets/` (copia irrilevante di com_content) (2026-02-05)
+- [x] **10.7** Pulito `config.xml`: rimosso fieldset vuoto e commenti boilerplate (2026-02-05)
+- [x] **10.8** Aggiunti in `config.xml` campi link multilingua (request_link_*, booking_link_*) (2026-02-05)
+- [x] **10.9** Fixato `joomla.asset.json`: rimosso prefisso "CVS:", versione 3.0.0 (2026-02-05)
+- [x] **10.10** ACL granulare: non necessario, basta permesso generico componente (2026-02-05)
+- [x] **10.11** Fixata language key errata nei filter form: `COM_USERS_FILTER_SEARCH_DESC` → `JGLOBAL_FILTER_SEARCH_DESC` (2026-02-05)
+- [x] **10.12** Rimosse language key duplicate `COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION` e `COMPONENT_DESC` (2026-02-05)
 - [x] **10.13** Aggiungere filtro per categoria in Rooms list (2026-02-05)
 - [x] **10.15** Aggiungere filtro per parent category in Room Categories list (2026-02-05)
 - [x] **10.16** Mostrare "No Parent" invece di "0" nella colonna Parent della lista Room Categories (2026-02-05)
+- [x] **10.17** Rimosso updateservers (component-creator) dal manifest (2026-02-05)
 
 ### FASE 11 - Build e packaging
 

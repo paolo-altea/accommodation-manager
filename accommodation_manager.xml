@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="4.0" method="upgrade">
+<extension type="component" version="5.0" method="upgrade">
     <name>com_accommodation_manager</name>
-    <creationDate>2.1.1</creationDate>
-    <copyright>Copyright (C) 2024. Tutti i diritti riservati.</copyright>
+    <creationDate>2026-02</creationDate>
+    <copyright>Copyright (C) 2026. Tutti i diritti riservati.</copyright>
     <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
     <author>Altea Software Srl</author>
     <authorEmail>web@altea.it</authorEmail>
     <authorUrl>https://www.altea.it</authorUrl>
-    <version>2.1.1</version>
+    <version>3.1.0</version>
     <description>COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION</description>
     <namespace path="src">Accomodationmanager\Component\Accommodation_manager</namespace>
 
@@ -68,7 +68,6 @@
             <folder>src</folder>
             <folder>tmpl</folder>
             <folder>services</folder>
-            <folder>presets</folder>
             <folder>sql</folder>
             <folder>assets</folder>
             <folder>layouts</folder>
@@ -91,9 +90,4 @@
         </fields>
     </config>
 
-    <updateservers>
-        <server type="extension" priority="1" name="com_accommodation_manager">https://www.component-creator.com/index.php?task=builder.preupdatecheckhook&amp;option=com_combuilder&amp;component=Mjk4NzAtMjAyODU3</server>
-    </updateservers>
 </extension>
-<!-- Component built by the Joomla Component Creator -->
-<!-- http://www.component-creator.com/ -->

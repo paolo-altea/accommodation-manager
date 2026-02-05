@@ -47,7 +47,6 @@ cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/forms" "$BUILD
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/src" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/tmpl" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/services" "$BUILD_DIR/administrator/"
-cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/presets" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/sql" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/assets" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/layouts" "$BUILD_DIR/administrator/"
