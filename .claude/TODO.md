@@ -35,7 +35,7 @@ Revisione dei form di editing:
 ### FASE 3 - Funzionalità rotte
 
 - [ ] **3.1** Fixare ricerca testo rotta in 4 ListModel: `$search` viene preparato ma `$query->where()` mai chiamato. File: `ManagerroomcategoriesModel`, `ManagerratesModel`, `ManagerrateperiodsModel`, `ManagerratetypologiesModel`
-- [ ] **3.2** Fixare ForeignKey fields in `managerrate.xml`: `value_field="id"` mostra ID numerici grezzi. Cambiare: room_id -> `room_name`, period_id -> `period_title_en`, typology_id -> `rate_typology_en`
+- [x] **3.2** ~~Fixare ForeignKey fields in `managerrate.xml`~~ - Rimosso: form edit singola rate non usato, rates si modificano nella griglia (2026-02-05)
 - [ ] **3.3** Fixare bug `strrpos()` in Table bind(): `!= false` -> `!== false` (fallisce se comma è a posizione 0). File: RoommanagerTable, RoommanagercategoryTable, ManagerrateTable
 - [ ] **3.4** Aggiungere language key mancante `COM_ACCOMMODATION_MANAGER_NO_ELEMENT_SELECTED` in tutti i file .ini (usata in 5 controller)
 
@@ -71,7 +71,7 @@ Revisione dei form di editing:
 
 ### FASE 6 - Performance
 
-- [ ] **6.1** Eliminare N+1 queries in `ManagerratesModel::getItems()` - 3 query per ogni item (room_id, period_id, typology_id). Usare JOIN nella query principale.
+- [x] **6.1** ~~Eliminare N+1 queries in `ManagerratesModel::getItems()`~~ - Risolto: griglia usa query dedicate (getPeriods/getRooms/getTypologies/getRatesGrid), rimosso getListQuery/getItems (2026-02-05)
 - [ ] **6.2** Eliminare N+1 queries in `RoomsmanagerModel::getItems()` - query separata per ogni room per risolvere room_category. Usare JOIN.
 - [ ] **6.3** Eliminare N+1 queries in `ManagerroomcategoriesModel::getItems()` - query separata per ogni categoria per risolvere parent. Usare JOIN.
 - [ ] **6.4** Rimuovere jQuery dependency da `joomla.asset.json` - usare vanilla JS
@@ -180,6 +180,8 @@ Script PHP per migrare dati dal vecchio componente al nuovo:
 
 ## Completati (storico)
 
+- [x] Rimosso codice morto edit singola rate: managerrate.xml, ManagerrateController, ManagerrateModel, ManagerrateTable, View/Managerrate, tmpl/managerrate (2026-02-05)
+- [x] Rimosso getListQuery/getItems da ManagerratesModel - sostituiti da metodi griglia (2026-02-05)
 - [x] Sicurezza 1.1: Rimuovere `ajax/update.php` - RCE, path traversal, CSRF bypass (2026-02-05)
 - [x] Sicurezza 1.2: Riscrivere `tmpl/managerrates/default.php` - MVC fix + CSRF (2026-02-05)
 - [x] Sicurezza 1.3: Fixare `filter="raw"` nei form XML (2026-02-05)
