@@ -292,8 +292,9 @@ class ManagerratesModel extends ListModel
 
 						$submittedKeys[$key] = true;
 
-						if ($rateValue === '') {
-							// Empty value: delete if exists
+						// Treat empty string or "--" as "not available" - delete the record
+						if ($rateValue === '' || $rateValue === '--') {
+							// Empty or not available: delete if exists
 							if (isset($existingRates[$key])) {
 								$this->deleteRate((int) $existingRates[$key]['id']);
 							}

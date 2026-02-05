@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_name` VARCHAR(255)  NOT NULL ,
 `room_category` INT(10)  NOT NULL  DEFAULT 0,
 `room_code` VARCHAR(255)  NOT NULL ,
-`room_surface` VARCHAR(255)  NULL  DEFAULT "",
-`room_people` VARCHAR(255)  NULL  DEFAULT "",
+`room_surface` VARCHAR(50)  NULL  DEFAULT "",
+`room_people` VARCHAR(20)  NULL  DEFAULT "",
 `room_price_from` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_de` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_it` VARCHAR(255)  NULL  DEFAULT "",
@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_gallery` TEXT  NULL,
 `room_video` VARCHAR(255)  NULL  DEFAULT "",
 `room_pano` VARCHAR(255)  NULL  DEFAULT "",
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+INDEX `idx_room_category` (`room_category`),
+INDEX `idx_state_ordering` (`state`, `ordering`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_room_categories` (
@@ -67,7 +69,9 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_room_categories` (
 `room_category_description_en` TEXT NULL ,
 `room_category_description_fr` TEXT NULL ,
 `room_category_description_es` TEXT NULL ,
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+INDEX `idx_room_category_parent` (`room_category_parent`),
+INDEX `idx_state_ordering` (`state`, `ordering`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_periods` (
@@ -78,14 +82,15 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_periods` (
 `checked_out` INT(11)  UNSIGNED,
 `checked_out_time` DATETIME NULL  DEFAULT NULL ,
 `created_by` INT(11)  NULL  DEFAULT 0,
-`period_start` DATETIME NOT NULL ,
-`period_end` DATETIME NOT NULL ,
+`period_start` DATE NOT NULL ,
+`period_end` DATE NOT NULL ,
 `period_title_de` VARCHAR(255)  NULL  DEFAULT "",
 `period_title_it` VARCHAR(255)  NULL  DEFAULT "",
 `period_title_en` VARCHAR(255)  NULL  DEFAULT "",
 `period_title_fr` VARCHAR(255)  NULL  DEFAULT "",
 `period_title_es` VARCHAR(255)  NULL  DEFAULT "",
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+INDEX `idx_state_ordering` (`state`, `ordering`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rates` (
@@ -99,8 +104,12 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rates` (
 `room_id` INT(10)  NOT NULL  DEFAULT 0,
 `period_id` INT(10)  NOT NULL  DEFAULT 0,
 `typology_id` INT(10)  NOT NULL  DEFAULT 0,
-`rate` VARCHAR(255)  NOT NULL ,
-PRIMARY KEY (`id`)
+`rate` DECIMAL(10,2) NULL DEFAULT NULL ,
+PRIMARY KEY (`id`),
+INDEX `idx_room_id` (`room_id`),
+INDEX `idx_period_id` (`period_id`),
+INDEX `idx_typology_id` (`typology_id`),
+INDEX `idx_state` (`state`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
@@ -116,7 +125,8 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rate_typologies` (
 `rate_typology_en` VARCHAR(255)  NULL  DEFAULT "",
 `rate_typology_fr` VARCHAR(255)  NULL  DEFAULT "",
 `rate_typology_es` VARCHAR(255)  NULL  DEFAULT "",
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+INDEX `idx_state_ordering` (`state`, `ordering`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
 
