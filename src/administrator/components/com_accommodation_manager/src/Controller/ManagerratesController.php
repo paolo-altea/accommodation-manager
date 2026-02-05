@@ -11,13 +11,11 @@ namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Cont
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -27,6 +25,53 @@ use Joomla\Utilities\ArrayHelper;
  */
 class ManagerratesController extends AdminController
 {
+	/**
+	 * Save rates grid (bulk update).
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0.0
+	 */
+	public function saveGrid(): void
+	{
+		// Check for request forgeries
+		$this->checkToken();
+
+		$app  = Factory::getApplication();
+		$user = $app->getIdentity();
+
+		// Access check
+		if (!$user->authorise('core.edit', 'com_accommodation_manager')) {
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+			$this->setRedirect(Route::_('index.php?option=com_accommodation_manager&view=managerrates', false));
+			return;
+		}
+
+		// Get the rates data from POST
+		$ratesData = $this->input->post->get('rates', [], 'array');
+
+		if (empty($ratesData)) {
+			$app->enqueueMessage(Text::_('COM_ACCOMMODATION_MANAGER_NO_RATES_TO_SAVE'), 'warning');
+			$this->setRedirect(Route::_('index.php?option=com_accommodation_manager&view=managerrates', false));
+			return;
+		}
+
+		/** @var ManagerratesModel $model */
+		$model = $this->getModel('Managerrates', 'Administrator', ['ignore_request' => true]);
+
+		try {
+			$result = $model->saveRatesGrid($ratesData, $user->id);
+
+			if ($result) {
+				$app->enqueueMessage(Text::_('COM_ACCOMMODATION_MANAGER_RATES_SAVED_SUCCESSFULLY'), 'success');
+			}
+		} catch (\Exception $e) {
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		$this->setRedirect(Route::_('index.php?option=com_accommodation_manager&view=managerrates', false));
+	}
+
 	/**
 	 * Method to clone existing Managerrates
 	 *

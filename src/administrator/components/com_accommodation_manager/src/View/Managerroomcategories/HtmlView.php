@@ -33,6 +33,11 @@ class HtmlView extends BaseHtmlView
 	protected $state;
 
 	/**
+	 * @var  array  Workflow transitions (empty if workflows not used)
+	 */
+	protected $transitions = [];
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  Template name

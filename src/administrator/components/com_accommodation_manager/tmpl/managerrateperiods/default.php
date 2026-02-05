@@ -151,16 +151,10 @@ if ($saveOrder)
 								<?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'managerrateperiods.', $canChange, 'cb'); ?>
 							</td>
 							<td>
-								<?php
-									$date = $item->period_start;
-									echo $date > 0 ? HTMLHelper::_('date', $date, Text::_('DATE_FORMAT_LC6')) : '-';
-								?>
+								<?php echo !empty($item->period_start) ? HTMLHelper::_('date', $item->period_start, Text::_('DATE_FORMAT_LC4')) : '-'; ?>
 							</td>
 							<td>
-								<?php
-									$date = $item->period_end;
-									echo $date > 0 ? HTMLHelper::_('date', $date, Text::_('DATE_FORMAT_LC6')) : '-';
-								?>
+								<?php echo !empty($item->period_end) ? HTMLHelper::_('date', $item->period_end, Text::_('DATE_FORMAT_LC4')) : '-'; ?>
 							</td>
 							<td>
 								<?php echo $item->period_title_de; ?>

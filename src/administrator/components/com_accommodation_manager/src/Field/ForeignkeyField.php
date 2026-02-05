@@ -59,6 +59,46 @@ class ForeignKeyField extends ListField
 	private $condition;
 
 	/**
+	 * Flag to identify if the fk_value is multiple
+	 *
+	 * @var    int
+	 * @since  2.0.1
+	 */
+	protected $value_multiple = 0;
+
+	/**
+	 * Flag to identify if the fk_value hides the trashed items
+	 *
+	 * @var    int
+	 * @since  2.0.1
+	 */
+	protected $hideTrashed = 0;
+
+	/**
+	 * Flag to identify if the fk has default order
+	 *
+	 * @var    int
+	 * @since  2.0.1
+	 */
+	protected $ordering = 0;
+
+	/**
+	 * Multiple value fields
+	 *
+	 * @var    array
+	 * @since  2.0.1
+	 */
+	protected $value_fields = [];
+
+	/**
+	 * Separator for multiple values
+	 *
+	 * @var    string
+	 * @since  2.0.1
+	 */
+	protected $separator = '';
+
+	/**
 	 * Method to get the field input markup.
 	 *
 	 * @return  string  The field input markup.

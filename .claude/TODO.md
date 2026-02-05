@@ -4,8 +4,8 @@
 
 ### FASE 1 - Sicurezza (CRITICA)
 
-- [ ] **1.1** Rimuovere `ajax/update.php` - contiene RCE via unserialize(), path traversal, CSRF bypass, query SQL dirette senza sanitizzazione, user ID hardcoded (413). File da eliminare completamente.
-- [ ] **1.2** Riscrivere `tmpl/managerrates/default.php` - attualmente posta direttamente a ajax/update.php senza CSRF, contiene query SQL nel template (viola MVC), usa JFactory/JHtml/JText (fatal error su Joomla 5). La logica di aggiornamento massivo tariffe va spostata in un Controller dedicato con token CSRF.
+- [x] **1.1** Rimuovere `ajax/update.php` - contiene RCE via unserialize(), path traversal, CSRF bypass, query SQL dirette senza sanitizzazione, user ID hardcoded (413). File da eliminare completamente. (2026-02-05)
+- [x] **1.2** Riscrivere `tmpl/managerrates/default.php` - attualmente posta direttamente a ajax/update.php senza CSRF, contiene query SQL nel template (viola MVC), usa JFactory/JHtml/JText (fatal error su Joomla 5). La logica di aggiornamento massivo tariffe va spostata in un Controller dedicato con token CSRF. (2026-02-05)
 - [ ] **1.3** Fixare `filter="raw"` nei form XML (`roommanagercategory.xml`, `managerrateperiod.xml`, `managerratetypology.xml`) - cambiare in `filter="string"` o `filter="safehtml"` per sanitizzare input utente.
 - [ ] **1.4** Fixare `filter="JComponentHelper::filterText"` nei form XML (`roommanager.xml`, `roommanagercategory.xml`) - cambiare in `filter="safehtml"` (class name Joomla 3 deprecato).
 
@@ -43,7 +43,7 @@
 ### FASE 4 - Funzionalita' rotte
 
 - [ ] **4.1** Fixare ricerca testo rotta in 4 ListModel: `$search` viene preparato ma `$query->where()` mai chiamato. File: `ManagerroomcategoriesModel`, `ManagerratesModel`, `ManagerrateperiodsModel`, `ManagerratetypologiesModel`
-- [ ] **4.2** Fixare `$this->transitions` undefined in tutte le 5 list View - definire la variabile o rimuovere il check
+- [x] **4.2** Fixare `$this->transitions` undefined in tutte le 5 list View - definire la variabile o rimuovere il check (2026-02-05)
 - [ ] **4.3** Fixare ForeignKey fields in `managerrate.xml`: `value_field="id"` mostra ID numerici grezzi. Cambiare: room_id -> `room_name`, period_id -> `period_title_en`, typology_id -> `rate_typology_en`
 - [ ] **4.4** Fixare bug `strrpos()` in Table bind(): `!= false` -> `!== false` (fallisce se comma e' a posizione 0). File: RoommanagerTable, RoommanagercategoryTable, ManagerrateTable
 - [ ] **4.5** Aggiungere language key mancante `COM_ACCOMMODATION_MANAGER_NO_ELEMENT_SELECTED` in tutti i file .ini (usata in 5 controller)
@@ -85,7 +85,7 @@
 - [ ] **7.10** Fixare language key errata nei filter form: `COM_USERS_FILTER_SEARCH_DESC` -> `COM_ACCOMMODATION_MANAGER_FILTER_SEARCH_DESC`
 - [ ] **7.11** Rimuovere language key duplicata `COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION` in com_accommodation_manager.ini
 - [ ] **7.12** Aggiungere filtri per entita' correlate nei filter form XML (es. filtra rooms per categoria, rates per room)
-- [ ] **7.13** Rimuovere riferimento al plugin Finder dal manifest del componente (sezione `<plugins>` se presente)
+- [x] **7.13** Rimuovere riferimento al plugin Finder dal manifest del componente (sezione `<plugins>` se presente) (2026-02-05)
 
 ### FASE 8 - Refactoring strutturale
 
@@ -101,8 +101,8 @@
 
 - [ ] **9.1** Creare `pkg_accommodation_manager.xml` (package manifest) seguendo modello enquirytools
 - [ ] **9.2** Creare `pkg_accommodation_manager_script.php` (package install script)
-- [ ] **9.3** Creare `build/build.sh` per generare ZIP del pacchetto
-- [ ] **9.4** Creare `.gitignore` appropriato (dist/, *.zip, .DS_Store, .idea/)
+- [x] **9.3** Creare `build/build.sh` per generare ZIP del pacchetto (2026-02-05)
+- [x] **9.4** Creare `.gitignore` appropriato (dist/, *.zip, .DS_Store, .idea/) (2026-02-05)
 - [ ] **9.5** Popolare `language/` root con file sys.ini a livello pacchetto
 - [ ] **9.6** Inizializzare git repository
 
@@ -111,6 +111,31 @@
 - [ ] **10.1** Progettare nuova architettura frontend (da definire)
 - [ ] **10.2** Implementare nuove View frontend
 - [ ] **10.3** Implementare Router SEF
+- [ ] **10.4** Usare come riferimento/spunto: `/Users/paolodaponte/projects/base/static/room_rate` (da approfondire)
+
+### FASE 11 - Revisione interfacce admin
+
+Revisione una ad una delle interfacce backend per verificare usabilità e consistenza:
+
+- [x] **11.1** Rates (griglia tariffe) - Rivista struttura tabella, paginazione, formato date (2026-02-05)
+- [x] **11.2** Rate Periods - Formato date corretto (2026-02-05)
+- [ ] **11.3** Rooms Manager - Verificare layout, campi, messaggi
+- [ ] **11.4** Room Categories - Verificare layout, campi, messaggi
+- [ ] **11.5** Rate Typologies - Verificare layout, campi, messaggi
+- [ ] **11.6** Form edit Room - Verificare campi, validazione, UX
+- [ ] **11.7** Form edit Rate Period - Verificare campi, validazione, UX
+- [ ] **11.8** Form edit Room Category - Verificare campi, validazione, UX
+- [ ] **11.9** Form edit Rate Typology - Verificare campi, validazione, UX
+
+### FASE 12 - Gestione lingue
+
+- [ ] **12.1** Rivedere architettura multilingua: attualmente le traduzioni sono salvate come colonne separate nel DB (`*_de`, `*_it`, `*_en`, `*_fr`, `*_es`). Valutare alternative:
+  - Mantenere approccio attuale ma renderlo configurabile (lista lingue dinamica)
+  - Usare tabelle di traduzione separate (es. `#__accommodation_manager_rooms_translations`)
+  - Integrare con sistema Associations di Joomla
+- [ ] **12.2** Rendere la lista delle lingue supportate configurabile invece di hardcoded
+- [ ] **12.3** Aggiornare form XML per generare dinamicamente i campi lingua
+- [ ] **12.4** Aggiornare template per gestire lingue dinamiche (attualmente hardcoded `$lang = substr(..., 0, 2)`)
 
 ## In corso
 

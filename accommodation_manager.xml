@@ -70,7 +70,6 @@
             <folder>services</folder>
             <folder>presets</folder>
             <folder>sql</folder>
-            <folder>ajax</folder>
             <folder>assets</folder>
         </files>
         <languages folder="administrator/languages">
@@ -90,10 +89,6 @@
             </fieldset>
         </fields>
     </config>
-    <plugins>
-		<plugin group="finder" plugin="accommodation_manager_roomsmanager"/>
-    </plugins>
-
 
     <updateservers>
         <server type="extension" priority="1" name="com_accommodation_manager">https://www.component-creator.com/index.php?task=builder.preupdatecheckhook&amp;option=com_combuilder&amp;component=Mjk4NzAtMjAyODU3</server>
