@@ -83,7 +83,7 @@ Revisione dei form di editing:
 - [x] **7.1** Creare configurazione centralizzata per lista lingue supportate (config.xml + Helper::LANGUAGES) (2026-02-05)
 - [x] **7.2** Aggiornare edit templates per usare la lista lingue configurata (tab dinamici) (2026-02-05)
 - [x] **7.3** Aggiornare list templates per usare la lista lingue configurata (colonne dinamiche) (2026-02-05)
-- [ ] **7.4** Documentare procedura per aggiungere nuova lingua (SQL + config)
+- [ ] **7.4** Creare script per aggiungere nuova lingua (SQL + config + form + template) - DA FARE DOPO FASE 12
 
 ### FASE 8 - Pulizia codice morto
 
@@ -138,12 +138,32 @@ Revisione dei form di editing:
 
 ### FASE 11 - Build e packaging
 
-- [ ] **11.1** Creare `pkg_accommodation_manager.xml` (package manifest) seguendo modello enquirytools
-- [ ] **11.2** Creare `pkg_accommodation_manager_script.php` (package install script)
-- [x] **11.3** Creare `build/build.sh` per generare ZIP del pacchetto (2026-02-05)
-- [x] **11.4** Creare `.gitignore` appropriato (dist/, *.zip, .DS_Store, .idea/) (2026-02-05)
-- [ ] **11.5** Popolare `language/` root con file sys.ini a livello pacchetto
-- [ ] **11.6** Inizializzare git repository
+- [x] **11.1** Creare `build/build.sh` per generare ZIP del componente (2026-02-05)
+- [x] **11.2** Creare `.gitignore` appropriato (dist/, *.zip, .DS_Store, .idea/) (2026-02-05)
+- [x] **11.3** Git repository inizializzato (2026-02-05)
+- [ ] **11.4** Creare `pkg_accommodation_manager.xml` (package manifest) - DA FARE DOPO FASE 12 (quando ci saranno moduli/plugin)
+- [ ] **11.5** Creare `pkg_accommodation_manager_script.php` (package install script) - DA FARE DOPO FASE 12
+- [ ] **11.6** Popolare `language/` root con file sys.ini a livello pacchetto - DA FARE DOPO FASE 12
+
+### FASE 11b - Code Review Fix (pre-frontend)
+
+Problemi identificati durante code review del backend:
+
+**Priorità Alta - Joomla 6 Compatibility:**
+- [ ] **11b.1** Sostituire `Factory::getApplication()->close()` con JSON response in `ManagerratesController::saveOrderAjax()`
+- [ ] **11b.2** Aggiungere `protected string $typeAlias = '';` in `BaseTable.php` (PHP 8.2+ dynamic property warning)
+- [ ] **11b.3** Sostituire `echo "1"` con JSON response in `BaseListController::saveOrderAjax()`
+
+**Priorità Media - Code Smell:**
+- [ ] **11b.4** Refactor `script.php::processTable()` - estrarre in metodi separati (126 righe, 4 livelli nesting)
+- [ ] **11b.5** Refactor `script.php::processField()` - estrarre in metodi separati (166 righe, complessità alta)
+- [ ] **11b.6** Fix timezone in `CreatedbyField.php` - usare UTC-only approach per Joomla 6
+
+**Priorità Bassa - Cleanup:**
+- [ ] **11b.7** Rimuovere `AssociationServiceTrait` inutilizzato da `Accommodation_managerComponent.php`
+- [ ] **11b.8** Verificare e rimuovere `Helper::getFiles()` se dead code
+- [ ] **11b.9** Rimuovere `ForeignKeyField::getAttribute()` - duplica metodo nativo Joomla
+- [ ] **11b.10** Fix `catch (ExecutionFailureException $e)` in `ForeignkeyField.php` - usare `\Exception`
 
 ---
 
