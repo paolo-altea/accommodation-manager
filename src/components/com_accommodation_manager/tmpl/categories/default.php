@@ -16,6 +16,10 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 <div class="com-accommodation-manager-categories">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<h1><?php echo $this->escape($this->params->get('page_heading') ?: $this->params->get('page_title')); ?></h1>
+	<?php endif; ?>
+
 	<?php if (empty($this->items)) : ?>
 		<div class="alert alert-info">
 			<?php echo Text::_('COM_ACCOMMODATION_MANAGER_NO_CATEGORIES'); ?>

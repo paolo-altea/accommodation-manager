@@ -186,7 +186,10 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 - [ ] **B.1** Room Categories edit: spostare i campi alt immagine (`room_category_image_alt_*`) nel tab Basic insieme all'immagine, invece che nei singoli tab lingua
 - [ ] **B.2** Frontend CSS/JS: creare `site.css` e eventualmente `site.js`, registrare in `joomla.asset.json`, caricare dalle View - da fare dopo che tutte le view frontend sono pronte
-- [ ] **B.3** Configurazione component con tab per view (ispirato a com_content): aggiungere in `config.xml` fieldset separati per ogni view frontend con opzioni display (es. Categories: mostrare/nascondere bottone link categoria; Rooms: opzioni layout; etc.) - espandere mano a mano per ogni view
+- [ ] **B.3** Configurazione component con tab per view (ispirato a com_content): aggiungere in `config.xml` fieldset separati per ogni view frontend con opzioni display. Opzioni previste:
+  - **Categories**: mostrare/nascondere bottone link alla categoria
+  - **Rooms**: abilitare Swiper.js per gallery slider; modalità lista (solo intro, link a dettaglio) vs pagina completa (tutte le info); definire insieme quali sezioni mostrare/nascondere in base alla modalità
+  - Espandere mano a mano per ogni view
 
 ---
 

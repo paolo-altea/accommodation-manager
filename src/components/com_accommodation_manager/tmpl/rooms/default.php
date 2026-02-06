@@ -15,13 +15,17 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 <div class="com-accommodation-manager-rooms">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<h1><?php echo $this->escape($this->params->get('page_heading') ?: $this->params->get('page_title')); ?></h1>
+	<?php endif; ?>
+
 	<?php if (empty($this->items)) : ?>
 		<div class="alert alert-info">
 			<?php echo Text::_('COM_ACCOMMODATION_MANAGER_NO_ROOMS'); ?>
 		</div>
 	<?php else : ?>
 		<?php foreach ($this->items as $item) : ?>
-			<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
+			<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>" data-category="<?php echo (int) $item->room_category; ?>">
 
 				<?php if (!empty($item->title)) : ?>
 					<h2 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h2>
