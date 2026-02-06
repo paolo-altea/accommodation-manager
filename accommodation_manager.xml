@@ -33,7 +33,6 @@
 
     <files folder="site">
         <folder>src</folder>
-        <folder>forms</folder>
         <folder>tmpl</folder>
         <folder>language</folder>
     </files>

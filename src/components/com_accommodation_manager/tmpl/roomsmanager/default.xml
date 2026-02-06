@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<metadata>
-	<layout title="COM_ACCOMMODATION_MANAGER_TITLE_LIST_VIEW_ROOMSMANAGER" option="View">
-        <message>
-                        <![CDATA[COM_ACCOMMODATION_MANAGER_TITLE_LIST_VIEW_ROOMSMANAGER_DESC]]>
-        </message>
-	</layout>
-	
-</metadata>

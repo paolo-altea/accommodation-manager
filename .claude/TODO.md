@@ -175,8 +175,12 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 ### FASE 12 - View Categories List (elenco categorie camere)
 
-- [ ] **12.1** Model: query categorie pubblicate con titoli multilingua, immagine, descrizione
-- [ ] **12.2** View + template: lista categorie con titolo, descrizione intro, link alla lista camere filtrata
+- [x] **12.0** Pulizia frontend: rimosso tutto il codice CRUD auto-generato (controller, model, view, template, form, field) mai usato in produzione (2026-02-06)
+- [x] **12.1** Model CategoriesModel: query categorie pubblicate con titoli multilingua, immagine, descrizione (2026-02-06)
+- [x] **12.2** View + template: lista categorie con titolo, immagine, descrizione, link alla lista camere filtrata (2026-02-06)
+- [x] **12.3** Helper frontend con getLanguageSuffix() per mappare lingua Joomla a suffisso colonna DB (2026-02-06)
+- [x] **12.4** Router SEF riscritto, DisplayController aggiornato, menu item XML (2026-02-06)
+- [x] **12.5** Language files frontend riscritti (solo key necessarie) + sys.ini per menu type picker (2026-02-06)
 
 ### FASE 13 - View Rooms List (elenco camere)
 

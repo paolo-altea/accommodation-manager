@@ -105,13 +105,15 @@ abstract class BaseEditView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_($this->titleKey), 'generic');
 
-		// Build the save group button
 		if (!$checkedOut && ($canEdit || $canDo->get('core.create'))) {
+			// Save button (standalone)
+			$toolbar->apply($this->taskPrefix . '.apply');
+
+			// Save & Close group dropdown
 			$saveGroup = $toolbar->dropdownButton('save-group');
 
 			$saveGroup->configure(
 				function (Toolbar $childBar) use ($canDo, $isNew) {
-					$childBar->apply($this->taskPrefix . '.apply');
 					$childBar->save($this->taskPrefix . '.save');
 
 					if ($canDo->get('core.create')) {
