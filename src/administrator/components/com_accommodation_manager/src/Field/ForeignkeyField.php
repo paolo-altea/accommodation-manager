@@ -256,7 +256,7 @@ class ForeignKeyField extends ListField
 			$db->setQuery($this->processQuery());
 			$results = $db->loadObjectList();
 		}
-		catch (ExecutionFailureException $e)
+		catch (\Exception $e)
 		{
 			Factory::getApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 		}
@@ -290,23 +290,4 @@ class ForeignKeyField extends ListField
 		return $options;
 	}
 
-	/**
-	 * Wrapper method for getting attributes from the form element
-	 *
-	 * @param   string  $attr_name  Attribute name
-	 * @param   mixed   $default    Optional value to return if attribute not found
-	 *
-	 * @return  mixed The value of the attribute if it exists, null otherwise
-	 */
-	public function getAttribute($attr_name, $default = null)
-	{
-		if (!empty($this->element[$attr_name]))
-		{
-			return $this->element[$attr_name];
-		}
-		else
-		{
-			return $default;
-		}
-	}
 }

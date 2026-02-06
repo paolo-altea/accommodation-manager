@@ -14,8 +14,8 @@ namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Cont
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -134,29 +134,24 @@ class ManagerratesController extends AdminController
 	 *
 	 * @throws  Exception
 	 */
-	public function saveOrderAjax()
+	public function saveOrderAjax(): void
 	{
-		// Get the input
-		$input = Factory::getApplication()->input;
-		$pks   = $input->post->get('cid', array(), 'array');
-		$order = $input->post->get('order', array(), 'array');
+		$app   = Factory::getApplication();
+		$input = $app->getInput();
+		$pks   = $input->post->get('cid', [], 'array');
+		$order = $input->post->get('order', [], 'array');
 
-		// Sanitize the input
 		ArrayHelper::toInteger($pks);
 		ArrayHelper::toInteger($order);
 
-		// Get the model
-		$model = $this->getModel();
-
-		// Save the ordering
+		$model  = $this->getModel();
 		$return = $model->saveorder($pks, $order);
 
-		if ($return)
-		{
-			echo "1";
-		}
+		$app->mimeType = 'application/json';
+		$app->setHeader('Content-Type', $app->mimeType . '; charset=' . $app->charSet);
+		$app->sendHeaders();
 
-		// Close the application
-		Factory::getApplication()->close();
+		echo new JsonResponse($return);
+		$app->close();
 	}
 }

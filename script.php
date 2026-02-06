@@ -124,139 +124,148 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	}
 
 	/**
-	 * Process a table
+	 * Process a table definition from the structure XML.
 	 *
-	 * @param   CMSApplication  $app   Application object
-	 * @param   SimpleXMLElement $table Table to process
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app    Application object
+	 * @param   \SimpleXMLElement                        $table  Table to process
 	 *
-	 * @return void
+	 * @return  void
 	 *
-	 * @since 0.2b
+	 * @since   0.2b
 	 */
 	private function processTable($app, $table)
 	{
-		$db = Factory::getDbo();
-
 		$table_added = false;
 
-		if (isset($table['action']))
-		{
-			switch ($table['action'])
-			{
-				case 'add':
-
-					// Check if the table exists before create the statement
-					if (!$this->existsTable($table['table_name']))
-					{
-						$create_statement = $this->generateCreateTableStatement($table);
-						$db->setQuery($create_statement);
-
-						try
-						{
-							$db->execute();
-							$app->enqueueMessage(
-								Text::sprintf(
-									'Table `%s` has been successfully created',
-									(string) $table['table_name']
-								)
-							);
-							$table_added = true;
-						} catch (Exception $ex)
-						{
-							$app->enqueueMessage(
-								Text::sprintf(
-									'There was an error creating the table `%s`. Error: %s',
-									(string) $table['table_name'],
-									$ex->getMessage()
-								), 'error'
-							);
-						}
-					}
-					break;
-				case 'change':
-
-					// Check if the table exists first to avoid errors.
-					if ($this->existsTable($table['old_name']) && !$this->existsTable($table['new_name']))
-					{
-						try
-						{
-							$db->renameTable($table['old_name'], $table['new_name']);
-							$app->enqueueMessage(
-								Text::sprintf(
-									'Table `%s` was successfully renamed to `%s`',
-									$table['old_name'],
-									$table['new_name']
-								)
-							);
-						} catch (Exception $ex)
-						{
-							$app->enqueueMessage(
-								Text::sprintf(
-									'There was an error renaming the table `%s`. Error: %s',
-									$table['old_name'],
-									$ex->getMessage()
-								), 'error'
-							);
-						}
-					}
-					else
-					{
-						if (!$this->existsTable($table['table_name']))
-						{
-							// If the table does not exists, let's create it.
-							$create_statement = $this->generateCreateTableStatement($table);
-							$db->setQuery($create_statement);
-
-							try
-							{
-								$db->execute();
-								$app->enqueueMessage(
-									Text::sprintf('Table `%s` has been successfully created', $table['table_name'])
-								);
-								$table_added = true;
-							} catch (Exception $ex)
-							{
-								$app->enqueueMessage(
-									Text::sprintf(
-										'There was an error creating the table `%s`. Error: %s',
-										$table['table_name'],
-										$ex->getMessage()
-									), 'error'
-								);
-							}
-						}
-					}
-					break;
-				case 'remove':
-
-					try
-					{
-						// We make sure that the table will be removed only if it exists specifying ifExists argument as true.
-						$db->dropTable((string) $table['table_name'], true);
-						$app->enqueueMessage(
-							Text::sprintf('Table `%s` was successfully deleted', $table['table_name'])
-						);
-					} catch (Exception $ex)
-					{
-						$app->enqueueMessage(
-							Text::sprintf(
-								'There was an error deleting Table `%s`. Error: %s',
-								$table['table_name'], $ex->getMessage()
-							), 'error'
-						);
-					}
-
-					break;
-			}
+		if (isset($table['action'])) {
+			$table_added = match ((string) $table['action']) {
+				'add'    => $this->processTableAdd($app, $table),
+				'change' => $this->processTableChange($app, $table),
+				'remove' => $this->processTableRemove($app, $table),
+				default  => false,
+			};
 		}
 
-		// If the table wasn't added before, let's process the fields of the table
-		if (!$table_added)
-		{
-			if ($this->existsTable($table['table_name']))
-			{
-				$this->executeFieldsUpdating($app, $table);
+		if (!$table_added && $this->existsTable($table['table_name'])) {
+			$this->executeFieldsUpdating($app, $table);
+		}
+	}
+
+	/**
+	 * Handle 'add' action for a table.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app    Application object
+	 * @param   \SimpleXMLElement                        $table  Table definition
+	 *
+	 * @return  bool  True if the table was created
+	 *
+	 * @since   3.2.0
+	 */
+	private function processTableAdd($app, $table): bool
+	{
+		if ($this->existsTable($table['table_name'])) {
+			return false;
+		}
+
+		return $this->createTable($app, $table);
+	}
+
+	/**
+	 * Handle 'change' (rename) action for a table.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app    Application object
+	 * @param   \SimpleXMLElement                        $table  Table definition
+	 *
+	 * @return  bool  True if the table was created as new
+	 *
+	 * @since   3.2.0
+	 */
+	private function processTableChange($app, $table): bool
+	{
+		$db = Factory::getDbo();
+
+		if ($this->existsTable($table['old_name']) && !$this->existsTable($table['new_name'])) {
+			try {
+				$db->renameTable($table['old_name'], $table['new_name']);
+				$app->enqueueMessage(
+					Text::sprintf('Table `%s` was successfully renamed to `%s`', $table['old_name'], $table['new_name'])
+				);
+			} catch (\Exception $ex) {
+				$app->enqueueMessage(
+					Text::sprintf('There was an error renaming the table `%s`. Error: %s', $table['old_name'], $ex->getMessage()),
+					'error'
+				);
 			}
+
+			return false;
+		}
+
+		if (!$this->existsTable($table['table_name'])) {
+			return $this->createTable($app, $table);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Handle 'remove' action for a table.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app    Application object
+	 * @param   \SimpleXMLElement                        $table  Table definition
+	 *
+	 * @return  bool  Always false (removed tables are not "added")
+	 *
+	 * @since   3.2.0
+	 */
+	private function processTableRemove($app, $table): bool
+	{
+		$db = Factory::getDbo();
+
+		try {
+			$db->dropTable((string) $table['table_name'], true);
+			$app->enqueueMessage(
+				Text::sprintf('Table `%s` was successfully deleted', $table['table_name'])
+			);
+		} catch (\Exception $ex) {
+			$app->enqueueMessage(
+				Text::sprintf('There was an error deleting Table `%s`. Error: %s', $table['table_name'], $ex->getMessage()),
+				'error'
+			);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Create a table from its XML definition.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app    Application object
+	 * @param   \SimpleXMLElement                        $table  Table definition
+	 *
+	 * @return  bool  True on success
+	 *
+	 * @since   3.2.0
+	 */
+	private function createTable($app, $table): bool
+	{
+		$db = Factory::getDbo();
+		$create_statement = $this->generateCreateTableStatement($table);
+		$db->setQuery($create_statement);
+
+		try {
+			$db->execute();
+			$app->enqueueMessage(
+				Text::sprintf('Table `%s` has been successfully created', (string) $table['table_name'])
+			);
+
+			return true;
+		} catch (\Exception $ex) {
+			$app->enqueueMessage(
+				Text::sprintf('There was an error creating the table `%s`. Error: %s', (string) $table['table_name'], $ex->getMessage()),
+				'error'
+			);
+
+			return false;
 		}
 	}
 
@@ -465,176 +474,153 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	/**
 	 * Process a certain field.
 	 *
-	 * @param   CMSApplication  $app        Application object
-	 * @param   string           $table_name The name of the table that contains the field.
-	 * @param   SimpleXMLElement $field      Field Information.
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app         Application object
+	 * @param   string                                   $table_name  The table name
+	 * @param   \SimpleXMLElement                        $field       Field information
 	 *
-	 * @return void
+	 * @return  void
+	 *
+	 * @since   0.2b
 	 */
 	private function processField($app, $table_name, $field)
 	{
+		if (!isset($field['action'])) {
+			$this->addFieldWithMessage($app, $table_name, $field, 'added');
+			return;
+		}
+
+		match ((string) $field['action']) {
+			'add'    => $this->addFieldWithMessage($app, $table_name, $field, 'added'),
+			'change' => $this->processFieldChange($app, $table_name, $field),
+			'remove' => $this->processFieldRemove($app, $table_name, $field),
+			default  => null,
+		};
+	}
+
+	/**
+	 * Handle 'change' action for a field (rename or modify).
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app         Application object
+	 * @param   string                                   $table_name  The table name
+	 * @param   \SimpleXMLElement                        $field       Field information
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.0
+	 */
+	private function processFieldChange($app, $table_name, $field)
+	{
+		if (isset($field['old_name']) && isset($field['new_name'])
+			&& $this->existsField($table_name, $field['old_name'])
+			&& !$this->existsField($table_name, $field['new_name'])
+		) {
+			$this->renameField($app, $table_name, $field);
+			return;
+		}
+
+		$this->addFieldWithMessage($app, $table_name, $field, 'modified');
+	}
+
+	/**
+	 * Rename a field column.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app         Application object
+	 * @param   string                                   $table_name  The table name
+	 * @param   \SimpleXMLElement                        $field       Field information
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.0
+	 */
+	private function renameField($app, $table_name, $field)
+	{
 		$db = Factory::getDbo();
 
-		if (isset($field['action']))
-		{
-			switch ($field['action'])
-			{
-				case 'add':
-					$result = $this->addField($table_name, $field);
+		$renaming_statement = Text::sprintf(
+			'ALTER TABLE %s CHANGE %s %s %s',
+			$table_name,
+			$db->quoteName($field['old_name']->__toString()),
+			$db->quoteName($field['new_name']->__toString()),
+			$this->getFieldType($field)
+		);
+		$db->setQuery($renaming_statement);
 
-					if ($result === self::MODIFIED)
-					{
-						$app->enqueueMessage(
-							Text::sprintf('Field `%s` has been successfully added', $field['field_name'])
-						);
-					}
-					else
-					{
-						if ($result !== self::NOT_MODIFIED)
-						{
-							$app->enqueueMessage(
-								Text::sprintf(
-									'There was an error adding the field `%s`. Error: %s',
-									$field['field_name'], $result
-								), 'error'
-							);
-						}
-					}
-					break;
-				case 'change':
-
-					if (isset($field['old_name']) && isset($field['new_name']))
-					{
-						if ($this->existsField($table_name, $field['old_name']) && !$this->existsField($table_name, $field['new_name']))
-						{
-							$renaming_statement = Text::sprintf(
-								'ALTER TABLE %s CHANGE %s %s %s',
-								$table_name, $db->quoteName($field['old_name']->__toString()),
-								$db->quoteName($field['new_name']->__toString()),
-								$this->getFieldType($field)
-							);
-							$db->setQuery($renaming_statement);
-
-							try
-							{
-								$db->execute();
-								$app->enqueueMessage(
-									Text::sprintf('Field `%s` has been successfully modified', $field['old_name'])
-								);
-							} catch (Exception $ex)
-							{
-								$app->enqueueMessage(
-									Text::sprintf(
-										'There was an error modifying the field `%s`. Error: %s',
-										$field['field_name'],
-										$ex->getMessage()
-									), 'error'
-								);
-							}
-						}
-						else
-						{
-							$result = $this->addField($table_name, $field);
-
-							if ($result === self::MODIFIED)
-							{
-								$app->enqueueMessage(
-									Text::sprintf('Field `%s` has been successfully modified', $field['field_name'])
-								);
-							}
-							else
-							{
-								if ($result !== self::NOT_MODIFIED)
-								{
-									$app->enqueueMessage(
-										Text::sprintf(
-											'There was an error modifying the field `%s`. Error: %s',
-											$field['field_name'], $result
-										), 'error'
-									);
-								}
-							}
-						}
-					}
-					else
-					{
-						$result = $this->addField($table_name, $field);
-
-						if ($result === self::MODIFIED)
-						{
-							$app->enqueueMessage(
-								Text::sprintf('Field `%s` has been successfully modified', $field['field_name'])
-							);
-						}
-						else
-						{
-							if ($result !== self::NOT_MODIFIED)
-							{
-								$app->enqueueMessage(
-									Text::sprintf(
-										'There was an error modifying the field `%s`. Error: %s',
-										$field['field_name'], $result
-									), 'error'
-								);
-							}
-						}
-					}
-
-					break;
-				case 'remove':
-
-					// Check if the field exists first to prevent issue removing the field
-					if ($this->existsField($table_name, $field['field_name']))
-					{
-						$drop_statement = Text::sprintf(
-							'ALTER TABLE %s DROP COLUMN %s',
-							$table_name, $field['field_name']
-						);
-						$db->setQuery($drop_statement);
-
-						try
-						{
-							$db->execute();
-							$app->enqueueMessage(
-								Text::sprintf('Field `%s` has been successfully deleted', $field['field_name'])
-							);
-						} catch (Exception $ex)
-						{
-							$app->enqueueMessage(
-								Text::sprintf(
-									'There was an error deleting the field `%s`. Error: %s',
-									$field['field_name'],
-									$ex->getMessage()
-								), 'error'
-							);
-						}
-					}
-
-					break;
-			}
+		try {
+			$db->execute();
+			$app->enqueueMessage(
+				Text::sprintf('Field `%s` has been successfully modified', $field['old_name'])
+			);
+		} catch (\Exception $ex) {
+			$app->enqueueMessage(
+				Text::sprintf('There was an error modifying the field `%s`. Error: %s', $field['field_name'], $ex->getMessage()),
+				'error'
+			);
 		}
-		else
-		{
-			$result = $this->addField($table_name, $field);
+	}
 
-			if ($result === self::MODIFIED)
-			{
-				$app->enqueueMessage(
-					Text::sprintf('Field `%s` has been successfully added', $field['field_name'])
-				);
-			}
-			else
-			{
-				if ($result !== self::NOT_MODIFIED)
-				{
-					$app->enqueueMessage(
-						Text::sprintf(
-							'There was an error adding the field `%s`. Error: %s',
-							$field['field_name'], $result
-						), 'error'
-					);
-				}
-			}
+	/**
+	 * Handle 'remove' action for a field.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app         Application object
+	 * @param   string                                   $table_name  The table name
+	 * @param   \SimpleXMLElement                        $field       Field information
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.0
+	 */
+	private function processFieldRemove($app, $table_name, $field)
+	{
+		if (!$this->existsField($table_name, $field['field_name'])) {
+			return;
+		}
+
+		$db = Factory::getDbo();
+
+		$drop_statement = Text::sprintf(
+			'ALTER TABLE %s DROP COLUMN %s',
+			$table_name, $field['field_name']
+		);
+		$db->setQuery($drop_statement);
+
+		try {
+			$db->execute();
+			$app->enqueueMessage(
+				Text::sprintf('Field `%s` has been successfully deleted', $field['field_name'])
+			);
+		} catch (\Exception $ex) {
+			$app->enqueueMessage(
+				Text::sprintf('There was an error deleting the field `%s`. Error: %s', $field['field_name'], $ex->getMessage()),
+				'error'
+			);
+		}
+	}
+
+	/**
+	 * Add/modify a field and enqueue the appropriate message.
+	 *
+	 * @param   \Joomla\CMS\Application\CMSApplication  $app         Application object
+	 * @param   string                                   $table_name  The table name
+	 * @param   \SimpleXMLElement                        $field       Field information
+	 * @param   string                                   $verb        Action verb for messages ('added' or 'modified')
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.0
+	 */
+	private function addFieldWithMessage($app, $table_name, $field, string $verb)
+	{
+		$result = $this->addField($table_name, $field);
+
+		if ($result === self::MODIFIED) {
+			$app->enqueueMessage(
+				Text::sprintf('Field `%s` has been successfully ' . $verb, $field['field_name'])
+			);
+		} elseif ($result !== self::NOT_MODIFIED) {
+			$app->enqueueMessage(
+				Text::sprintf('There was an error with the field `%s`. Error: %s', $field['field_name'], $result),
+				'error'
+			);
 		}
 	}
 

@@ -86,30 +86,6 @@ class Accommodation_managerHelper
 	}
 
 	/**
-	 * Gets the files attached to an item
-	 *
-	 * @param   int     $pk     The item's id
-	 * @param   string  $table  The table's name
-	 * @param   string  $field  The field's name
-	 *
-	 * @return  array  The files
-	 */
-	public static function getFiles($pk, $table, $field)
-	{
-		$db = Factory::getContainer()->get('DatabaseDriver');
-		$query = $db->getQuery(true);
-
-		$query
-			->select($field)
-			->from($table)
-			->where('id = ' . (int) $pk);
-
-		$db->setQuery($query);
-
-		return explode(',', $db->loadResult());
-	}
-
-	/**
 	 * Gets a list of the actions that can be performed.
 	 *
 	 * @return  CMSObject

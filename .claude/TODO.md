@@ -150,20 +150,20 @@ Revisione dei form di editing:
 Problemi identificati durante code review del backend:
 
 **Priorità Alta - Joomla 6 Compatibility:**
-- [ ] **11b.1** Sostituire `Factory::getApplication()->close()` con JSON response in `ManagerratesController::saveOrderAjax()`
-- [ ] **11b.2** Aggiungere `protected string $typeAlias = '';` in `BaseTable.php` (PHP 8.2+ dynamic property warning)
-- [ ] **11b.3** Sostituire `echo "1"` con JSON response in `BaseListController::saveOrderAjax()`
+- [x] **11b.1** Sostituire `Factory::getApplication()->close()` con JSON response in `ManagerratesController::saveOrderAjax()` (2026-02-06)
+- [x] **11b.2** Aggiungere `protected string $typeAlias = '';` in `BaseTable.php` (PHP 8.2+ dynamic property warning) (2026-02-06)
+- [x] **11b.3** Sostituire `echo "1"` con JSON response in `BaseListController::saveOrderAjax()` (2026-02-06)
 
 **Priorità Media - Code Smell:**
-- [ ] **11b.4** Refactor `script.php::processTable()` - estrarre in metodi separati (126 righe, 4 livelli nesting)
-- [ ] **11b.5** Refactor `script.php::processField()` - estrarre in metodi separati (166 righe, complessità alta)
-- [ ] **11b.6** Fix timezone in `CreatedbyField.php` - usare UTC-only approach per Joomla 6
+- [x] **11b.4** Refactor `script.php::processTable()` - estratti metodi processTableAdd/Change/Remove/createTable (2026-02-06)
+- [x] **11b.5** Refactor `script.php::processField()` - estratti metodi processFieldChange/renameField/processFieldRemove/addFieldWithMessage (2026-02-06)
+- [x] **11b.6** Fix `Factory::getUser()` deprecato in `CreatedbyField.php` - usa UserFactoryInterface + htmlspecialchars output (2026-02-06)
 
 **Priorità Bassa - Cleanup:**
-- [ ] **11b.7** Rimuovere `AssociationServiceTrait` inutilizzato da `Accommodation_managerComponent.php`
-- [ ] **11b.8** Verificare e rimuovere `Helper::getFiles()` se dead code
-- [ ] **11b.9** Rimuovere `ForeignKeyField::getAttribute()` - duplica metodo nativo Joomla
-- [ ] **11b.10** Fix `catch (ExecutionFailureException $e)` in `ForeignkeyField.php` - usare `\Exception`
+- [x] **11b.7** Rimuovere `AssociationServiceTrait` inutilizzato da `Accommodation_managerComponent.php` + import morti (2026-02-06)
+- [x] **11b.8** Rimosso `Helper::getFiles()` dead code da admin e site + fixato `Factory::getUser()` in site Helper (2026-02-06)
+- [x] **11b.9** Rimosso `ForeignKeyField::getAttribute()` - duplica metodo nativo Joomla (2026-02-06)
+- [x] **11b.10** Fix `catch (ExecutionFailureException $e)` → `catch (\Exception $e)` in `ForeignkeyField.php` (2026-02-06)
 
 ---
 

@@ -11,8 +11,9 @@ namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Fiel
 
 defined('JPATH_BASE') or die;
 
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\User\UserFactoryInterface;
 
 /**
  * Supports an HTML select list of categories
@@ -38,25 +39,20 @@ class CreatedbyField extends FormField
 	 */
 	protected function getInput()
 	{
-		// Initialize variables.
-		$html = array();
+		$html = [];
 
-		// Load user
 		$user_id = $this->value;
 
-		if ($user_id)
-		{
-			$user = Factory::getUser($user_id);
-		}
-		else
-		{
+		if ($user_id) {
+			$user = Factory::getContainer()->get(UserFactoryInterface::class)->loadUserById((int) $user_id);
+		} else {
 			$user   = Factory::getApplication()->getIdentity();
 			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . $user->id . '" />';
 		}
 
-		if (!$this->hidden)
-		{
-			$html[] = "<div>" . $user->name . " (" . $user->username . ")</div>";
+		if (!$this->hidden) {
+			$html[] = '<div>' . htmlspecialchars($user->name, ENT_QUOTES, 'UTF-8')
+				. ' (' . htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8') . ')</div>';
 		}
 
 		return implode($html);
