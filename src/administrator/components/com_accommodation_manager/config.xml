@@ -309,6 +309,16 @@
             <option value="1">JSHOW</option>
         </field>
         <field
+            name="rooms_show_video"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_VIDEO"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
             name="rooms_show_gallery"
             type="radio"
             default="1"
@@ -319,15 +329,138 @@
             <option value="1">JSHOW</option>
         </field>
         <field
-            name="rooms_show_video"
+            name="rooms_enable_swiper"
             type="radio"
-            default="1"
-            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_VIDEO"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER_DESC"
             layout="joomla.form.field.radio.switcher"
+            showon="rooms_show_gallery:1"
             >
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
         </field>
+        <field
+            name="spacer_rooms_gallery_slider"
+            type="spacer"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_SLIDER_SETTINGS"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_SLIDER_SETTINGS_DESC"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="rooms_gallery_slides_per_view_mobile"
+            type="text"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDES_PER_VIEW_MOBILE"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDES_PER_VIEW_DESC"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="rooms_gallery_slides_per_view_desktop"
+            type="text"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDES_PER_VIEW_DESKTOP"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDES_PER_VIEW_DESC"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="rooms_gallery_space_between_mobile"
+            type="text"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SPACE_BETWEEN_MOBILE"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SPACE_BETWEEN_DESC"
+            default="10"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="rooms_gallery_space_between_desktop"
+            type="text"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SPACE_BETWEEN_DESKTOP"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SPACE_BETWEEN_DESC"
+            default="30"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="rooms_gallery_autoplay"
+            type="radio"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_AUTOPLAY"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rooms_gallery_autoplay_delay"
+            type="text"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_AUTOPLAY_DELAY"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_AUTOPLAY_DELAY_DESC"
+            default="5000"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1[AND]rooms_gallery_autoplay:1"
+        />
+        <field
+            name="rooms_gallery_navigation"
+            type="radio"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_NAVIGATION"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rooms_gallery_pagination"
+            type="radio"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_PAGINATION"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rooms_gallery_load_css"
+            type="radio"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_LOAD_CSS"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_LOAD_CSS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rooms_gallery_load_js"
+            type="radio"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SWIPER_LOAD_JS"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_LOAD_JS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="note_gallery_css_vars"
+            type="note"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDER_CSS_VARS"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_CSS_VARS_DESC"
+            class="alert alert-info"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+        <field
+            name="note_gallery_js_event"
+            type="note"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SLIDER_JS_EVENT"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_GALLERY_JS_EVENT_DESC"
+            class="alert alert-info"
+            showon="rooms_show_gallery:1[AND]rooms_enable_swiper:1"
+        />
+
         <field
             name="spacer_rooms_layout"
             type="spacer"
@@ -340,17 +473,6 @@
             default="0"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_CATEGORY"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_CATEGORY_DESC"
-            layout="joomla.form.field.radio.switcher"
-            >
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-        <field
-            name="rooms_enable_swiper"
-            type="radio"
-            default="0"
-            label="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER"
-            description="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER_DESC"
             layout="joomla.form.field.radio.switcher"
             >
             <option value="0">JNO</option>

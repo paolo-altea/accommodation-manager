@@ -50,6 +50,25 @@
             "attributes": {
                 "defer": true
             }
+        },
+        {
+            "name": "com_accommodation_manager.gallery-slider",
+            "type": "style",
+            "uri": "com_accommodation_manager/gallery-slider.css",
+            "dependencies": [
+                "com_accommodation_manager.swiper-lib"
+            ]
+        },
+        {
+            "name": "com_accommodation_manager.gallery-slider",
+            "type": "script",
+            "uri": "com_accommodation_manager/gallery-slider.js",
+            "dependencies": [
+                "com_accommodation_manager.swiper-lib"
+            ],
+            "attributes": {
+                "defer": true
+            }
         }
     ]
 }
