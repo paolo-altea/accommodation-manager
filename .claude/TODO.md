@@ -167,16 +167,40 @@ Problemi identificati durante code review del backend:
 
 ---
 
-## FRONTEND (da fare dopo il backend)
+## FRONTEND
+
+Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (script custom usato in produzione al posto del frontend Joomla)
 
 ---
 
-### FASE 12 - Frontend pubblico
+### FASE 12 - View Categories List (elenco categorie camere)
 
-- [ ] **12.1** Progettare nuova architettura frontend (da definire)
-- [ ] **12.2** Implementare nuove View frontend
-- [ ] **12.3** Implementare Router SEF
-- [ ] **12.4** Usare come riferimento/spunto: `/Users/paolodaponte/projects/base/static/room_rate` (da approfondire)
+- [ ] **12.1** Model: query categorie pubblicate con titoli multilingua, immagine, descrizione
+- [ ] **12.2** View + template: lista categorie con titolo, descrizione intro, link alla lista camere filtrata
+
+### FASE 13 - View Rooms List (elenco camere)
+
+- [ ] **13.1** Model: query camere pubblicate con categoria, prezzo "a partire da", thumbnail, titoli multilingua. Filtro opzionale per category (se impostata mostra solo quelle della categoria, altrimenti tutte)
+- [ ] **13.2** View + template "page": griglia/lista camere con thumbnail, titolo, intro, prezzo da, link al dettaglio
+- [ ] **13.3** View + template "homepage": layout slider (Swiper.js) con thumbnail, titolo, prezzo corrente o intro
+
+### FASE 14 - View Room Detail (dettaglio camera)
+
+- [ ] **14.1** Model: singola camera con tutti i campi multilingua, gallery JSON, calcolo prezzo corrente (periodo odierno + tipologia default)
+- [ ] **14.2** Template: gallery Swiper.js (immagini da subform JSON, non più glob), descrizione, info sidebar (superficie, persone, prezzo)
+- [ ] **14.3** Sidebar: bottone richiesta/prenotazione con link da config.xml (request_link_*, booking_link_*)
+
+### FASE 15 - View Rates (griglia tariffe)
+
+- [ ] **15.1** Model: query tariffe con JOIN rooms/periods/typologies, preparazione struttura periodi > camere > tipologie
+- [ ] **15.2** Template: griglia tariffe con divisione estate/inverno (mag-ott / nov-apr), tab JS per switch stagione
+- [ ] **15.3** Formattazione prezzi: numerico → "XXX €", NULL → simbolo non disponibile
+
+### FASE 16 - Router SEF e infrastruttura
+
+- [ ] **16.1** Router SEF: URL puliti (`/categorie/`, `/camere/`, `/camere/slug/`, `/tariffe/`)
+- [ ] **16.2** Menu items: creare tipi di menu per le 4 view (categories, rooms list, room detail, rates)
+- [ ] **16.3** Rilevamento lingua: usare Joomla language tag per selezionare campi `*_de`, `*_it`, etc.
 
 ---
 
@@ -184,16 +208,16 @@ Problemi identificati durante code review del backend:
 
 ---
 
-### FASE 13 - Script import dati
+### FASE 17 - Script import dati
 
 Script PHP per migrare dati dal vecchio componente al nuovo:
 
-- [ ] **13.1** Convertire `room_gallery` da path stringa a JSON subform (estrarre immagini da cartella e creare array)
-- [ ] **13.2** Mappare dati esistenti nei nuovi campi alt (se disponibili altrove)
-- [ ] **13.3** Decidere come gestire `room_pano` (migrare a video? scartare?)
-- [ ] **13.4** Verificare/pulire dati rates, periods, typologies, categories
-- [ ] **13.5** Creare script di backup pre-migrazione
-- [ ] **13.6** Creare script di rollback in caso di errori
+- [ ] **17.1** Convertire `room_gallery` da path stringa a JSON subform (estrarre immagini da cartella e creare array)
+- [ ] **17.2** Mappare dati esistenti nei nuovi campi alt (se disponibili altrove)
+- [ ] **17.3** Decidere come gestire `room_pano` (migrare a video? scartare?)
+- [ ] **17.4** Verificare/pulire dati rates, periods, typologies, categories
+- [ ] **17.5** Creare script di backup pre-migrazione
+- [ ] **17.6** Creare script di rollback in caso di errori
 
 ---
 

@@ -51,10 +51,9 @@ cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/sql" "$BUILD_D
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/assets" "$BUILD_DIR/administrator/"
 cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/layouts" "$BUILD_DIR/administrator/"
 
-# Copy administrator languages
+# Copy administrator languages (inside component folder, not global)
 echo -e "${YELLOW}Copying administrator languages...${NC}"
-mkdir -p "$BUILD_DIR/administrator/languages"
-cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/language/"* "$BUILD_DIR/administrator/languages/"
+cp -r "$PROJECT_ROOT/src/administrator/components/$COMPONENT_NAME/language" "$BUILD_DIR/administrator/"
 
 # Copy site files
 echo -e "${YELLOW}Copying site files...${NC}"
@@ -63,11 +62,10 @@ cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/src" "$BUILD_DIR/site/"
 cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/forms" "$BUILD_DIR/site/"
 cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/tmpl" "$BUILD_DIR/site/"
 
-# Copy site languages
+# Copy site languages (inside component folder, not global)
 echo -e "${YELLOW}Copying site languages...${NC}"
-mkdir -p "$BUILD_DIR/site/languages"
 if [ -d "$PROJECT_ROOT/src/components/$COMPONENT_NAME/language" ]; then
-    cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/language/"* "$BUILD_DIR/site/languages/"
+    cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/language" "$BUILD_DIR/site/"
 fi
 
 # Copy media files

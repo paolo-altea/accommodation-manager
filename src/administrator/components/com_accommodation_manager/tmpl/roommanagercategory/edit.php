@@ -37,6 +37,7 @@ $enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
         <div class="col-lg-9">
             <?php echo $this->form->renderField('room_category_title'); ?>
             <?php echo $this->form->renderField('room_category_parent'); ?>
+            <?php echo $this->form->renderField('room_category_image'); ?>
         </div>
         <div class="col-lg-3">
             <div class="card">
@@ -55,6 +56,7 @@ $enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
     <div class="row">
         <div class="col-12">
             <?php echo $this->form->renderField('room_category_name_' . $lang); ?>
+            <?php echo $this->form->renderField('room_category_image_alt_' . $lang); ?>
             <?php echo $this->form->renderField('room_category_description_' . $lang); ?>
         </div>
     </div>
