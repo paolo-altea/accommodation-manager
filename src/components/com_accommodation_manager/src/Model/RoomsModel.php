@@ -57,6 +57,7 @@ class RoomsModel extends ListModel
 				$db->quoteName('a.room_video', 'video'),
 				$db->quoteName('a.ordering'),
 				$db->quoteName('c.room_category_name_' . $lang, 'category_name'),
+			$db->quoteName('c.room_category_description_' . $lang, 'category_description'),
 			])
 			->from($db->quoteName('#__accommodation_manager_rooms', 'a'))
 			->join('LEFT', $db->quoteName('#__accommodation_manager_room_categories', 'c')

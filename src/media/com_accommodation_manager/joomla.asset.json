@@ -69,6 +69,14 @@
             "attributes": {
                 "defer": true
             }
+        },
+        {
+            "name": "com_accommodation_manager.category-filter",
+            "type": "script",
+            "uri": "com_accommodation_manager/category-filter.js",
+            "attributes": {
+                "defer": true
+            }
         }
     ]
 }

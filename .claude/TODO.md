@@ -233,6 +233,7 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 - [ ] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla: verificare tutto il codice (template, model, view, controller) per individuare casi in cui si costruisce output a mano invece di usare helper nativi Joomla (es. `HTMLHelper::_('image')`, `HTMLHelper::_('date')`, `HTMLHelper::_('grid.*')`, `Text::_()`, `Route::_()`, ecc.)
 - [ ] **PR.2** Strategia traduzioni per lingue non installate: il componente prevede 5 lingue (de, it, en, fr, es) con colonne DB dedicate, ma i file `.ini` esistono solo per en-GB, de-DE, it-IT. Decidere come gestire fr-FR e es-ES (creare i file? fallback a en-GB? generare automaticamente?). Valutare anche cosa succede se una lingua è abilitata nel componente (`config.xml`) ma il language pack Joomla corrispondente non è installato nel sito.
+- [ ] **PR.3** Analisi overkill generale: revisione dell'intero componente per individuare complessità non necessaria, over-engineering, astrazioni premature, opzioni di configurazione eccessive, o codice ridondante. Semplificare dove possibile mantenendo solo ciò che serve realmente.
 
 ---
 
@@ -250,6 +251,14 @@ Script PHP per migrare dati dal vecchio componente al nuovo:
 - [ ] **17.4** Verificare/pulire dati rates, periods, typologies, categories
 - [ ] **17.5** Creare script di backup pre-migrazione
 - [ ] **17.6** Creare script di rollback in caso di errori
+
+---
+
+## POST-RELEASE
+
+---
+
+- [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.)
 
 ---
 
