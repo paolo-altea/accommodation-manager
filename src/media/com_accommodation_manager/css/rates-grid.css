@@ -1,0 +1,190 @@
+/* Rates Grid – Accommodation Manager
+   Customise via CSS custom properties on .com-accommodation-manager-rates or :root */
+
+.com-accommodation-manager-rates {
+  --rates-font-size: 0.9375rem;
+  --rates-header-bg: #353535;
+  --rates-header-color: #fff;
+  --rates-header-font-weight: 600;
+  --rates-border-color: #e5e5e5;
+  --rates-row-bg: #fff;
+  --rates-row-alt-bg: #f5f5f5;
+  --rates-row-hover-bg: #ececec;
+  --rates-period-bg: #f8f8f8;
+  --rates-period-alt-bg: #f0f0f0;
+  --rates-period-title-weight: 600;
+  --rates-period-dates-color: #6b6b6b;
+  --rates-cell-padding: 0.75rem 1rem;
+  --rates-rate-font-weight: 600;
+  --rates-not-available-color: #b5b0a5;
+  --rates-sticky-shadow: 4px 0 8px rgba(0, 0, 0, 0.06);
+  --rates-scroll-hint-width: 2rem;
+  --rates-scroll-hint-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Season heading */
+.rates-season-heading {
+  margin: 1.5rem 0 0.75rem;
+}
+
+.rates-season-heading:first-child {
+  margin-top: 0;
+}
+
+/* Wrapper: horizontal scroll on overflow */
+.rates-grid-wrapper {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.5rem;
+}
+
+/* Scroll hint gradient on the right */
+.rates-grid-wrapper.is-scrollable::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--rates-scroll-hint-width);
+  background: linear-gradient(to right, transparent, var(--rates-scroll-hint-color));
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.rates-grid-wrapper.is-scrolled-end::after {
+  opacity: 0;
+}
+
+/* Table base */
+.rates-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--rates-font-size);
+  white-space: nowrap;
+}
+
+/* Header */
+.rates-grid thead th {
+  background: var(--rates-header-bg);
+  color: var(--rates-header-color);
+  font-weight: var(--rates-header-font-weight);
+  padding: var(--rates-cell-padding);
+  text-align: center;
+  border: 1px solid var(--rates-header-bg);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.rates-grid__header-period,
+.rates-grid__header-typology {
+  text-align: left;
+}
+
+/* Body cells */
+.rates-grid td {
+  padding: var(--rates-cell-padding);
+  border-bottom: 1px solid var(--rates-border-color);
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  vertical-align: middle;
+}
+
+/* Period cell */
+.rates-grid__period {
+  background: var(--rates-period-bg);
+  border-right: 1px solid var(--rates-border-color);
+}
+
+.rates-grid__row-alt .rates-grid__period {
+  background: var(--rates-period-alt-bg);
+}
+
+.rates-grid__period-title {
+  display: block;
+  font-weight: var(--rates-period-title-weight);
+}
+
+.rates-grid__period-dates {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--rates-period-dates-color);
+  margin-top: 0.125rem;
+}
+
+/* Typology cell */
+.rates-grid__typology {
+  font-weight: 500;
+}
+
+/* Rate cells: numbers right-aligned */
+.rates-grid__rate {
+  text-align: right;
+  font-weight: var(--rates-rate-font-weight);
+  font-variant-numeric: tabular-nums;
+}
+
+.rates-grid__not-available {
+  color: var(--rates-not-available-color);
+  font-weight: 400;
+}
+
+/* Zebra striping per period group */
+.rates-grid__row {
+  background: var(--rates-row-bg);
+}
+
+.rates-grid__row-alt {
+  background: var(--rates-row-alt-bg);
+}
+
+.rates-grid__row-hover {
+  background: var(--rates-row-hover-bg);
+}
+
+.rates-grid__row-hover.rates-grid__row-alt {
+  background: var(--rates-row-hover-bg);
+}
+
+/* ── Mobile: sticky period + typology columns ── */
+@media (max-width: 768px) {
+  .rates-grid__header-period,
+  .rates-grid__period {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+  }
+
+  .rates-grid__header-period {
+    z-index: 4;
+  }
+
+  .rates-grid__period {
+    box-shadow: var(--rates-sticky-shadow);
+  }
+
+  .rates-grid__header-typology,
+  .rates-grid__typology {
+    position: sticky;
+    z-index: 3;
+  }
+
+  .rates-grid__header-typology {
+    z-index: 4;
+  }
+
+  .rates-grid__typology {
+    background: var(--rates-row-bg);
+    box-shadow: var(--rates-sticky-shadow);
+  }
+
+  .rates-grid__row-alt .rates-grid__typology {
+    background: var(--rates-row-alt-bg);
+  }
+
+  .rates-grid__row-hover .rates-grid__typology {
+    background: var(--rates-row-hover-bg);
+  }
+}

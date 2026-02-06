@@ -25,11 +25,13 @@ class RatesModel extends BaseDatabaseModel
 	/**
 	 * Get all active rate periods ordered by start date.
 	 *
+	 * @param   bool  $hidePast  If true, exclude periods whose end date is in the past
+	 *
 	 * @return  array
 	 *
 	 * @since   3.2.0
 	 */
-	public function getPeriods(): array
+	public function getPeriods(bool $hidePast = false): array
 	{
 		$db   = $this->getDatabase();
 		$lang = Accommodation_managerHelper::getLanguageSuffix();
@@ -44,6 +46,11 @@ class RatesModel extends BaseDatabaseModel
 			->from($db->quoteName('#__accommodation_manager_rate_periods'))
 			->where($db->quoteName('state') . ' = 1')
 			->order($db->quoteName('period_start') . ' ASC');
+
+		if ($hidePast)
+		{
+			$query->where($db->quoteName('period_end') . ' >= CURDATE()');
+		}
 
 		$db->setQuery($query);
 

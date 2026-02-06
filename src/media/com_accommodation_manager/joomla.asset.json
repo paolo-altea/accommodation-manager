@@ -77,6 +77,19 @@
             "attributes": {
                 "defer": true
             }
+        },
+        {
+            "name": "com_accommodation_manager.rates-grid",
+            "type": "style",
+            "uri": "com_accommodation_manager/rates-grid.css"
+        },
+        {
+            "name": "com_accommodation_manager.rates-grid",
+            "type": "script",
+            "uri": "com_accommodation_manager/rates-grid.js",
+            "attributes": {
+                "defer": true
+            }
         }
     ]
 }

@@ -60,11 +60,13 @@ class HtmlView extends BaseHtmlView
 		$app   = Factory::getApplication();
 		$model = $this->getModel();
 
-		$this->periods    = $model->getPeriods();
+		$this->params     = $app->getParams('com_accommodation_manager');
+
+		$hidePast         = (bool) $this->params->get('rates_hide_past_periods', 0);
+		$this->periods    = $model->getPeriods($hidePast);
 		$this->rooms      = $model->getRooms();
 		$this->typologies = $model->getTypologies();
 		$this->grid       = $model->getRatesGrid();
-		$this->params     = $app->getParams('com_accommodation_manager');
 
 		// Set page title from menu item
 		$activeMenu = $app->getMenu()->getActive();
