@@ -41,6 +41,10 @@ class Router extends RouterView
 		$room->setKey('id')->setParent($rooms, 'room_category');
 		$this->registerView($room);
 
+		// Rates grid view
+		$rates = new RouterViewConfiguration('rates');
+		$this->registerView($rates);
+
 		parent::__construct($app, $menu);
 
 		$this->attachRule(new MenuRules($this));

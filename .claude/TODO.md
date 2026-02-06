@@ -189,6 +189,7 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 - [ ] **B.3** Configurazione component con tab per view (ispirato a com_content): aggiungere in `config.xml` fieldset separati per ogni view frontend con opzioni display. Opzioni previste:
   - **Categories**: mostrare/nascondere bottone link alla categoria
   - **Rooms**: abilitare Swiper.js per gallery slider; modalità lista (solo intro, link a dettaglio) vs pagina completa (tutte le info); definire insieme quali sezioni mostrare/nascondere in base alla modalità
+  - **Rates**: nascondere periodi con date passate (sì/no); dividere tabella per stagione estate/inverno (mag-ott / nov-apr) con tab o sezioni separate
   - Espandere mano a mano per ogni view
 
 ---
