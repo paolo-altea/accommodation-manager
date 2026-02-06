@@ -185,7 +185,11 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 ### Backend fix minori (da fare dopo frontend)
 
 - [x] **B.1** Room Categories edit: spostare i campi alt immagine nel tab Basic insieme all'immagine (2026-02-06)
-- [ ] **B.2** Frontend CSS/JS: creare `site.css` e eventualmente `site.js`, registrare in `joomla.asset.json`, caricare dalle View condizionalmente in base a config params e template
+- [x] **B.2** Frontend CSS/JS: asset per-view registrati in `joomla.asset.json`, caricati condizionalmente da config params (load_css/load_js) (2026-02-06)
+  - categories-slider.css/js (con dependency Swiper CDN)
+  - gallery-slider.css/js (con dependency Swiper CDN)
+  - category-filter.js
+  - rates-grid.css/js
 - [x] **B.3** Configurazione component con tab per view (2026-02-06):
   - Componente: unito lingue abilitate con hr separator
   - **Categories**: immagine, descrizione, bottone link
@@ -213,16 +217,16 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 ### FASE 16 - Applicare config ai template
 
-- [ ] **16.1** Categories template: leggere params da config e condizionare immagine, descrizione, bottone link
-- [ ] **16.2** Rooms template: leggere params da config e condizionare tutte le sezioni, split per categoria, bottoni richiesta/prenotazione
-- [ ] **16.3** Rates template/model: applicare nascondi periodi passati e split per stagione estate/inverno
-- [ ] **16.4** Room detail template: mostrare bottoni richiesta/prenotazione se link configurati
+- [x] **16.1** Categories template: params condizionano immagine, descrizione, bottone link (2026-02-06)
+- [x] **16.2** Rooms template: params condizionano tutte le sezioni + layout split (default flat / grouped by category) + category filter JS (2026-02-06)
+- [x] **16.3** Rates template/model: nascondi periodi passati, split per stagione con raggruppamento per anno (Summer 2026, Winter 2026/27) (2026-02-06)
+- [x] **16.4** Room detail template: bottoni richiesta/prenotazione condizionali ai link configurati (2026-02-06)
 
 ### FASE 17 - Frontend CSS/JS e Swiper
 
-- [ ] **17.1** Creare `site.css`, registrare in `joomla.asset.json`, caricare dalle View
-- [ ] **17.2** Integrare Swiper.js per gallery (condizionale a config `rooms_enable_swiper`)
-- [ ] **17.3** Eventuale `site.js` per interazioni (tab stagioni rates, filtri, ecc.)
+- [x] **17.1** CSS/JS per-view con toggle load_css/load_js in config: categories-slider, gallery-slider, rates-grid, category-filter (2026-02-06)
+- [x] **17.2** Swiper.js integrato: categories slider (layout alternativo), gallery slider per rooms e room detail (2026-02-06)
+- [x] **17.3** rates-grid.js: zebra striping, period group hover, sticky columns mobile, scroll hints. category-filter.js: filtro client-side per categoria (2026-02-06)
 
 ### FASE 18 - Router SEF
 
