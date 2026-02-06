@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_video` VARCHAR(255)  NULL  DEFAULT "",
 `room_pano` VARCHAR(255)  NULL  DEFAULT "",
 PRIMARY KEY (`id`),
+UNIQUE INDEX `idx_room_name` (`room_name`),
 INDEX `idx_room_category` (`room_category`),
 INDEX `idx_state_ordering` (`state`, `ordering`)
 ) DEFAULT COLLATE=utf8mb4_unicode_ci;

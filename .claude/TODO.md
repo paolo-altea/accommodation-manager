@@ -182,6 +182,14 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 - [x] **12.4** Router SEF riscritto, DisplayController aggiornato, menu item XML (2026-02-06)
 - [x] **12.5** Language files frontend riscritti (solo key necessarie) + sys.ini per menu type picker (2026-02-06)
 
+### Backend fix minori (da fare dopo frontend)
+
+- [ ] **B.1** Room Categories edit: spostare i campi alt immagine (`room_category_image_alt_*`) nel tab Basic insieme all'immagine, invece che nei singoli tab lingua
+- [ ] **B.2** Frontend CSS/JS: creare `site.css` e eventualmente `site.js`, registrare in `joomla.asset.json`, caricare dalle View - da fare dopo che tutte le view frontend sono pronte
+- [ ] **B.3** Configurazione component con tab per view (ispirato a com_content): aggiungere in `config.xml` fieldset separati per ogni view frontend con opzioni display (es. Categories: mostrare/nascondere bottone link categoria; Rooms: opzioni layout; etc.) - espandere mano a mano per ogni view
+
+---
+
 ### FASE 13 - View Rooms List (elenco camere)
 
 - [ ] **13.1** Model: query camere pubblicate con categoria, prezzo "a partire da", thumbnail, titoli multilingua. Filtro opzionale per category (se impostata mostra solo quelle della categoria, altrimenti tutte)

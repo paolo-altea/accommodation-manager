@@ -32,6 +32,10 @@ class Router extends RouterView
 		$categories = new RouterViewConfiguration('categories');
 		$this->registerView($categories);
 
+		// Rooms list view
+		$rooms = new RouterViewConfiguration('rooms');
+		$this->registerView($rooms);
+
 		parent::__construct($app, $menu);
 
 		$this->attachRule(new MenuRules($this));

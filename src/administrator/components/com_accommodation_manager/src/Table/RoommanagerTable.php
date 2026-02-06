@@ -11,6 +11,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Tabl
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseDriver;
 
 /**
@@ -30,6 +31,47 @@ class RoommanagerTable extends BaseTable
 		$this->typeAlias = 'com_accommodation_manager.roommanager';
 		parent::__construct('#__accommodation_manager_rooms', 'id', $db);
 		$this->setColumnAlias('published', 'state');
+	}
+
+	/**
+	 * Validate room_name uniqueness before save.
+	 *
+	 * @return  bool
+	 *
+	 * @since   3.2.0
+	 */
+	protected function processCheck(): bool
+	{
+		if (empty($this->room_name))
+		{
+			$this->setError(Text::_('COM_ACCOMMODATION_MANAGER_ERROR_ROOM_NAME_REQUIRED'));
+
+			return false;
+		}
+
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from($db->quoteName($this->_tbl))
+			->where($db->quoteName('room_name') . ' = :roomName')
+			->bind(':roomName', $this->room_name);
+
+		if ($this->id)
+		{
+			$query->where($db->quoteName('id') . ' != :id')
+				->bind(':id', $this->id, \Joomla\Database\ParameterType::INTEGER);
+		}
+
+		$db->setQuery($query);
+
+		if ($db->loadResult())
+		{
+			$this->setError(Text::sprintf('COM_ACCOMMODATION_MANAGER_ERROR_ROOM_NAME_DUPLICATE', $this->room_name));
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

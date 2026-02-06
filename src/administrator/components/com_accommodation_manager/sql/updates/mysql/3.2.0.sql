@@ -6,3 +6,6 @@ ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `room_category
 ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `room_category_image_alt_en` VARCHAR(255) NULL DEFAULT '' AFTER `room_category_image_alt_it`;
 ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `room_category_image_alt_fr` VARCHAR(255) NULL DEFAULT '' AFTER `room_category_image_alt_en`;
 ALTER TABLE `#__accommodation_manager_room_categories` ADD COLUMN `room_category_image_alt_es` VARCHAR(255) NULL DEFAULT '' AFTER `room_category_image_alt_fr`;
+
+-- Ensure room_name is unique
+ALTER TABLE `#__accommodation_manager_rooms` ADD UNIQUE INDEX `idx_room_name` (`room_name`);

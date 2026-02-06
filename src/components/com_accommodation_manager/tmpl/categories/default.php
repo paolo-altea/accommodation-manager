@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -23,12 +24,21 @@ use Joomla\CMS\Uri\Uri;
 		<div class="categories-list">
 			<?php foreach ($this->items as $item) : ?>
 				<div class="category-item">
-					<?php if (!empty($item->image)) : ?>
+					<?php if (!empty($item->image)) :
+						$imgData = HTMLHelper::_('cleanImageURL', $item->image);
+						$imgUrl  = Uri::root(true) . '/' . $imgData->url;
+						$imgW    = $imgData->attributes['width'] ?? null;
+						$imgH    = $imgData->attributes['height'] ?? null;
+					?>
 						<div class="category-image">
 							<a href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=rooms&category_id=' . (int) $item->id); ?>">
-								<img src="<?php echo htmlspecialchars(Uri::root() . $item->image, ENT_QUOTES, 'UTF-8'); ?>"
-									 alt="<?php echo htmlspecialchars($item->image_alt ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-									 loading="lazy" />
+								<img src="<?php echo htmlspecialchars($imgUrl, ENT_QUOTES, 'UTF-8'); ?>"
+									alt="<?php echo htmlspecialchars($item->image_alt ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+									<?php if ($imgW && $imgH) : ?>
+										width="<?php echo (int) $imgW; ?>"
+										height="<?php echo (int) $imgH; ?>"
+									<?php endif; ?>
+									loading="lazy" />
 							</a>
 						</div>
 					<?php endif; ?>

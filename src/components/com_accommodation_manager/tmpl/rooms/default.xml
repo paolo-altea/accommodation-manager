@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_ACCOMMODATION_MANAGER_VIEW_ROOMS_TITLE"
+			option="COM_ACCOMMODATION_MANAGER_VIEW_ROOMS_OPTION">
+		<message>
+			<![CDATA[COM_ACCOMMODATION_MANAGER_VIEW_ROOMS_DESC]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field
+				name="category_id"
+				type="sql"
+				label="COM_ACCOMMODATION_MANAGER_ROOMS_FILTER_CATEGORY"
+				description="COM_ACCOMMODATION_MANAGER_ROOMS_FILTER_CATEGORY_DESC"
+				query="SELECT id, room_category_name_en AS title FROM #__accommodation_manager_room_categories WHERE state = 1 ORDER BY ordering ASC"
+				key_field="id"
+				value_field="title"
+				default="0"
+				>
+				<option value="0">COM_ACCOMMODATION_MANAGER_ALL_CATEGORIES</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>
