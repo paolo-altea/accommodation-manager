@@ -1,0 +1,95 @@
+/**
+ * Categories Slider - Swiper layout
+ * com_accommodation_manager
+ */
+
+:root {
+	--am-slider-height: 70vh;
+	--am-slider-overlay-bg: linear-gradient(transparent 40%, rgba(0, 0, 0, .7));
+	--am-slider-overlay-padding: 2rem;
+	--am-slider-title-color: #fff;
+	--am-slider-title-size: 2.5rem;
+	--am-slider-text-color: #fff;
+	--am-slider-btn-bg: var(--am-slider-title-color);
+	--am-slider-btn-color: #000;
+	--am-slider-nav-color: #fff;
+	--am-slider-pagination-color: #fff;
+}
+
+.am-categories-swiper {
+	width: 100%;
+	overflow: hidden;
+}
+
+.am-categories-swiper .swiper-slide {
+	position: relative;
+	height: var(--am-slider-height);
+	overflow: hidden;
+}
+
+.am-slide-img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.am-slide-content {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: var(--am-slider-overlay-padding);
+	background: var(--am-slider-overlay-bg);
+}
+
+.am-slide-title {
+	margin: 0 0 .5rem;
+	font-size: var(--am-slider-title-size);
+	line-height: 1.2;
+}
+
+.am-slide-title a {
+	color: var(--am-slider-title-color);
+	text-decoration: none;
+}
+
+.am-slide-title a:hover {
+	text-decoration: underline;
+}
+
+.am-slide-description {
+	color: var(--am-slider-text-color);
+	margin-bottom: 1rem;
+	max-width: 40rem;
+}
+
+.am-slide-btn {
+	align-self: flex-start;
+	background-color: var(--am-slider-btn-bg);
+	color: var(--am-slider-btn-color);
+	border: none;
+}
+
+.am-slide-btn:hover {
+	opacity: .85;
+	color: var(--am-slider-btn-color);
+}
+
+/* Navigation arrows */
+.am-categories-swiper .swiper-button-prev,
+.am-categories-swiper .swiper-button-next {
+	color: var(--am-slider-nav-color);
+}
+
+/* Pagination dots */
+.am-categories-swiper .swiper-pagination-bullet {
+	background: var(--am-slider-pagination-color);
+	opacity: .5;
+}
+
+.am-categories-swiper .swiper-pagination-bullet-active {
+	opacity: 1;
+}

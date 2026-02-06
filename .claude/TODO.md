@@ -184,39 +184,55 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 ### Backend fix minori (da fare dopo frontend)
 
-- [ ] **B.1** Room Categories edit: spostare i campi alt immagine (`room_category_image_alt_*`) nel tab Basic insieme all'immagine, invece che nei singoli tab lingua
-- [ ] **B.2** Frontend CSS/JS: creare `site.css` e eventualmente `site.js`, registrare in `joomla.asset.json`, caricare dalle View - da fare dopo che tutte le view frontend sono pronte
-- [ ] **B.3** Configurazione component con tab per view (ispirato a com_content): aggiungere in `config.xml` fieldset separati per ogni view frontend con opzioni display. Opzioni previste:
-  - **Categories**: mostrare/nascondere bottone link alla categoria
-  - **Rooms**: abilitare Swiper.js per gallery slider; modalità lista (solo intro, link a dettaglio) vs pagina completa (tutte le info); definire insieme quali sezioni mostrare/nascondere in base alla modalità
-  - **Rates**: nascondere periodi con date passate (sì/no); dividere tabella per stagione estate/inverno (mag-ott / nov-apr) con tab o sezioni separate
-  - Espandere mano a mano per ogni view
+- [x] **B.1** Room Categories edit: spostare i campi alt immagine nel tab Basic insieme all'immagine (2026-02-06)
+- [ ] **B.2** Frontend CSS/JS: creare `site.css` e eventualmente `site.js`, registrare in `joomla.asset.json`, caricare dalle View condizionalmente in base a config params e template
+- [x] **B.3** Configurazione component con tab per view (2026-02-06):
+  - Componente: unito lingue abilitate con hr separator
+  - **Categories**: immagine, descrizione, bottone link
+  - **Rooms**: toggle sezioni (superficie, persone, prezzo, intro, descrizione, planimetria, galleria, video), split per categoria, Swiper.js, bottoni richiesta/prenotazione
+  - **Room detail**: nessun config (mostra tutto, bottoni condizionali ai link configurati)
+  - **Rates**: nascondi periodi passati, dividi per stagione estate/inverno con date inizio configurabili
 
 ---
 
 ### FASE 13 - View Rooms List (elenco camere)
 
-- [ ] **13.1** Model: query camere pubblicate con categoria, prezzo "a partire da", thumbnail, titoli multilingua. Filtro opzionale per category (se impostata mostra solo quelle della categoria, altrimenti tutte)
-- [ ] **13.2** View + template "page": griglia/lista camere con thumbnail, titolo, intro, prezzo da, link al dettaglio
-- [ ] **13.3** View + template "homepage": layout slider (Swiper.js) con thumbnail, titolo, prezzo corrente o intro
+- [x] **13.1** Model RoomsModel: query camere con categoria, prezzo, thumbnail, titoli multilingua, gallery JSON, filtro per category_id (2026-02-06)
+- [x] **13.2** View + template: lista camere con `<section>`, `<picture>` per gallery, `data-category`, page heading, unique room_name constraint (2026-02-06)
 
 ### FASE 14 - View Room Detail (dettaglio camera)
 
-- [ ] **14.1** Model: singola camera con tutti i campi multilingua, gallery JSON, calcolo prezzo corrente (periodo odierno + tipologia default)
-- [ ] **14.2** Template: gallery Swiper.js (immagini da subform JSON, non più glob), descrizione, info sidebar (superficie, persone, prezzo)
-- [ ] **14.3** Sidebar: bottone richiesta/prenotazione con link da config.xml (request_link_*, booking_link_*)
+- [x] **14.1** Model RoomModel: singola camera con tutti i campi, gallery JSON decode (2026-02-06)
+- [x] **14.2** View + template: `<article>` con `<h1>` titolo camera, tutte le info, gallery con `<picture>` (2026-02-06)
 
 ### FASE 15 - View Rates (griglia tariffe)
 
-- [ ] **15.1** Model: query tariffe con JOIN rooms/periods/typologies, preparazione struttura periodi > camere > tipologie
-- [ ] **15.2** Template: griglia tariffe con divisione estate/inverno (mag-ott / nov-apr), tab JS per switch stagione
-- [ ] **15.3** Formattazione prezzi: numerico → "XXX €", NULL → simbolo non disponibile
+- [x] **15.1** Model RatesModel: getPeriods/getRooms/getTypologies/getRatesGrid con 3D array (2026-02-06)
+- [x] **15.2** Template: tabella HTML con periodi rowspan, tipologie righe, camere colonne, page heading (2026-02-06)
+- [x] **15.3** Formattazione prezzi: `number_format` + euro, NULL → dash (2026-02-06)
 
-### FASE 16 - Router SEF e infrastruttura
+### FASE 16 - Applicare config ai template
 
-- [ ] **16.1** Router SEF: URL puliti (`/categorie/`, `/camere/`, `/camere/slug/`, `/tariffe/`)
-- [ ] **16.2** Menu items: creare tipi di menu per le 4 view (categories, rooms list, room detail, rates)
-- [ ] **16.3** Rilevamento lingua: usare Joomla language tag per selezionare campi `*_de`, `*_it`, etc.
+- [ ] **16.1** Categories template: leggere params da config e condizionare immagine, descrizione, bottone link
+- [ ] **16.2** Rooms template: leggere params da config e condizionare tutte le sezioni, split per categoria, bottoni richiesta/prenotazione
+- [ ] **16.3** Rates template/model: applicare nascondi periodi passati e split per stagione estate/inverno
+- [ ] **16.4** Room detail template: mostrare bottoni richiesta/prenotazione se link configurati
+
+### FASE 17 - Frontend CSS/JS e Swiper
+
+- [ ] **17.1** Creare `site.css`, registrare in `joomla.asset.json`, caricare dalle View
+- [ ] **17.2** Integrare Swiper.js per gallery (condizionale a config `rooms_enable_swiper`)
+- [ ] **17.3** Eventuale `site.js` per interazioni (tab stagioni rates, filtri, ecc.)
+
+### FASE 18 - Router SEF
+
+- [ ] **18.1** Router SEF: URL puliti (`/categorie/`, `/camere/`, `/camere/slug/`, `/tariffe/`)
+- [ ] **18.2** Rilevamento lingua: già implementato con `Accommodation_managerHelper::getLanguageSuffix()`
+
+### Pre-rilascio
+
+- [ ] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla: verificare tutto il codice (template, model, view, controller) per individuare casi in cui si costruisce output a mano invece di usare helper nativi Joomla (es. `HTMLHelper::_('image')`, `HTMLHelper::_('date')`, `HTMLHelper::_('grid.*')`, `Text::_()`, `Route::_()`, ecc.)
+- [ ] **PR.2** Strategia traduzioni per lingue non installate: il componente prevede 5 lingue (de, it, en, fr, es) con colonne DB dedicate, ma i file `.ini` esistono solo per en-GB, de-DE, it-IT. Decidere come gestire fr-FR e es-ES (creare i file? fallback a en-GB? generare automaticamente?). Valutare anche cosa succede se una lingua è abilitata nel componente (`config.xml`) ma il language pack Joomla corrispondente non è installato nel sito.
 
 ---
 
@@ -224,7 +240,7 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 ---
 
-### FASE 17 - Script import dati
+### FASE 19 - Script import dati
 
 Script PHP per migrare dati dal vecchio componente al nuovo:
 

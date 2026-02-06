@@ -9,11 +9,16 @@
 
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 $item = $this->item;
+
+// Request/booking buttons (show if URL is configured, no toggle needed)
+$lang       = Accommodation_managerHelper::getLanguageSuffix();
+$requestUrl = $this->params->get('request_link_' . $lang, '');
+$bookingUrl = $this->params->get('booking_link_' . $lang, '');
 ?>
 <div class="com-accommodation-manager-room">
 	<?php if (empty($item)) : ?>
@@ -33,19 +38,17 @@ $item = $this->item;
 
 			<?php // Thumbnail ?>
 			<?php if (!empty($item->thumbnail)) :
-				$thumbData = HTMLHelper::_('cleanImageURL', $item->thumbnail);
-				$thumbUrl  = Uri::root(true) . '/' . $thumbData->url;
-				$thumbW    = $thumbData->attributes['width'] ?? null;
-				$thumbH    = $thumbData->attributes['height'] ?? null;
+				$thumbData    = HTMLHelper::_('cleanImageURL', $item->thumbnail);
+				$thumbAttribs = ['loading' => 'lazy'];
+				if (!empty($thumbData->attributes['width'])) {
+					$thumbAttribs['width'] = (int) $thumbData->attributes['width'];
+				}
+				if (!empty($thumbData->attributes['height'])) {
+					$thumbAttribs['height'] = (int) $thumbData->attributes['height'];
+				}
 			?>
 				<div class="room-thumbnail">
-					<img src="<?php echo htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8'); ?>"
-						alt="<?php echo htmlspecialchars($item->thumbnail_alt ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-						<?php if ($thumbW && $thumbH) : ?>
-							width="<?php echo (int) $thumbW; ?>"
-							height="<?php echo (int) $thumbH; ?>"
-						<?php endif; ?>
-						loading="lazy" />
+					<?php echo HTMLHelper::_('image', $thumbData->url, $item->thumbnail_alt ?? '', $thumbAttribs); ?>
 				</div>
 			<?php endif; ?>
 
@@ -89,20 +92,18 @@ $item = $this->item;
 
 			<?php // Floor plan ?>
 			<?php if (!empty($item->floor_plan)) :
-				$fpData = HTMLHelper::_('cleanImageURL', $item->floor_plan);
-				$fpUrl  = Uri::root(true) . '/' . $fpData->url;
-				$fpW    = $fpData->attributes['width'] ?? null;
-				$fpH    = $fpData->attributes['height'] ?? null;
+				$fpData    = HTMLHelper::_('cleanImageURL', $item->floor_plan);
+				$fpAttribs = ['loading' => 'lazy'];
+				if (!empty($fpData->attributes['width'])) {
+					$fpAttribs['width'] = (int) $fpData->attributes['width'];
+				}
+				if (!empty($fpData->attributes['height'])) {
+					$fpAttribs['height'] = (int) $fpData->attributes['height'];
+				}
 			?>
 				<div class="room-floor-plan">
 					<h2><?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_FLOOR_PLAN'); ?></h2>
-					<img src="<?php echo htmlspecialchars($fpUrl, ENT_QUOTES, 'UTF-8'); ?>"
-						alt="<?php echo htmlspecialchars($item->floor_plan_alt ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-						<?php if ($fpW && $fpH) : ?>
-							width="<?php echo (int) $fpW; ?>"
-							height="<?php echo (int) $fpH; ?>"
-						<?php endif; ?>
-						loading="lazy" />
+					<?php echo HTMLHelper::_('image', $fpData->url, $item->floor_plan_alt ?? '', $fpAttribs); ?>
 				</div>
 			<?php endif; ?>
 
@@ -112,7 +113,6 @@ $item = $this->item;
 					<?php foreach ($item->gallery_items as $galleryItem) : ?>
 						<?php if (!empty($galleryItem->image)) :
 							$imgData = HTMLHelper::_('cleanImageURL', $galleryItem->image);
-							$imgUrl  = Uri::root(true) . '/' . $imgData->url;
 							$imgW    = $imgData->attributes['width'] ?? null;
 							$imgH    = $imgData->attributes['height'] ?? null;
 
@@ -134,24 +134,26 @@ $item = $this->item;
 								}
 							}
 
+							$imgAttribs = ['loading' => 'lazy'];
+							if ($imgW) {
+								$imgAttribs['width'] = (int) $imgW;
+							}
+							if ($imgH) {
+								$imgAttribs['height'] = (int) $imgH;
+							}
+
 							$mobileUrl = null;
 							if (!empty($galleryItem->image_mobile))
 							{
 								$mobileData = HTMLHelper::_('cleanImageURL', $galleryItem->image_mobile);
-								$mobileUrl  = Uri::root(true) . '/' . $mobileData->url;
+								$mobileUrl  = $mobileData->url;
 							}
 						?>
 							<picture class="room-gallery__picture">
 								<?php if ($mobileUrl) : ?>
 									<source media="(max-width: 768px)" srcset="<?php echo htmlspecialchars($mobileUrl, ENT_QUOTES, 'UTF-8'); ?>">
 								<?php endif; ?>
-								<img src="<?php echo htmlspecialchars($imgUrl, ENT_QUOTES, 'UTF-8'); ?>"
-									alt="<?php echo htmlspecialchars($galleryItem->alt ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-									<?php if ($imgW && $imgH) : ?>
-										width="<?php echo (int) $imgW; ?>"
-										height="<?php echo (int) $imgH; ?>"
-									<?php endif; ?>
-									loading="lazy" />
+								<?php echo HTMLHelper::_('image', $imgData->url, $galleryItem->alt ?? '', $imgAttribs); ?>
 							</picture>
 						<?php endif; ?>
 					<?php endforeach; ?>
@@ -162,6 +164,22 @@ $item = $this->item;
 			<?php if (!empty($item->video)) : ?>
 				<div class="room-video">
 					<?php echo $item->video; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php // Request / Booking buttons ?>
+			<?php if ($requestUrl || $bookingUrl) : ?>
+				<div class="room-actions">
+					<?php if ($requestUrl) : ?>
+						<a class="btn btn-primary room-request-btn" href="<?php echo htmlspecialchars($requestUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
+							<?php echo Text::_('COM_ACCOMMODATION_MANAGER_REQUEST'); ?>
+						</a>
+					<?php endif; ?>
+					<?php if ($bookingUrl) : ?>
+						<a class="btn btn-primary room-booking-btn" href="<?php echo htmlspecialchars($bookingUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
+							<?php echo Text::_('COM_ACCOMMODATION_MANAGER_BOOKING'); ?>
+						</a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_ACCOMMODATION_MANAGER_VIEW_CATEGORIES_SLIDER_TITLE"
+			option="COM_ACCOMMODATION_MANAGER_VIEW_CATEGORIES_SLIDER_OPTION">
+		<message>
+			<![CDATA[COM_ACCOMMODATION_MANAGER_VIEW_CATEGORIES_SLIDER_DESC]]>
+		</message>
+	</layout>
+</metadata>

@@ -21,6 +21,35 @@
             "name": "com_accommodation_manager.list",
             "type": "style",
             "uri": "com_accommodation_manager/list.css"
+        },
+        {
+            "name": "com_accommodation_manager.swiper-lib",
+            "type": "style",
+            "uri": "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        },
+        {
+            "name": "com_accommodation_manager.swiper-lib",
+            "type": "script",
+            "uri": "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+        },
+        {
+            "name": "com_accommodation_manager.categories-slider",
+            "type": "style",
+            "uri": "com_accommodation_manager/categories-slider.css",
+            "dependencies": [
+                "com_accommodation_manager.swiper-lib"
+            ]
+        },
+        {
+            "name": "com_accommodation_manager.categories-slider",
+            "type": "script",
+            "uri": "com_accommodation_manager/categories-slider.js",
+            "dependencies": [
+                "com_accommodation_manager.swiper-lib"
+            ],
+            "attributes": {
+                "defer": true
+            }
         }
     ]
 }
