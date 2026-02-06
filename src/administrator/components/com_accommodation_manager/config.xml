@@ -34,9 +34,18 @@
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-    </fieldset>
 
-    <fieldset name="languages" label="COM_ACCOMMODATION_MANAGER_CONFIG_LANGUAGES">
+        <field
+            name="spacer_languages_hr"
+            type="spacer"
+            hr="true"
+        />
+        <field
+            name="spacer_languages"
+            type="spacer"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_LANGUAGES"
+        />
+
         <field
             name="lang_de"
             type="radio"
@@ -86,6 +95,323 @@
             >
             <option value="0">JNO</option>
             <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="view_categories" label="COM_ACCOMMODATION_MANAGER_CONFIG_VIEW_CATEGORIES">
+        <field
+            name="categories_show_image"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_IMAGE"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="categories_show_description"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_DESCRIPTION"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="categories_show_link_button"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_LINK_BUTTON"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_LINK_BUTTON_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="view_rooms" label="COM_ACCOMMODATION_MANAGER_CONFIG_VIEW_ROOMS">
+        <field
+            name="rooms_show_surface"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_SURFACE"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_people"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_PEOPLE"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_price_from"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_PRICE_FROM"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_intro"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_INTRO"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_description"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_DESCRIPTION"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_floor_plan"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_FLOOR_PLAN"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_gallery"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_GALLERY"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_video"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_VIDEO"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="spacer_rooms_layout"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="rooms_split_by_category"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_CATEGORY"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_CATEGORY_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rooms_enable_swiper"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_ENABLE_SWIPER_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="spacer_rooms_actions"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="rooms_show_request_button"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_REQUEST_BUTTON"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_REQUEST_BUTTON_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
+            name="rooms_show_booking_button"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_BOOKING_BUTTON"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_BOOKING_BUTTON_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="view_rates" label="COM_ACCOMMODATION_MANAGER_CONFIG_VIEW_RATES">
+        <field
+            name="rates_hide_past_periods"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_HIDE_PAST_PERIODS"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_HIDE_PAST_PERIODS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rates_split_by_season"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_SEASON"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SPLIT_BY_SEASON_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="rates_summer_start_day"
+            type="list"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SUMMER_START_DAY"
+            showon="rates_split_by_season:1"
+            >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </field>
+        <field
+            name="rates_summer_start_month"
+            type="list"
+            default="5"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SUMMER_START_MONTH"
+            showon="rates_split_by_season:1"
+            >
+            <option value="1">JANUARY</option>
+            <option value="2">FEBRUARY</option>
+            <option value="3">MARCH</option>
+            <option value="4">APRIL</option>
+            <option value="5">MAY</option>
+            <option value="6">JUNE</option>
+            <option value="7">JULY</option>
+            <option value="8">AUGUST</option>
+            <option value="9">SEPTEMBER</option>
+            <option value="10">OCTOBER</option>
+            <option value="11">NOVEMBER</option>
+            <option value="12">DECEMBER</option>
+        </field>
+        <field
+            name="rates_winter_start_day"
+            type="list"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_WINTER_START_DAY"
+            showon="rates_split_by_season:1"
+            >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </field>
+        <field
+            name="rates_winter_start_month"
+            type="list"
+            default="11"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_WINTER_START_MONTH"
+            showon="rates_split_by_season:1"
+            >
+            <option value="1">JANUARY</option>
+            <option value="2">FEBRUARY</option>
+            <option value="3">MARCH</option>
+            <option value="4">APRIL</option>
+            <option value="5">MAY</option>
+            <option value="6">JUNE</option>
+            <option value="7">JULY</option>
+            <option value="8">AUGUST</option>
+            <option value="9">SEPTEMBER</option>
+            <option value="10">OCTOBER</option>
+            <option value="11">NOVEMBER</option>
+            <option value="12">DECEMBER</option>
         </field>
     </fieldset>
 
