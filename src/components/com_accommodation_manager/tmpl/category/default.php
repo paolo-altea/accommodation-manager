@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-// Show/hide toggles
+// Show/hide toggles (reuses rooms config params)
 $showSurface     = $this->params->get('rooms_show_surface', 1);
 $showPeople      = $this->params->get('rooms_show_people', 1);
 $showPriceFrom   = $this->params->get('rooms_show_price_from', 1);
@@ -24,6 +24,9 @@ $showFloorPlan   = $this->params->get('rooms_show_floor_plan', 1);
 $showGallery     = $this->params->get('rooms_show_gallery', 1);
 $showVideo       = $this->params->get('rooms_show_video', 1);
 $showInfo        = $showSurface || $showPeople || $showPriceFrom;
+
+// Detail link
+$showDetailLink = $this->params->get('rooms_show_detail_link', 0);
 
 // Gallery Swiper
 $gallerySwiper = $showGallery && $this->params->get('rooms_enable_swiper', 0);
@@ -58,40 +61,8 @@ $showBookingBtn = $this->params->get('rooms_show_booking_button', 1);
 $lang           = Accommodation_managerHelper::getLanguageSuffix();
 $requestUrl     = $this->params->get('request_link_' . $lang, '');
 $bookingUrl     = $this->params->get('booking_link_' . $lang, '');
-
-// Detail link
-$showDetailLink = $this->params->get('rooms_show_detail_link', 0);
-
-// Category filter
-$showCategoryFilter = $this->params->get('rooms_show_category_filter', 0);
-
-if ($showCategoryFilter && !empty($this->items))
-{
-	// Extract unique categories preserving order
-	$filterCategories = [];
-
-	foreach ($this->items as $item)
-	{
-		$catId = (int) $item->room_category;
-
-		if (!isset($filterCategories[$catId]) && !empty($item->category_name))
-		{
-			$filterCategories[$catId] = $item->category_name;
-		}
-	}
-
-	// Only show filter if there are 2+ categories
-	if (count($filterCategories) < 2)
-	{
-		$showCategoryFilter = false;
-	}
-	else
-	{
-		$this->document->getWebAssetManager()->useScript('com_accommodation_manager.category-filter');
-	}
-}
 ?>
-<div class="com-accommodation-manager-rooms">
+<div class="com-accommodation-manager-category">
 	<?php if ($this->params->get('show_page_heading')) : ?>
 		<h1><?php echo $this->escape($this->params->get('page_heading') ?: $this->params->get('page_title')); ?></h1>
 	<?php endif; ?>
@@ -101,24 +72,11 @@ if ($showCategoryFilter && !empty($this->items))
 			<?php echo Text::_('COM_ACCOMMODATION_MANAGER_NO_ROOMS'); ?>
 		</div>
 	<?php else : ?>
-		<?php if ($showCategoryFilter) : ?>
-			<div class="rooms-category-filter">
-				<button type="button" class="btn btn-outline-primary active" data-filter-category=""><?php echo Text::_('COM_ACCOMMODATION_MANAGER_FILTER_ALL'); ?></button>
-				<?php foreach ($filterCategories as $catId => $catName) : ?>
-					<button type="button" class="btn btn-outline-primary" data-filter-category="<?php echo $catId; ?>"><?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?></button>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
-
 		<?php foreach ($this->items as $item) : ?>
-		<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>" data-category="<?php echo (int) $item->room_category; ?>">
+		<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
 
 			<?php if (!empty($item->title)) : ?>
 				<h2 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h2>
-			<?php endif; ?>
-
-			<?php if (!empty($item->category_name)) : ?>
-				<p class="room-category"><?php echo htmlspecialchars($item->category_name, ENT_QUOTES, 'UTF-8'); ?></p>
 			<?php endif; ?>
 
 			<?php // Thumbnail ?>
@@ -224,8 +182,6 @@ if ($showCategoryFilter && !empty($this->items))
 							$imgW    = $imgData->attributes['width'] ?? null;
 							$imgH    = $imgData->attributes['height'] ?? null;
 
-							// Subform media fields don't store the #joomlaImage fragment,
-							// so fall back to getimagesize() for dimensions
 							if (!$imgW || !$imgH)
 							{
 								$imgPath = JPATH_ROOT . '/' . $imgData->url;

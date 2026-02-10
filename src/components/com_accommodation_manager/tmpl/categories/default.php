@@ -29,7 +29,7 @@ $showLinkButton  = $this->params->get('categories_show_link_button', 0);
 	<?php else : ?>
 		<div class="categories-list">
 			<?php foreach ($this->items as $item) :
-				$categoryUrl = Route::_('index.php?option=com_accommodation_manager&view=rooms&category_id=' . (int) $item->id);
+				$categoryUrl = Route::_('index.php?option=com_accommodation_manager&view=category&id=' . (int) $item->id);
 			?>
 				<div class="category-item">
 					<?php if ($showImage && !empty($item->image)) :

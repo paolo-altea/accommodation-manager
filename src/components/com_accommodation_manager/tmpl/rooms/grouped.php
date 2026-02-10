@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 // Show/hide toggles
 $showSurface     = $this->params->get('rooms_show_surface', 1);
@@ -23,6 +24,9 @@ $showFloorPlan   = $this->params->get('rooms_show_floor_plan', 1);
 $showGallery     = $this->params->get('rooms_show_gallery', 1);
 $showVideo       = $this->params->get('rooms_show_video', 1);
 $showInfo        = $showSurface || $showPeople || $showPriceFrom;
+
+// Detail link
+$showDetailLink = $this->params->get('rooms_show_detail_link', 0);
 
 // Category description
 $showCategoryDesc = $this->params->get('rooms_show_category_description', 0);
@@ -155,6 +159,15 @@ if (!empty($this->items))
 						<?php if ($showDescription && !empty($item->description)) : ?>
 							<div class="room-description">
 								<?php echo $item->description; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php // Detail link ?>
+						<?php if ($showDetailLink) : ?>
+							<div class="room-detail-link">
+								<a class="btn btn-outline-primary" href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=room&id=' . (int) $item->id); ?>">
+									<?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_DETAIL'); ?>
+								</a>
 							</div>
 						<?php endif; ?>
 

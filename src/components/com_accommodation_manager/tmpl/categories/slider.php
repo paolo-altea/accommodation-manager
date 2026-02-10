@@ -61,7 +61,7 @@ if ($loadCss) {
 			 data-pagination="<?php echo $showPagination; ?>">
 			<div class="swiper-wrapper">
 				<?php foreach ($this->items as $item) :
-					$categoryUrl = Route::_('index.php?option=com_accommodation_manager&view=rooms&category_id=' . (int) $item->id);
+					$categoryUrl = Route::_('index.php?option=com_accommodation_manager&view=category&id=' . (int) $item->id);
 				?>
 					<div class="swiper-slide">
 						<?php if ($showImage && !empty($item->image)) :

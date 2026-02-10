@@ -12,18 +12,24 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\Model;
 defined('_JEXEC') or die;
 
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\ParameterType;
 
 /**
- * Rooms list model for the public frontend.
- * Returns all room data in the current language.
+ * Category model: rooms filtered by a single category.
  *
  * @since  3.2.0
  */
-class RoomsModel extends ListModel
+class CategoryModel extends ListModel
 {
 	/**
-	 * Build the query to retrieve published rooms with all fields.
+	 * @var  object|null  Cached category data
+	 */
+	protected $_category;
+
+	/**
+	 * Build the query to retrieve published rooms for a specific category.
 	 *
 	 * @return  \Joomla\Database\QueryInterface
 	 *
@@ -33,6 +39,8 @@ class RoomsModel extends ListModel
 	{
 		$db   = $this->getDatabase();
 		$lang = Accommodation_managerHelper::getLanguageSuffix();
+
+		$categoryId = $this->getCategoryId();
 
 		$query = $db->getQuery(true)
 			->select([
@@ -60,6 +68,8 @@ class RoomsModel extends ListModel
 			->join('LEFT', $db->quoteName('#__accommodation_manager_room_categories', 'c')
 				. ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.room_category'))
 			->where($db->quoteName('a.state') . ' = 1')
+			->where($db->quoteName('a.room_category') . ' = :categoryId')
+			->bind(':categoryId', $categoryId, ParameterType::INTEGER)
 			->order($db->quoteName('a.ordering') . ' ASC');
 
 		return $query;
@@ -79,7 +89,6 @@ class RoomsModel extends ListModel
 
 		foreach ($items as $item)
 		{
-			// Decode gallery JSON
 			$item->gallery_items = [];
 
 			if (!empty($item->gallery))
@@ -101,5 +110,68 @@ class RoomsModel extends ListModel
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Get the category data (name, description, image).
+	 *
+	 * @return  object|null
+	 *
+	 * @since   3.2.0
+	 */
+	public function getCategory()
+	{
+		if ($this->_category !== null)
+		{
+			return $this->_category;
+		}
+
+		$categoryId = $this->getCategoryId();
+
+		if (!$categoryId)
+		{
+			return null;
+		}
+
+		$db   = $this->getDatabase();
+		$lang = Accommodation_managerHelper::getLanguageSuffix();
+
+		$query = $db->getQuery(true)
+			->select([
+				$db->quoteName('id'),
+				$db->quoteName('room_category_name_' . $lang, 'name'),
+				$db->quoteName('room_category_description_' . $lang, 'description'),
+				$db->quoteName('room_category_image', 'image'),
+				$db->quoteName('room_category_image_alt_' . $lang, 'image_alt'),
+			])
+			->from($db->quoteName('#__accommodation_manager_room_categories'))
+			->where($db->quoteName('state') . ' = 1')
+			->where($db->quoteName('id') . ' = :id')
+			->bind(':id', $categoryId, ParameterType::INTEGER);
+
+		$db->setQuery($query);
+		$this->_category = $db->loadObject();
+
+		return $this->_category;
+	}
+
+	/**
+	 * Get the category ID from input or menu item params.
+	 *
+	 * @return  int
+	 *
+	 * @since   3.2.0
+	 */
+	private function getCategoryId(): int
+	{
+		$app = Factory::getApplication();
+		$id  = $app->getInput()->getInt('id', 0);
+
+		if (!$id)
+		{
+			$id = (int) $app->getParams('com_accommodation_manager')->get('id', 0);
+		}
+
+		return $id;
 	}
 }
