@@ -13,6 +13,7 @@ use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodatio
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 /** @var array $items */
@@ -36,31 +37,35 @@ $showInfo        = $showSurface || $showPeople || $showPriceFrom;
 
 // Gallery Swiper
 $gallerySwiper = $showGallery && (int) $params->get('enable_swiper', 0);
+$gallerySwiperConfig = [];
 
 if ($gallerySwiper)
 {
-	$galSlidesPerViewMobile  = (float) $params->get('gallery_slides_per_view_mobile', 1);
-	$galSlidesPerViewDesktop = (float) $params->get('gallery_slides_per_view_desktop', 1);
-	$galSpaceBetweenMobile   = (int) $params->get('gallery_space_between_mobile', 10);
-	$galSpaceBetweenDesktop  = (int) $params->get('gallery_space_between_desktop', 30);
-	$galAutoplay             = (int) $params->get('gallery_autoplay', 0);
-	$galAutoplayDelay        = (int) $params->get('gallery_autoplay_delay', 5000);
-	$galNavigation           = (int) $params->get('gallery_navigation', 1);
-	$galPagination           = (int) $params->get('gallery_pagination', 1);
-	$galLoadCss              = (int) $params->get('load_css', 1);
-	$galLoadJs               = (int) $params->get('load_js', 1);
+	$gallerySwiperConfig = [
+		'slidesPerViewMobile'  => (float) $params->get('gallery_slides_per_view_mobile', 1),
+		'slidesPerViewDesktop' => (float) $params->get('gallery_slides_per_view_desktop', 1),
+		'spaceBetweenMobile'   => (int) $params->get('gallery_space_between_mobile', 10),
+		'spaceBetweenDesktop'  => (int) $params->get('gallery_space_between_desktop', 30),
+		'autoplay'             => (int) $params->get('gallery_autoplay', 0),
+		'autoplayDelay'        => (int) $params->get('gallery_autoplay_delay', 5000),
+		'navigation'           => (int) $params->get('gallery_navigation', 1),
+		'pagination'           => (int) $params->get('gallery_pagination', 1),
+	];
 
 	/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 	$wa = $app->getDocument()->getWebAssetManager();
 	$wa->getRegistry()->addRegistryFile('media/com_accommodation_manager/joomla.asset.json');
 
-	if ($galLoadJs) {
+	if ((int) $params->get('load_js', 1)) {
 		$wa->useScript('com_accommodation_manager.gallery-slider');
 	}
-	if ($galLoadCss) {
+	if ((int) $params->get('load_css', 1)) {
 		$wa->useStyle('com_accommodation_manager.gallery-slider');
 	}
 }
+
+// Layout path for shared layouts
+$layoutPath = JPATH_SITE . '/components/com_accommodation_manager/layouts';
 
 // Request/booking buttons
 $showRequestBtn = (int) $params->get('show_request_button', 1);
@@ -169,77 +174,11 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 
 		<?php // Gallery ?>
 		<?php if ($showGallery && !empty($item->gallery_items)) : ?>
-			<?php if ($gallerySwiper) : ?>
-			<div class="room-gallery am-gallery-swiper swiper"
-				 data-slides-per-view-mobile="<?php echo $galSlidesPerViewMobile; ?>"
-				 data-slides-per-view-desktop="<?php echo $galSlidesPerViewDesktop; ?>"
-				 data-space-between-mobile="<?php echo $galSpaceBetweenMobile; ?>"
-				 data-space-between-desktop="<?php echo $galSpaceBetweenDesktop; ?>"
-				 data-autoplay="<?php echo $galAutoplay ? $galAutoplayDelay : '0'; ?>"
-				 data-navigation="<?php echo $galNavigation; ?>"
-				 data-pagination="<?php echo $galPagination; ?>">
-				<div class="swiper-wrapper">
-			<?php else : ?>
-			<div class="room-gallery">
-			<?php endif; ?>
-				<?php foreach ($item->gallery_items as $galleryItem) : ?>
-					<?php if (!empty($galleryItem->image)) :
-						$imgData = HTMLHelper::_('cleanImageURL', $galleryItem->image);
-						$imgW    = $imgData->attributes['width'] ?? null;
-						$imgH    = $imgData->attributes['height'] ?? null;
-
-						if (!$imgW || !$imgH)
-						{
-							$imgPath = JPATH_ROOT . '/' . $imgData->url;
-
-							if (is_file($imgPath))
-							{
-								$size = getimagesize($imgPath);
-
-								if ($size)
-								{
-									$imgW = $size[0];
-									$imgH = $size[1];
-								}
-							}
-						}
-
-						$imgAttribs = ['loading' => 'lazy'];
-						if ($imgW) {
-							$imgAttribs['width'] = (int) $imgW;
-						}
-						if ($imgH) {
-							$imgAttribs['height'] = (int) $imgH;
-						}
-
-						$mobileUrl = null;
-						if (!empty($galleryItem->image_mobile))
-						{
-							$mobileData = HTMLHelper::_('cleanImageURL', $galleryItem->image_mobile);
-							$mobileUrl  = $mobileData->url;
-						}
-					?>
-						<?php if ($gallerySwiper) : ?><div class="swiper-slide"><?php endif; ?>
-						<picture class="room-gallery__picture">
-							<?php if ($mobileUrl) : ?>
-								<source media="(max-width: 768px)" srcset="<?php echo htmlspecialchars($mobileUrl, ENT_QUOTES, 'UTF-8'); ?>">
-							<?php endif; ?>
-							<?php echo HTMLHelper::_('image', $imgData->url, $galleryItem->alt ?? '', $imgAttribs); ?>
-						</picture>
-						<?php if ($gallerySwiper) : ?></div><?php endif; ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			<?php if ($gallerySwiper) : ?>
-				</div>
-				<?php if ($galNavigation) : ?>
-					<div class="swiper-button-prev"></div>
-					<div class="swiper-button-next"></div>
-				<?php endif; ?>
-				<?php if ($galPagination) : ?>
-					<div class="swiper-pagination"></div>
-				<?php endif; ?>
-			<?php endif; ?>
-			</div>
+			<?php echo LayoutHelper::render('room.gallery', [
+				'items'        => $item->gallery_items,
+				'swiper'       => $gallerySwiper,
+				'swiperConfig' => $gallerySwiperConfig,
+			], $layoutPath); ?>
 		<?php endif; ?>
 
 		<?php // Video ?>

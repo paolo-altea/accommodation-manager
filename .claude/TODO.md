@@ -264,6 +264,15 @@ Griglia tariffe per singola camera visualizzabile nella lista camere e nel detta
 - [x] **23.6** Templates rates/rooms/room: usano `LayoutHelper::render()` invece di duplicare HTML (2026-02-10)
 - [x] **23.7** Modulo rates: riscritto per usare layout condiviso + `Factory::getLanguage()->load()` per chiavi componente (2026-02-10)
 
+### FASE 24 - Estrarre gallery in Joomla Layout condiviso
+
+Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, mobile source duplicato tra rooms e room templates:
+
+- [ ] **24.1** Creare `layouts/room/gallery.php` — layout condiviso per rendering gallery (Swiper + plain)
+- [ ] **24.2** Aggiornare `tmpl/rooms/default.php` per usare `LayoutHelper::render('room.gallery', ...)`
+- [ ] **24.3** Aggiornare `tmpl/room/default.php` per usare `LayoutHelper::render('room.gallery', ...)`
+- [ ] **24.4** Verificare se `mod_accommodation_rooms` duplica la gallery e aggiornare se necessario
+
 ### Pre-rilascio
 
 - [ ] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla: verificare tutto il codice (template, model, view, controller) per individuare casi in cui si costruisce output a mano invece di usare helper nativi Joomla (es. `HTMLHelper::_('image')`, `HTMLHelper::_('date')`, `HTMLHelper::_('grid.*')`, `Text::_()`, `Route::_()`, ecc.)
