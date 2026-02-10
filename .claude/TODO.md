@@ -83,7 +83,7 @@ Revisione dei form di editing:
 - [x] **7.1** Creare configurazione centralizzata per lista lingue supportate (config.xml + Helper::LANGUAGES) (2026-02-05)
 - [x] **7.2** Aggiornare edit templates per usare la lista lingue configurata (tab dinamici) (2026-02-05)
 - [x] **7.3** Aggiornare list templates per usare la lista lingue configurata (colonne dinamiche) (2026-02-05)
-- [ ] **7.4** Creare script per aggiungere nuova lingua (SQL + config + form + template) - DA FARE DOPO FASE 12
+- [x] **7.4** ~~Creare script per aggiungere nuova lingua~~ → Spostato a POST-RELEASE
 
 ### FASE 8 - Pulizia codice morto
 
@@ -268,16 +268,46 @@ Griglia tariffe per singola camera visualizzabile nella lista camere e nel detta
 
 Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, mobile source duplicato tra rooms e room templates:
 
-- [ ] **24.1** Creare `layouts/room/gallery.php` — layout condiviso per rendering gallery (Swiper + plain)
-- [ ] **24.2** Aggiornare `tmpl/rooms/default.php` per usare `LayoutHelper::render('room.gallery', ...)`
-- [ ] **24.3** Aggiornare `tmpl/room/default.php` per usare `LayoutHelper::render('room.gallery', ...)`
-- [ ] **24.4** Verificare se `mod_accommodation_rooms` duplica la gallery e aggiornare se necessario
+- [x] **24.1** Creare `layouts/room/gallery.php` — layout condiviso per rendering gallery (Swiper + plain) (2026-02-10)
+- [x] **24.2** Aggiornare `tmpl/rooms/default.php` per usare `LayoutHelper::render('room.gallery', ...)` (2026-02-10)
+- [x] **24.3** Aggiornare `tmpl/room/default.php` per usare `LayoutHelper::render('room.gallery', ...)` (2026-02-10)
+- [x] **24.4** Aggiornare `mod_accommodation_rooms/tmpl/default.php` per usare layout condiviso gallery (2026-02-10)
 
 ### Pre-rilascio
 
+- [x] **PR.3** Analisi overkill generale completata (2026-02-10)
+
+#### PR.3a — Priorità Alta: Eliminare duplicazione codice
+
+- [x] **PR.3a.1** Estratto `Accommodation_managerHelper::decodeGalleryItems($json, $lang)` — sostituito in RoomsModel, CategoryModel, RoomModel, RoomsHelper (2026-02-10)
+- [x] **PR.3a.2** Module helpers: RatesHelper riscritto per delegare a RatesModel via bootComponent (eliminata DatabaseAwareInterface, -70 righe). RoomsHelper usa decodeGalleryItems(). CategoriesHelper invariato (query specifica modulo per ordering/filter/limit) (2026-02-10)
+
+#### PR.3b — Priorità Media: Pulizia dead code
+
+- [ ] **PR.3b.1** `script.php`: rimuovere `preflight()` vuoto (righe 58-69) e `postflight()` vuoto (righe 1065-1070)
+- [ ] **PR.3b.2** `script.php`: estrarre manifest getter duplicato 4 volte (`installPlugins`, `installModules`, `uninstallPlugins`, `uninstallModules`) in metodo privato `getManifestElement($parent, $elementName)`
+- [ ] **PR.3b.3** Estrarre query room condivisa — SELECT con JOIN categoria duplicata in `RoomsModel`, `CategoryModel`, `RoomModel` (3 copie) → metodo statico o trait
+- [ ] **PR.3b.4** Estrarre logica caricamento tariffe nelle view — blocco identico in `Rooms/HtmlView` e `Room/HtmlView` (bootComponent + createModel + getPeriods/getTypologies/getRatesGrid) → metodo helper statico
+
+#### PR.3c — Priorità Bassa: Semplificazione base classes
+
+- [ ] **PR.3c.1** `BaseItemModel`: rimuovere `getItem()` proxy (righe 116-119) — chiama solo parent senza logica aggiuntiva
+- [ ] **PR.3c.2** `script.php`: sostituire costanti `MODIFIED`/`NOT_MODIFIED` con boolean (usate solo in `addField`/`addFieldWithMessage`)
+- [ ] **PR.3c.3** `Router.php`: rendere consistente slug building — `buildRoomSlug()` chiamato 1 volta, categories fa inline. Scegliere un approccio unico
+
+#### PR.3d — Valutati e mantenuti (nessun intervento)
+
+- **BaseTable**: KEEP — hook `processBind()` usato da 3/4 subclasses, audit fields condivisi
+- **BaseListController**: KEEP — `duplicate()` + `saveOrderAjax()` giustificano DRY
+- **BaseListView / BaseEditView**: funzionano, semplificazione ha rischio > beneficio per 4 subclass ciascuno
+- **Config load_css/load_js**: KEEP — utili per chi fa override CSS/JS custom nel template
+- **Config 12 display toggles Rooms**: KEEP — pattern standard Joomla, ogni toggle ha showon conditions
+- **Config 5 toggle lingue separati**: KEEP — più chiaro per l'utente di un multi-select
+
+---
+
 - [ ] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla: verificare tutto il codice (template, model, view, controller) per individuare casi in cui si costruisce output a mano invece di usare helper nativi Joomla (es. `HTMLHelper::_('image')`, `HTMLHelper::_('date')`, `HTMLHelper::_('grid.*')`, `Text::_()`, `Route::_()`, ecc.)
 - [ ] **PR.2** Strategia traduzioni per lingue non installate: il componente prevede 5 lingue (de, it, en, fr, es) con colonne DB dedicate, ma i file `.ini` esistono solo per en-GB, de-DE, it-IT. Decidere come gestire fr-FR e es-ES (creare i file? fallback a en-GB? generare automaticamente?). Valutare anche cosa succede se una lingua è abilitata nel componente (`config.xml`) ma il language pack Joomla corrispondente non è installato nel sito.
-- [ ] **PR.3** Analisi overkill generale: revisione dell'intero componente per individuare complessità non necessaria, over-engineering, astrazioni premature, opzioni di configurazione eccessive, o codice ridondante. Semplificare dove possibile mantenendo solo ciò che serve realmente.
 
 ---
 
@@ -303,6 +333,7 @@ Script PHP per migrare dati dal vecchio componente al nuovo:
 ---
 
 - [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.)
+- [ ] **POST.2** Creare script per aggiungere nuova lingua (SQL + config + form + template)
 
 ---
 

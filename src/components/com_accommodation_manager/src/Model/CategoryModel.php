@@ -89,24 +89,7 @@ class CategoryModel extends ListModel
 
 		foreach ($items as $item)
 		{
-			$item->gallery_items = [];
-
-			if (!empty($item->gallery))
-			{
-				$decoded = json_decode($item->gallery, true);
-
-				if (is_array($decoded))
-				{
-					foreach ($decoded as $galleryItem)
-					{
-						$item->gallery_items[] = (object) [
-							'image'        => $galleryItem['image'] ?? '',
-							'image_mobile' => $galleryItem['image_mobile'] ?? '',
-							'alt'          => $galleryItem['alt_' . $lang] ?? '',
-						];
-					}
-				}
-			}
+			$item->gallery_items = Accommodation_managerHelper::decodeGalleryItems($item->gallery ?? null, $lang);
 		}
 
 		return $items;

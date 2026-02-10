@@ -89,6 +89,44 @@ class Accommodation_managerHelper
 	}
 
 	/**
+	 * Decode gallery JSON into an array of objects with localised alt text.
+	 *
+	 * @param   string|null  $galleryJson  Raw JSON from room_gallery column
+	 * @param   string       $lang         Language suffix (de, it, en, fr, es)
+	 *
+	 * @return  array  Array of objects with image, image_mobile, alt
+	 *
+	 * @since   3.2.0
+	 */
+	public static function decodeGalleryItems(?string $galleryJson, string $lang): array
+	{
+		if (empty($galleryJson))
+		{
+			return [];
+		}
+
+		$decoded = json_decode($galleryJson, true);
+
+		if (!is_array($decoded))
+		{
+			return [];
+		}
+
+		$items = [];
+
+		foreach ($decoded as $galleryItem)
+		{
+			$items[] = (object) [
+				'image'        => $galleryItem['image'] ?? '',
+				'image_mobile' => $galleryItem['image_mobile'] ?? '',
+				'alt'          => $galleryItem['alt_' . $lang] ?? '',
+			];
+		}
+
+		return $items;
+	}
+
+	/**
 	 * Valid language suffixes matching DB column naming
 	 *
 	 * @var array
