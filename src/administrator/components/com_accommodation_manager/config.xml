@@ -319,6 +319,17 @@
             <option value="1">JSHOW</option>
         </field>
         <field
+            name="rooms_show_rates"
+            type="radio"
+            default="0"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_RATES"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_RATES_DESC"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
             name="rooms_show_gallery"
             type="radio"
             default="1"

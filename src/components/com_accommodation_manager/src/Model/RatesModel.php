@@ -114,11 +114,13 @@ class RatesModel extends BaseDatabaseModel
 	/**
 	 * Get the rates grid indexed as [period_id][room_id][typology_id] => rate value.
 	 *
+	 * @param   array  $roomIds  Optional list of room IDs to filter by
+	 *
 	 * @return  array
 	 *
 	 * @since   3.2.0
 	 */
-	public function getRatesGrid(): array
+	public function getRatesGrid(array $roomIds = []): array
 	{
 		$db = $this->getDatabase();
 
@@ -131,6 +133,12 @@ class RatesModel extends BaseDatabaseModel
 			])
 			->from($db->quoteName('#__accommodation_manager_rates'))
 			->where($db->quoteName('state') . ' = 1');
+
+		if (!empty($roomIds))
+		{
+			$roomIds = array_map('intval', $roomIds);
+			$query->whereIn($db->quoteName('room_id'), $roomIds);
+		}
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();

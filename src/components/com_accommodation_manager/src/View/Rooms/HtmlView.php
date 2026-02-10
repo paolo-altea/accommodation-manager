@@ -32,6 +32,21 @@ class HtmlView extends BaseHtmlView
 	protected $params;
 
 	/**
+	 * @var  array  Rate periods (loaded when rooms_show_rates is enabled)
+	 */
+	protected $periods = [];
+
+	/**
+	 * @var  array  Rate typologies (loaded when rooms_show_rates is enabled)
+	 */
+	protected $typologies = [];
+
+	/**
+	 * @var  array  Rates grid [period_id][room_id][typology_id] => rate
+	 */
+	protected $ratesGrid = [];
+
+	/**
 	 * Display the rooms view.
 	 *
 	 * @param   string  $tpl  The template name
@@ -46,6 +61,20 @@ class HtmlView extends BaseHtmlView
 
 		$this->items  = $this->get('Items');
 		$this->params = $app->getParams('com_accommodation_manager');
+
+		// Load rates data when enabled
+		if ((int) $this->params->get('rooms_show_rates', 0) && !empty($this->items))
+		{
+			$factory    = $app->bootComponent('com_accommodation_manager')->getMVCFactory();
+			$ratesModel = $factory->createModel('Rates', 'Site');
+
+			$hidePast = (bool) $this->params->get('rates_hide_past_periods', 0);
+			$roomIds  = array_map(fn($item) => (int) $item->id, $this->items);
+
+			$this->periods    = $ratesModel->getPeriods($hidePast);
+			$this->typologies = $ratesModel->getTypologies();
+			$this->ratesGrid  = $ratesModel->getRatesGrid($roomIds);
+		}
 
 		// Set page title from menu item
 		$activeMenu = $app->getMenu()->getActive();

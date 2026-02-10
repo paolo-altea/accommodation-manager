@@ -72,6 +72,7 @@ echo -e "${YELLOW}  Copying site files...${NC}"
 mkdir -p "$BUILD_DIR/site"
 cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/src" "$BUILD_DIR/site/"
 cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/tmpl" "$BUILD_DIR/site/"
+cp -r "$PROJECT_ROOT/src/components/$COMPONENT_NAME/layouts" "$BUILD_DIR/site/"
 
 # Copy site languages
 if [ -d "$PROJECT_ROOT/src/components/$COMPONENT_NAME/language" ]; then

@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 // Show/hide toggles
@@ -23,7 +24,24 @@ $showDescription = $this->params->get('rooms_show_description', 1);
 $showFloorPlan   = $this->params->get('rooms_show_floor_plan', 1);
 $showGallery     = $this->params->get('rooms_show_gallery', 1);
 $showVideo       = $this->params->get('rooms_show_video', 1);
+$showRates       = (int) $this->params->get('rooms_show_rates', 0);
 $showInfo        = $showSurface || $showPeople || $showPriceFrom;
+
+// Rates grid assets
+if ($showRates && !empty($this->periods))
+{
+	/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+	$wa = $this->document->getWebAssetManager();
+
+	if ((int) $this->params->get('rates_load_css', 1)) {
+		$wa->useStyle('com_accommodation_manager.rates-grid');
+	}
+	if ((int) $this->params->get('rates_load_js', 1)) {
+		$wa->useScript('com_accommodation_manager.rates-grid');
+	}
+}
+
+$layoutPath = JPATH_SITE . '/components/com_accommodation_manager/layouts';
 
 // Gallery Swiper
 $gallerySwiper = $showGallery && $this->params->get('rooms_enable_swiper', 0);
@@ -284,6 +302,19 @@ if ($showCategoryFilter && !empty($this->items))
 			<?php if ($showVideo && !empty($item->video)) : ?>
 				<div class="room-video">
 					<?php echo $item->video; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php // Rates grid ?>
+			<?php if ($showRates && !empty($this->periods)) : ?>
+				<div class="room-rates accommodation-manager-rates">
+					<?php echo LayoutHelper::render('rates.room-grid', [
+						'periods'    => $this->periods,
+						'typologies' => $this->typologies,
+						'grid'       => $this->ratesGrid,
+						'roomId'     => (int) $item->id,
+						'params'     => $this->params,
+					], $layoutPath); ?>
 				</div>
 			<?php endif; ?>
 

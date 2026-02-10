@@ -193,8 +193,8 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 - [x] **B.3** Configurazione component con tab per view (2026-02-06):
   - Componente: unito lingue abilitate con hr separator
   - **Categories**: immagine, descrizione, bottone link
-  - **Rooms**: toggle sezioni (superficie, persone, prezzo, intro, descrizione, planimetria, galleria, video), split per categoria, Swiper.js, bottoni richiesta/prenotazione
-  - **Room detail**: nessun config (mostra tutto, bottoni condizionali ai link configurati)
+  - **Rooms**: toggle sezioni (superficie, persone, prezzo, intro, descrizione, planimetria, galleria, video, tariffe), split per categoria, Swiper.js, bottoni richiesta/prenotazione
+  - **Room detail**: tariffe condizionali, bottoni condizionali ai link configurati
   - **Rates**: nascondi periodi passati, dividi per stagione estate/inverno con date inizio configurabili
 
 ---
@@ -226,7 +226,7 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 - [x] **17.1** CSS/JS per-view con toggle load_css/load_js in config: categories-slider, gallery-slider, rates-grid, category-filter (2026-02-06)
 - [x] **17.2** Swiper.js integrato: categories slider (layout alternativo), gallery slider per rooms e room detail (2026-02-06)
-- [x] **17.3** rates-grid.js: zebra striping, period group hover, sticky columns mobile, scroll hints. category-filter.js: filtro client-side per categoria (2026-02-06)
+- [x] **17.3** rates-grid.js: zebra striping, period group hover, sticky columns (all viewports), scroll hints, border-separate fix. category-filter.js: filtro client-side per categoria (2026-02-10)
 
 ### FASE 18 - Router SEF
 
@@ -251,6 +251,18 @@ Pacchetto installabile unico con componente + moduli:
 - [x] **22.2** ~~Package install script~~ - Non necessario, componente ha gia' script.php e moduli non richiedono script (2026-02-10)
 - [x] **22.3** Popolare `language/` root con file sys.ini a livello pacchetto (EN, DE, IT) (2026-02-10)
 - [x] **22.4** Aggiornare `build/build.sh` per generare ZIP del package completo (2026-02-10)
+
+### FASE 23 - Rates grid in Rooms/Room views
+
+Griglia tariffe per singola camera visualizzabile nella lista camere e nel dettaglio camera:
+
+- [x] **23.1** Estratto rendering griglia in Joomla Layout condivisi: `layouts/rates/grid.php` (multi-room) e `layouts/rates/room-grid.php` (single-room) (2026-02-10)
+- [x] **23.2** Helper: aggiunto `buildSeasonGroups()` per centralizzare logica season grouping (2026-02-10)
+- [x] **23.3** RatesModel: aggiunto filtro opzionale `$roomIds` a `getRatesGrid()` (2026-02-10)
+- [x] **23.4** HtmlView Rooms/Room: caricano dati tariffe via `bootComponent()->getMVCFactory()->createModel('Rates')` (2026-02-10)
+- [x] **23.5** Config: toggle `rooms_show_rates` (default off) nel fieldset Rooms (2026-02-10)
+- [x] **23.6** Templates rates/rooms/room: usano `LayoutHelper::render()` invece di duplicare HTML (2026-02-10)
+- [x] **23.7** Modulo rates: riscritto per usare layout condiviso + `Factory::getLanguage()->load()` per chiavi componente (2026-02-10)
 
 ### Pre-rilascio
 

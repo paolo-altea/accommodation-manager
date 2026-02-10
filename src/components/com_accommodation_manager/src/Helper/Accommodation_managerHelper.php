@@ -12,6 +12,8 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\Helper;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * Frontend helper for Accommodation Manager
@@ -20,6 +22,72 @@ use Joomla\CMS\Factory;
  */
 class Accommodation_managerHelper
 {
+	/**
+	 * Build season-grouped table data from a list of periods.
+	 *
+	 * Returns an array of groups, each with 'heading' (string) and 'periods' (array).
+	 * If split by season is disabled, returns a single group with empty heading.
+	 *
+	 * @param   array     $periods  Array of period objects with period_start
+	 * @param   Registry  $params   Component params
+	 *
+	 * @return  array
+	 *
+	 * @since   3.2.0
+	 */
+	public static function buildSeasonGroups(array $periods, Registry $params): array
+	{
+		$splitBySeason = (int) $params->get('rates_split_by_season', 0);
+
+		if (!$splitBySeason || empty($periods))
+		{
+			return [['heading' => '', 'periods' => $periods]];
+		}
+
+		$summerStartMonth = (int) $params->get('rates_summer_start_month', 5);
+		$summerStartDay   = (int) $params->get('rates_summer_start_day', 1);
+		$winterStartMonth = (int) $params->get('rates_winter_start_month', 11);
+		$winterStartDay   = (int) $params->get('rates_winter_start_day', 1);
+
+		$summerMMDD = $summerStartMonth * 100 + $summerStartDay;
+		$winterMMDD = $winterStartMonth * 100 + $winterStartDay;
+
+		$seasonGroups = [];
+
+		foreach ($periods as $period)
+		{
+			$year       = (int) date('Y', strtotime($period->period_start));
+			$month      = (int) date('m', strtotime($period->period_start));
+			$day        = (int) date('d', strtotime($period->period_start));
+			$periodMMDD = $month * 100 + $day;
+
+			if ($periodMMDD >= $summerMMDD && $periodMMDD < $winterMMDD)
+			{
+				$key     = $year . '_1_summer';
+				$heading = Text::_('COM_ACCOMMODATION_MANAGER_RATES_SUMMER') . ' ' . $year;
+			}
+			elseif ($periodMMDD >= $winterMMDD)
+			{
+				$key     = $year . '_2_winter';
+				$heading = Text::_('COM_ACCOMMODATION_MANAGER_RATES_WINTER') . ' ' . $year . '/' . substr($year + 1, 2);
+			}
+			else
+			{
+				$key     = ($year - 1) . '_2_winter';
+				$heading = Text::_('COM_ACCOMMODATION_MANAGER_RATES_WINTER') . ' ' . ($year - 1) . '/' . substr($year, 2);
+			}
+
+			if (!isset($seasonGroups[$key]))
+			{
+				$seasonGroups[$key] = ['heading' => $heading, 'periods' => []];
+			}
+
+			$seasonGroups[$key]['periods'][] = $period;
+		}
+
+		return array_values($seasonGroups);
+	}
+
 	/**
 	 * Valid language suffixes matching DB column naming
 	 *

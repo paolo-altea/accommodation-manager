@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $item = $this->item;
 
@@ -39,6 +40,23 @@ if ($gallerySwiper)
 	}
 	if ($galLoadCss) {
 		$wa->useStyle('com_accommodation_manager.gallery-slider');
+	}
+}
+
+// Rates grid
+$showRates  = (int) $this->params->get('rooms_show_rates', 0);
+$layoutPath = JPATH_SITE . '/components/com_accommodation_manager/layouts';
+
+if ($showRates && !empty($this->periods))
+{
+	/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+	$rwa = $this->document->getWebAssetManager();
+
+	if ((int) $this->params->get('rates_load_css', 1)) {
+		$rwa->useStyle('com_accommodation_manager.rates-grid');
+	}
+	if ((int) $this->params->get('rates_load_js', 1)) {
+		$rwa->useScript('com_accommodation_manager.rates-grid');
 	}
 }
 
@@ -215,6 +233,19 @@ $bookingUrl = $this->params->get('booking_link_' . $lang, '');
 			<?php if (!empty($item->video)) : ?>
 				<div class="room-video">
 					<?php echo $item->video; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php // Rates grid ?>
+			<?php if ($showRates && !empty($this->periods)) : ?>
+				<div class="room-rates accommodation-manager-rates">
+					<?php echo LayoutHelper::render('rates.room-grid', [
+						'periods'    => $this->periods,
+						'typologies' => $this->typologies,
+						'grid'       => $this->ratesGrid,
+						'roomId'     => (int) $item->id,
+						'params'     => $this->params,
+					], $layoutPath); ?>
 				</div>
 			<?php endif; ?>
 
