@@ -1,7 +1,7 @@
 /* Rates Grid – Accommodation Manager
    Customise via CSS custom properties on .com-accommodation-manager-rates or :root */
 
-.com-accommodation-manager-rates {
+.accommodation-manager-rates {
   --rates-font-size: 0.9375rem;
   --rates-header-bg: #353535;
   --rates-header-color: #fff;

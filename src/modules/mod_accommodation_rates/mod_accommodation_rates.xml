@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_ACCOMMODATION_RATES</name>
+    <author>Altea Software Srl</author>
+    <authorEmail>web@altea.it</authorEmail>
+    <authorUrl>https://www.altea.it</authorUrl>
+    <copyright>Copyright (C) 2026. Tutti i diritti riservati.</copyright>
+    <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
+    <version>1.0.0</version>
+    <description>MOD_ACCOMMODATION_RATES_DESC</description>
+    <namespace path="src">Accomodationmanager\Module\AccommodationRates</namespace>
+
+    <files>
+        <filename module="mod_accommodation_rates">mod_accommodation_rates.php</filename>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_accommodation_rates.ini</language>
+        <language tag="en-GB">en-GB/mod_accommodation_rates.sys.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_rates.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_rates.sys.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_rates.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_rates.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="JGLOBAL_FIELDSET_BASIC">
+                <field
+                    name="load_css"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_RATES_LOAD_CSS"
+                    description="MOD_ACCOMMODATION_RATES_LOAD_CSS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="load_js"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_RATES_LOAD_JS"
+                    description="MOD_ACCOMMODATION_RATES_LOAD_JS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="note_config"
+                    type="note"
+                    label="MOD_ACCOMMODATION_RATES_NOTE_CONFIG"
+                    description="MOD_ACCOMMODATION_RATES_NOTE_CONFIG_DESC"
+                    class="alert alert-info"
+                />
+            </fieldset>
+
+            <fieldset name="advanced" label="JGLOBAL_FIELDSET_ADVANCED">
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                    class="form-select"
+                />
+                <field
+                    name="moduleclass_sfx"
+                    type="textarea"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    rows="3"
+                />
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

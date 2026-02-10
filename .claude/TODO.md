@@ -239,9 +239,9 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 Moduli Joomla per richiamare le view dei dati in posizioni del template:
 
-- [ ] **20.1** `mod_accommodation_categories` - Modulo categorie camere (lista o slider)
-- [ ] **20.2** `mod_accommodation_rooms` - Modulo elenco camere (con filtro categoria opzionale)
-- [ ] **20.3** `mod_accommodation_rates` - Modulo griglia tariffe
+- [x] **20.1** `mod_accommodation_categories` - Modulo categorie camere con title_tag (p/h2/h3), show/hide image/description/button, ordinamento (ordering/titolo generico/nome lingua + ASC/DESC) (2026-02-10)
+- [x] **20.2** `mod_accommodation_rooms` - Modulo elenco camere con filtro categoria, show/hide per ogni sezione, Swiper gallery, ordinamento (ordering/titolo lingua/nome interno + ASC/DESC), pulsanti request/booking (2026-02-10)
+- [x] **20.3** `mod_accommodation_rates` - Modulo griglia tariffe con CSS/JS componente, season grouping, config letto da componente (2026-02-10)
 
 ### FASE 21 - Plugin shortcode
 

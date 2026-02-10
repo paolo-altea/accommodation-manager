@@ -52,6 +52,7 @@ if ($gallerySwiper)
 
 	/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 	$wa = $app->getDocument()->getWebAssetManager();
+	$wa->getRegistry()->addRegistryFile('media/com_accommodation_manager/joomla.asset.json');
 
 	if ($galLoadJs) {
 		$wa->useScript('com_accommodation_manager.gallery-slider');
