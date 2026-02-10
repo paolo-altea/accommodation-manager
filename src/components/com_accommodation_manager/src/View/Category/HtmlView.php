@@ -47,6 +47,9 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
+		// Reset layout that may be inherited from parent menu item (e.g. slider)
+		$this->setLayout('default');
+
 		$app = Factory::getApplication();
 
 		$this->items    = $this->get('Items');

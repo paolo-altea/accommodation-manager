@@ -52,22 +52,23 @@ class Router extends RouterView
 
 	public function __construct(SiteApplication $app, AbstractMenu $menu)
 	{
-		// Categories list view
+		// Categories list view (keyed so that layout variants are found in lookup)
 		$categories = new RouterViewConfiguration('categories');
+		$categories->setKey('id');
 		$this->registerView($categories);
 
 		// Rooms list view (all rooms, no category filter)
 		$rooms = new RouterViewConfiguration('rooms');
 		$this->registerView($rooms);
 
-		// Category view (rooms for a single category)
+		// Category view (child of categories list)
 		$category = new RouterViewConfiguration('category');
-		$category->setKey('id');
+		$category->setKey('id')->setParent($categories);
 		$this->registerView($category);
 
-		// Room detail view (child of category)
+		// Room detail view (child of rooms list)
 		$room = new RouterViewConfiguration('room');
-		$room->setKey('id')->setParent($category, 'room_category');
+		$room->setKey('id')->setParent($rooms);
 		$this->registerView($room);
 
 		// Rates grid view
@@ -162,6 +163,40 @@ class Router extends RouterView
 			}
 		}
 
+		return 0;
+	}
+
+	/**
+	 * Build segment for the categories list view.
+	 *
+	 * The categories view shows all categories (no individual ID).
+	 * Always returns key=0 to match the menu item lookup entry
+	 * (buildLookup defaults to 0 for menu items without a key value).
+	 *
+	 * @param   int    $id     Passed ID (ignored)
+	 * @param   array  $query  Query string parameters
+	 *
+	 * @return  array  Single-element array [0 => '']
+	 *
+	 * @since   3.2.0
+	 */
+	public function getCategoriesSegment($id, $query): array
+	{
+		return [0 => ''];
+	}
+
+	/**
+	 * Parse segment back to categories ID (always 0).
+	 *
+	 * @param   string  $segment  URL segment
+	 * @param   array   $query    Query string parameters
+	 *
+	 * @return  int  Always 0
+	 *
+	 * @since   3.2.0
+	 */
+	public function getCategoriesId($segment, $query): int
+	{
 		return 0;
 	}
 
