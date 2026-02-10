@@ -141,9 +141,9 @@ Revisione dei form di editing:
 - [x] **11.1** Creare `build/build.sh` per generare ZIP del componente (2026-02-05)
 - [x] **11.2** Creare `.gitignore` appropriato (dist/, *.zip, .DS_Store, .idea/) (2026-02-05)
 - [x] **11.3** Git repository inizializzato (2026-02-05)
-- [ ] **11.4** Creare `pkg_accommodation_manager.xml` (package manifest) - DA FARE DOPO FASE 12 (quando ci saranno moduli/plugin)
-- [ ] **11.5** Creare `pkg_accommodation_manager_script.php` (package install script) - DA FARE DOPO FASE 12
-- [ ] **11.6** Popolare `language/` root con file sys.ini a livello pacchetto - DA FARE DOPO FASE 12
+- [x] **11.4** ~~Package manifest~~ → Spostato a FASE 22 (dopo moduli/plugin)
+- [x] **11.5** ~~Package install script~~ → Spostato a FASE 22
+- [x] **11.6** ~~Language files package~~ → Spostato a FASE 22
 
 ### FASE 11b - Code Review Fix (pre-frontend)
 
@@ -230,8 +230,33 @@ Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (sc
 
 ### FASE 18 - Router SEF
 
-- [ ] **18.1** Router SEF: URL puliti (`/categorie/`, `/camere/`, `/camere/slug/`, `/tariffe/`)
-- [ ] **18.2** Rilevamento lingua: già implementato con `Accommodation_managerHelper::getLanguageSuffix()`
+- [x] **18.1** Router SEF riscritto: slug multilingua per categories e rooms, gerarchia categories→category e rooms→room (2026-02-10)
+- [x] **18.2** View Category creata: Model, HtmlView, template, menu item XML con selezione categoria (2026-02-10)
+- [x] **18.3** Fix lookup MenuRules: categories con setKey('id') + getCategoriesSegment/Id per layout variants (slider) (2026-02-10)
+- [x] **18.4** Language keys frontend/admin per category view in tutte e 3 le lingue (2026-02-10)
+
+### FASE 20 - Moduli frontend
+
+Moduli Joomla per richiamare le view dei dati in posizioni del template:
+
+- [ ] **20.1** `mod_accommodation_categories` - Modulo categorie camere (lista o slider)
+- [ ] **20.2** `mod_accommodation_rooms` - Modulo elenco camere (con filtro categoria opzionale)
+- [ ] **20.3** `mod_accommodation_rates` - Modulo griglia tariffe
+
+### FASE 21 - Plugin shortcode
+
+Plugin content per inserire le view tramite shortcode negli articoli/moduli:
+
+- [ ] **21.1** `plg_content_accommodation_manager` - Plugin shortcode (es. `{accommodation_manager view=categories}`, `{accommodation_manager view=rooms category=2}`, `{accommodation_manager view=rates}`)
+
+### FASE 22 - Package manifest
+
+Pacchetto installabile unico con componente + moduli + plugin:
+
+- [ ] **22.1** Creare `pkg_accommodation_manager.xml` (package manifest)
+- [ ] **22.2** Creare `pkg_accommodation_manager_script.php` (package install script)
+- [ ] **22.3** Popolare `language/` root con file sys.ini a livello pacchetto
+- [ ] **22.4** Aggiornare `build/build.sh` per generare ZIP del package completo
 
 ### Pre-rilascio
 

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_ACCOMMODATION_CATEGORIES</name>
+    <author>Altea Software Srl</author>
+    <authorEmail>web@altea.it</authorEmail>
+    <authorUrl>https://www.altea.it</authorUrl>
+    <copyright>Copyright (C) 2026. Tutti i diritti riservati.</copyright>
+    <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
+    <version>1.0.0</version>
+    <description>MOD_ACCOMMODATION_CATEGORIES_DESC</description>
+    <namespace path="src">Accomodationmanager\Module\AccommodationCategories</namespace>
+
+    <files>
+        <filename module="mod_accommodation_categories">mod_accommodation_categories.php</filename>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_accommodation_categories.ini</language>
+        <language tag="en-GB">en-GB/mod_accommodation_categories.sys.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_categories.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_categories.sys.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_categories.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_categories.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="JGLOBAL_FIELDSET_BASIC">
+                <field
+                    name="count"
+                    type="number"
+                    default="0"
+                    min="0"
+                    label="MOD_ACCOMMODATION_CATEGORIES_COUNT"
+                    description="MOD_ACCOMMODATION_CATEGORIES_COUNT_DESC"
+                />
+                <field
+                    name="title_tag"
+                    type="list"
+                    default="p"
+                    label="MOD_ACCOMMODATION_CATEGORIES_TITLE_TAG"
+                    description="MOD_ACCOMMODATION_CATEGORIES_TITLE_TAG_DESC"
+                    class="form-select"
+                >
+                    <option value="p">p</option>
+                    <option value="h2">h2</option>
+                    <option value="h3">h3</option>
+                </field>
+                <field
+                    name="show_image"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_CATEGORIES_SHOW_IMAGE"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_description"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_CATEGORIES_SHOW_DESCRIPTION"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_link_button"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_CATEGORIES_SHOW_LINK_BUTTON"
+                    description="MOD_ACCOMMODATION_CATEGORIES_SHOW_LINK_BUTTON_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="ordering" label="MOD_ACCOMMODATION_CATEGORIES_ORDERING">
+                <field
+                    name="ordering"
+                    type="list"
+                    default="a.ordering"
+                    label="MOD_ACCOMMODATION_CATEGORIES_ORDERING_FIELD"
+                    class="form-select"
+                >
+                    <option value="a.ordering">MOD_ACCOMMODATION_CATEGORIES_ORDERING_DEFAULT</option>
+                    <option value="a.room_category_title">MOD_ACCOMMODATION_CATEGORIES_ORDERING_TITLE</option>
+                    <option value="name">MOD_ACCOMMODATION_CATEGORIES_ORDERING_NAME</option>
+                </field>
+                <field
+                    name="ordering_direction"
+                    type="list"
+                    default="ASC"
+                    label="MOD_ACCOMMODATION_CATEGORIES_ORDERING_DIR"
+                    class="form-select"
+                >
+                    <option value="ASC">MOD_ACCOMMODATION_CATEGORIES_ORDERING_ASC</option>
+                    <option value="DESC">MOD_ACCOMMODATION_CATEGORIES_ORDERING_DESC</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="advanced" label="JGLOBAL_FIELDSET_ADVANCED">
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                    class="form-select"
+                />
+                <field
+                    name="moduleclass_sfx"
+                    type="textarea"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    rows="3"
+                />
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

@@ -109,3 +109,40 @@ echo "To install:"
 echo "1. Go to Joomla Admin → System → Install → Extensions"
 echo "2. Upload the ZIP file"
 echo ""
+
+# Build modules
+echo -e "${GREEN}Building modules...${NC}"
+echo "================================================"
+
+MODULES_SRC="$PROJECT_ROOT/src/modules"
+
+for MOD_DIR in "$MODULES_SRC"/mod_*; do
+    if [ -d "$MOD_DIR" ]; then
+        MOD_NAME=$(basename "$MOD_DIR")
+        MOD_BUILD_DIR="$PROJECT_ROOT/build/module_package"
+        MOD_ZIP_NAME="${MOD_NAME}-1.0.0.zip"
+
+        echo -e "${YELLOW}Building $MOD_NAME...${NC}"
+
+        rm -rf "$MOD_BUILD_DIR"
+        mkdir -p "$MOD_BUILD_DIR"
+
+        cp -r "$MOD_DIR/"* "$MOD_BUILD_DIR/"
+
+        # Clean up
+        find "$MOD_BUILD_DIR" -name ".DS_Store" -delete 2>/dev/null || true
+        find "$MOD_BUILD_DIR" -name "*.bak" -delete 2>/dev/null || true
+
+        cd "$MOD_BUILD_DIR"
+        zip -rq "$DIST_DIR/$MOD_ZIP_NAME" .
+
+        rm -rf "$MOD_BUILD_DIR"
+
+        echo -e "  Package: ${YELLOW}$DIST_DIR/$MOD_ZIP_NAME${NC}"
+        echo -e "  Size: $(du -h "$DIST_DIR/$MOD_ZIP_NAME" | cut -f1)"
+    fi
+done
+
+echo ""
+echo -e "${GREEN}All packages built!${NC}"
+echo ""

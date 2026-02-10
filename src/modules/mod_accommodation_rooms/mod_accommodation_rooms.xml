@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_ACCOMMODATION_ROOMS</name>
+    <author>Altea Software Srl</author>
+    <authorEmail>web@altea.it</authorEmail>
+    <authorUrl>https://www.altea.it</authorUrl>
+    <copyright>Copyright (C) 2026. Tutti i diritti riservati.</copyright>
+    <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
+    <version>1.0.0</version>
+    <description>MOD_ACCOMMODATION_ROOMS_DESC</description>
+    <namespace path="src">Accomodationmanager\Module\AccommodationRooms</namespace>
+
+    <files>
+        <filename module="mod_accommodation_rooms">mod_accommodation_rooms.php</filename>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_accommodation_rooms.ini</language>
+        <language tag="en-GB">en-GB/mod_accommodation_rooms.sys.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_rooms.ini</language>
+        <language tag="de-DE">de-DE/mod_accommodation_rooms.sys.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_rooms.ini</language>
+        <language tag="it-IT">it-IT/mod_accommodation_rooms.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="JGLOBAL_FIELDSET_BASIC">
+                <field
+                    name="category_id"
+                    type="sql"
+                    default="0"
+                    label="MOD_ACCOMMODATION_ROOMS_CATEGORY"
+                    description="MOD_ACCOMMODATION_ROOMS_CATEGORY_DESC"
+                    query="SELECT id AS value, room_category_name_en AS text FROM #__accommodation_manager_room_categories WHERE state = 1 ORDER BY ordering ASC"
+                    key_field="value"
+                    value_field="text"
+                    header="MOD_ACCOMMODATION_ROOMS_ALL_CATEGORIES"
+                />
+                <field
+                    name="count"
+                    type="number"
+                    default="0"
+                    min="0"
+                    label="MOD_ACCOMMODATION_ROOMS_COUNT"
+                    description="MOD_ACCOMMODATION_ROOMS_COUNT_DESC"
+                />
+
+                <field name="spacer_display" type="spacer" hr="true" />
+
+                <field
+                    name="show_surface"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_SURFACE"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_people"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_PEOPLE"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_price_from"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_PRICE_FROM"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_intro"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_INTRO"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_description"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_DESCRIPTION"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_floor_plan"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_FLOOR_PLAN"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_gallery"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_GALLERY"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_video"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_VIDEO"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_detail_link"
+                    type="radio"
+                    default="0"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_DETAIL_LINK"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_request_button"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_REQUEST_BUTTON"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                    name="show_booking_button"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_BOOKING_BUTTON"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="ordering" label="MOD_ACCOMMODATION_ROOMS_ORDERING">
+                <field
+                    name="ordering"
+                    type="list"
+                    default="a.ordering"
+                    label="MOD_ACCOMMODATION_ROOMS_ORDERING_FIELD"
+                    class="form-select"
+                >
+                    <option value="a.ordering">MOD_ACCOMMODATION_ROOMS_ORDERING_DEFAULT</option>
+                    <option value="title">MOD_ACCOMMODATION_ROOMS_ORDERING_TITLE</option>
+                    <option value="a.room_name">MOD_ACCOMMODATION_ROOMS_ORDERING_NAME</option>
+                </field>
+                <field
+                    name="ordering_direction"
+                    type="list"
+                    default="ASC"
+                    label="MOD_ACCOMMODATION_ROOMS_ORDERING_DIR"
+                    class="form-select"
+                >
+                    <option value="ASC">MOD_ACCOMMODATION_ROOMS_ORDERING_ASC</option>
+                    <option value="DESC">MOD_ACCOMMODATION_ROOMS_ORDERING_DESC</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="gallery_swiper" label="MOD_ACCOMMODATION_ROOMS_GALLERY_SWIPER">
+                <field
+                    name="enable_swiper"
+                    type="radio"
+                    default="0"
+                    label="MOD_ACCOMMODATION_ROOMS_ENABLE_SWIPER"
+                    description="MOD_ACCOMMODATION_ROOMS_ENABLE_SWIPER_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="gallery_slides_per_view_mobile"
+                    type="text"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SLIDES_PER_VIEW_MOBILE"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                />
+                <field
+                    name="gallery_slides_per_view_desktop"
+                    type="text"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SLIDES_PER_VIEW_DESKTOP"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                />
+                <field
+                    name="gallery_space_between_mobile"
+                    type="text"
+                    default="10"
+                    label="MOD_ACCOMMODATION_ROOMS_SPACE_BETWEEN_MOBILE"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                />
+                <field
+                    name="gallery_space_between_desktop"
+                    type="text"
+                    default="30"
+                    label="MOD_ACCOMMODATION_ROOMS_SPACE_BETWEEN_DESKTOP"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                />
+                <field
+                    name="gallery_autoplay"
+                    type="radio"
+                    default="0"
+                    label="MOD_ACCOMMODATION_ROOMS_AUTOPLAY"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="gallery_autoplay_delay"
+                    type="text"
+                    default="5000"
+                    label="MOD_ACCOMMODATION_ROOMS_AUTOPLAY_DELAY"
+                    showon="show_gallery:1[AND]enable_swiper:1[AND]gallery_autoplay:1"
+                />
+                <field
+                    name="gallery_navigation"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_NAVIGATION"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="gallery_pagination"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_PAGINATION"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="load_css"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_LOAD_CSS"
+                    description="MOD_ACCOMMODATION_ROOMS_LOAD_CSS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="load_js"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_LOAD_JS"
+                    description="MOD_ACCOMMODATION_ROOMS_LOAD_JS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    showon="show_gallery:1[AND]enable_swiper:1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="advanced" label="JGLOBAL_FIELDSET_ADVANCED">
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                    class="form-select"
+                />
+                <field
+                    name="moduleclass_sfx"
+                    type="textarea"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    rows="3"
+                />
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
