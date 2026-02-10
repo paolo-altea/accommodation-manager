@@ -243,15 +243,9 @@ Moduli Joomla per richiamare le view dei dati in posizioni del template:
 - [x] **20.2** `mod_accommodation_rooms` - Modulo elenco camere con filtro categoria, show/hide per ogni sezione, Swiper gallery, ordinamento (ordering/titolo lingua/nome interno + ASC/DESC), pulsanti request/booking (2026-02-10)
 - [x] **20.3** `mod_accommodation_rates` - Modulo griglia tariffe con CSS/JS componente, season grouping, config letto da componente (2026-02-10)
 
-### FASE 21 - Plugin shortcode
-
-Plugin content per inserire le view tramite shortcode negli articoli/moduli:
-
-- [ ] **21.1** `plg_content_accommodation_manager` - Plugin shortcode (es. `{accommodation_manager view=categories}`, `{accommodation_manager view=rooms category=2}`, `{accommodation_manager view=rates}`)
-
 ### FASE 22 - Package manifest
 
-Pacchetto installabile unico con componente + moduli + plugin:
+Pacchetto installabile unico con componente + moduli:
 
 - [ ] **22.1** Creare `pkg_accommodation_manager.xml` (package manifest)
 - [ ] **22.2** Creare `pkg_accommodation_manager_script.php` (package install script)
