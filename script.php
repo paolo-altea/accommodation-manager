@@ -47,28 +47,6 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	protected $minimumJoomla = '4.0';
 
 	/**
-	 * Method called before install/update the component. Note: This method won't be called during uninstall process.
-	 *
-	 * @param   string $type   Type of process [install | update]
-	 * @param   mixed  $parent Object who called this method
-	 *
-	 * @return boolean True if the process should continue, false otherwise
-     * @throws Exception
-	 */
-	public function preflight($type, $parent)
-	{
-		$result = parent::preflight($type, $parent);
-
-		if (!$result)
-		{
-			return $result;
-		}
-
-		// logic for preflight before install
-		return $result;
-	}
-
-	/**
 	 * Method to install the component
 	 *
 	 * @param   mixed $parent Object who called this method.
@@ -752,6 +730,26 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	}
 
 	/**
+	 * Get a manifest element (plugins or modules) from the parent installer.
+	 *
+	 * @param   mixed   $parent  Installer parent object
+	 * @param   string  $name    Element name ('plugins' or 'modules')
+	 *
+	 * @return  \SimpleXMLElement|null
+	 *
+	 * @since   3.2.0
+	 */
+	private function getManifestElement($parent, string $name)
+	{
+		if (method_exists($parent, 'getManifest'))
+		{
+			return $parent->getManifest()->$name;
+		}
+
+		return $parent->get('manifest')->$name;
+	}
+
+	/**
 	 * Installs plugins for this component
 	 *
 	 * @param   mixed $parent Object who called the install/update method
@@ -763,15 +761,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		$installation_folder = $parent->getParent()->getPath('source');
 		$app                 = Factory::getApplication();
 
-		/* @var $plugins SimpleXMLElement */
-		if (method_exists($parent, 'getManifest'))
-		{
-			$plugins = $parent->getManifest()->plugins;
-		}
-		else
-		{
-			$plugins = $parent->get('manifest')->plugins;
-		}
+		$plugins = $this->getManifestElement($parent, 'plugins');
 
 		if ($plugins && count($plugins->children()))
 		{
@@ -859,14 +849,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		$installation_folder = $parent->getParent()->getPath('source');
 		$app                 = Factory::getApplication();
 
-		if (method_exists($parent, 'getManifest'))
-		{
-			$modules = $parent->getManifest()->modules;
-		}
-		else
-		{
-			$modules = $parent->get('manifest')->modules;
-		}
+		$modules = $this->getManifestElement($parent, 'modules');
 
 		if (!empty($modules))
 		{
@@ -940,14 +923,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	{
 		$app     = Factory::getApplication();
 
-		if (method_exists($parent, 'getManifest'))
-		{
-			$plugins = $parent->getManifest()->plugins;
-		}
-		else
-		{
-			$plugins = $parent->get('manifest')->plugins;
-		}
+		$plugins = $this->getManifestElement($parent, 'plugins');
 
 		if ($plugins && count($plugins->children()))
 		{
@@ -1002,14 +978,7 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	{
 		$app = Factory::getApplication();
 
-		if (method_exists($parent, 'getManifest'))
-		{
-			$modules = $parent->getManifest()->modules;
-		}
-		else
-		{
-			$modules = $parent->get('manifest')->modules;
-		}
+		$modules = $this->getManifestElement($parent, 'modules');
 
 		if (!empty($modules))
 		{
@@ -1055,19 +1024,4 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		}
 	}
 
-	/**
-	 * @param   string $type   type
-	 * @param   string $parent parent
-	 *
-	 * @return boolean
-	 * @since Kunena
-	 */
-	public function postflight($type, $parent)
-	{
-		
-
-		return true;
-	}
-
-	
 }

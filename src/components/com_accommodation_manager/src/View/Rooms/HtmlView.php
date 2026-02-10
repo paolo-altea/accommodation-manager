@@ -11,6 +11,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\View\Rooms;
 
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -63,17 +64,14 @@ class HtmlView extends BaseHtmlView
 		$this->params = $app->getParams('com_accommodation_manager');
 
 		// Load rates data when enabled
-		if ((int) $this->params->get('rooms_show_rates', 0) && !empty($this->items))
+		$roomIds   = !empty($this->items) ? array_map(fn($item) => (int) $item->id, $this->items) : [];
+		$ratesData = Accommodation_managerHelper::loadRatesData($this->params, $roomIds);
+
+		if ($ratesData)
 		{
-			$factory    = $app->bootComponent('com_accommodation_manager')->getMVCFactory();
-			$ratesModel = $factory->createModel('Rates', 'Site');
-
-			$hidePast = (bool) $this->params->get('rates_hide_past_periods', 0);
-			$roomIds  = array_map(fn($item) => (int) $item->id, $this->items);
-
-			$this->periods    = $ratesModel->getPeriods($hidePast);
-			$this->typologies = $ratesModel->getTypologies();
-			$this->ratesGrid  = $ratesModel->getRatesGrid($roomIds);
+			$this->periods    = $ratesData['periods'];
+			$this->typologies = $ratesData['typologies'];
+			$this->ratesGrid  = $ratesData['ratesGrid'];
 		}
 
 		// Set page title from menu item

@@ -284,10 +284,10 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
 
 #### PR.3b — Priorità Media: Pulizia dead code
 
-- [ ] **PR.3b.1** `script.php`: rimuovere `preflight()` vuoto (righe 58-69) e `postflight()` vuoto (righe 1065-1070)
-- [ ] **PR.3b.2** `script.php`: estrarre manifest getter duplicato 4 volte (`installPlugins`, `installModules`, `uninstallPlugins`, `uninstallModules`) in metodo privato `getManifestElement($parent, $elementName)`
-- [ ] **PR.3b.3** Estrarre query room condivisa — SELECT con JOIN categoria duplicata in `RoomsModel`, `CategoryModel`, `RoomModel` (3 copie) → metodo statico o trait
-- [ ] **PR.3b.4** Estrarre logica caricamento tariffe nelle view — blocco identico in `Rooms/HtmlView` e `Room/HtmlView` (bootComponent + createModel + getPeriods/getTypologies/getRatesGrid) → metodo helper statico
+- [x] **PR.3b.1** `script.php`: rimossi `preflight()` e `postflight()` vuoti (2026-02-10)
+- [x] **PR.3b.2** `script.php`: estratto `getManifestElement($parent, $name)` — sostituisce 4 blocchi if/else identici (2026-02-10)
+- [x] **PR.3b.3** Estratto `Accommodation_managerHelper::buildRoomBaseQuery($db)` — 19 colonne SELECT + category JOIN + state=1, usato da RoomsModel, CategoryModel, RoomModel (2026-02-10)
+- [x] **PR.3b.4** Estratto `Accommodation_managerHelper::loadRatesData($params, $roomIds)` — restituisce [periods, typologies, ratesGrid], usato da Rooms/HtmlView e Room/HtmlView (2026-02-10)
 
 #### PR.3c — Priorità Bassa: Semplificazione base classes
 
