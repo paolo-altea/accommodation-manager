@@ -247,10 +247,10 @@ Moduli Joomla per richiamare le view dei dati in posizioni del template:
 
 Pacchetto installabile unico con componente + moduli:
 
-- [ ] **22.1** Creare `pkg_accommodation_manager.xml` (package manifest)
-- [ ] **22.2** Creare `pkg_accommodation_manager_script.php` (package install script)
-- [ ] **22.3** Popolare `language/` root con file sys.ini a livello pacchetto
-- [ ] **22.4** Aggiornare `build/build.sh` per generare ZIP del package completo
+- [x] **22.1** Creare `pkg_accommodation_manager.xml` (package manifest) (2026-02-10)
+- [x] **22.2** ~~Package install script~~ - Non necessario, componente ha gia' script.php e moduli non richiedono script (2026-02-10)
+- [x] **22.3** Popolare `language/` root con file sys.ini a livello pacchetto (EN, DE, IT) (2026-02-10)
+- [x] **22.4** Aggiornare `build/build.sh` per generare ZIP del package completo (2026-02-10)
 
 ### Pre-rilascio
 
