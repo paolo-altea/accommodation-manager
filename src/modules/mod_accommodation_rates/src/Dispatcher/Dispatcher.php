@@ -28,7 +28,14 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
 	 */
 	protected function getLayoutData(): array
 	{
-		$data   = parent::getLayoutData();
+		$data = parent::getLayoutData();
+
+		// Load component language for shared layout keys (COM_ACCOMMODATION_MANAGER_*)
+		$this->getApplication()->getLanguage()->load(
+			'com_accommodation_manager',
+			JPATH_SITE . '/components/com_accommodation_manager'
+		);
+
 		$helper = $this->getHelperFactory()->getHelper('RatesHelper');
 
 		$data['periods']    = $helper->getPeriods();

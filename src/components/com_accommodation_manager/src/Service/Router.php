@@ -101,23 +101,10 @@ class Router extends RouterView
 			return [(int) $id => (string) $id];
 		}
 
-		$cat  = $categories[$id];
 		$lang = Accommodation_managerHelper::getLanguageSuffix();
-		$nameCol = 'room_category_name_' . $lang;
-		$name = $cat->$nameCol ?? '';
+		$slug = $this->buildSlug($categories[$id], 'room_category_name_' . $lang, 'room_category_title');
 
-		if ($name !== '')
-		{
-			$slug = OutputFilter::stringURLSafe($name);
-
-			if ($slug !== '')
-			{
-				return [(int) $id => $slug];
-			}
-		}
-
-		// Fallback: room_category_title (backend title, always present)
-		return [(int) $id => OutputFilter::stringURLSafe($cat->room_category_title)];
+		return [(int) $id => $slug];
 	}
 
 	/**
@@ -219,8 +206,8 @@ class Router extends RouterView
 			return [(int) $id => (string) $id];
 		}
 
-		$room = $rooms[$id];
-		$slug = $this->buildRoomSlug($room);
+		$lang = Accommodation_managerHelper::getLanguageSuffix();
+		$slug = $this->buildSlug($rooms[$id], 'room_title_' . $lang, 'room_name');
 
 		return [(int) $id => $slug];
 	}
@@ -272,23 +259,23 @@ class Router extends RouterView
 	}
 
 	/**
-	 * Build the URL slug for a room.
+	 * Build a URL slug from a localised column with a fallback column.
 	 *
-	 * @param   object  $room  Room object
+	 * @param   object  $item          DB row object
+	 * @param   string  $localizedCol  Localised column name (e.g. room_title_de)
+	 * @param   string  $fallbackCol   Fallback column name (e.g. room_name)
 	 *
 	 * @return  string  URL-safe slug
 	 *
 	 * @since   3.2.0
 	 */
-	private function buildRoomSlug(object $room): string
+	private function buildSlug(object $item, string $localizedCol, string $fallbackCol): string
 	{
-		$lang     = Accommodation_managerHelper::getLanguageSuffix();
-		$titleCol = 'room_title_' . $lang;
-		$title    = $room->$titleCol ?? '';
+		$name = $item->$localizedCol ?? '';
 
-		if ($title !== '')
+		if ($name !== '')
 		{
-			$slug = OutputFilter::stringURLSafe($title);
+			$slug = OutputFilter::stringURLSafe($name);
 
 			if ($slug !== '')
 			{
@@ -296,7 +283,7 @@ class Router extends RouterView
 			}
 		}
 
-		return OutputFilter::stringURLSafe($room->room_name);
+		return OutputFilter::stringURLSafe($item->$fallbackCol);
 	}
 
 	/**

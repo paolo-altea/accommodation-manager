@@ -24,15 +24,6 @@ use \Joomla\CMS\Installer\InstallerScript;
 class com_accommodation_managerInstallerScript extends InstallerScript
 {
 	/**
-	 * Return status: field was modified
-	 */
-	private const MODIFIED = 1;
-
-	/**
-	 * Return status: field was not modified
-	 */
-	private const NOT_MODIFIED = 2;
-	/**
 	 * The title of the component (printed on installation and uninstallation messages)
 	 *
 	 * @var string
@@ -590,11 +581,11 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	{
 		$result = $this->addField($table_name, $field);
 
-		if ($result === self::MODIFIED) {
+		if ($result === true) {
 			$app->enqueueMessage(
 				Text::sprintf('Field `%s` has been successfully ' . $verb, $field['field_name'])
 			);
-		} elseif ($result !== self::NOT_MODIFIED) {
+		} elseif ($result !== false) {
 			$app->enqueueMessage(
 				Text::sprintf('There was an error with the field `%s`. Error: %s', $field['field_name'], $result),
 				'error'
@@ -639,14 +630,14 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 			{
 				$db->execute();
 
-				return self::MODIFIED;
+				return true;
 			} catch (Exception $ex)
 			{
 				return $ex->getMessage();
 			}
 		}
 
-		return self::NOT_MODIFIED;
+		return false;
 	}
 
 	/**

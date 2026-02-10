@@ -105,20 +105,6 @@ abstract class BaseItemModel extends AdminModel
 	}
 
 	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return  object|false  Object on success, false on failure.
-	 *
-	 * @since   3.1.0
-	 */
-	public function getItem($pk = null)
-	{
-		return parent::getItem($pk);
-	}
-
-	/**
 	 * Method to duplicate items.
 	 *
 	 * @param   array  &$pks  An array of primary key IDs.

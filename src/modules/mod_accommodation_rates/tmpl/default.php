@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 
 $periods    = $periods ?? [];
@@ -31,9 +30,6 @@ if ((int) $params->get('load_css', 1)) {
 if ((int) $params->get('load_js', 1)) {
 	$wa->useScript('com_accommodation_manager.rates-grid');
 }
-
-// Load component language for layout keys
-Factory::getLanguage()->load('com_accommodation_manager', JPATH_SITE);
 
 $layoutPath = JPATH_SITE . '/components/com_accommodation_manager/layouts';
 ?>
