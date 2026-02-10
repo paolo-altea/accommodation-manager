@@ -53,11 +53,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (periodHeader && typologyHeader) {
       var updateStickyOffset = function () {
         var periodWidth = periodHeader.offsetWidth;
-        typologyHeader.style.left = periodWidth + 'px';
+        var offset = periodWidth + 'px';
+        typologyHeader.style.left = offset;
 
         var typologyCells = table.querySelectorAll('.rates-grid__typology');
         typologyCells.forEach(function (cell) {
-          cell.style.left = periodWidth + 'px';
+          cell.style.left = offset;
         });
       };
 
