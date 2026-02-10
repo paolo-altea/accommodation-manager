@@ -291,9 +291,10 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
 
 #### PR.3c — Priorità Bassa: Semplificazione base classes
 
-- [ ] **PR.3c.1** `BaseItemModel`: rimuovere `getItem()` proxy (righe 116-119) — chiama solo parent senza logica aggiuntiva
-- [ ] **PR.3c.2** `script.php`: sostituire costanti `MODIFIED`/`NOT_MODIFIED` con boolean (usate solo in `addField`/`addFieldWithMessage`)
-- [ ] **PR.3c.3** `Router.php`: rendere consistente slug building — `buildRoomSlug()` chiamato 1 volta, categories fa inline. Scegliere un approccio unico
+- [x] **PR.3c.1** `BaseItemModel`: rimosso `getItem()` proxy — chiamava solo parent (2026-02-10)
+- [x] **PR.3c.2** `script.php`: rimossi `MODIFIED`/`NOT_MODIFIED` constants, sostituiti con `true`/`false` (2026-02-10)
+- [x] **PR.3c.3** `Router.php`: creato `buildSlug($item, $localizedCol, $fallbackCol)` generico, usato da categories e rooms. Rimosso `buildRoomSlug()` (2026-02-10)
+- [x] **PR.3c.4** Fix `mod_accommodation_rates` language: caricamento lingua componente da path corretto (`JPATH_SITE/components/com_accommodation_manager`) (2026-02-10)
 
 #### PR.3d — Valutati e mantenuti (nessun intervento)
 
