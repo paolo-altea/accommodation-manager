@@ -7,7 +7,7 @@
     <author>Altea Software Srl</author>
     <authorEmail>web@altea.it</authorEmail>
     <authorUrl>https://www.altea.it</authorUrl>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <description>COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION</description>
     <namespace path="src">Accomodationmanager\Component\Accommodation_manager</namespace>
 

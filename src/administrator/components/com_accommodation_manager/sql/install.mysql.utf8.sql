@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_thumbnail_alt_es` VARCHAR(255)  NULL  DEFAULT "",
 `room_gallery` TEXT  NULL,
 `room_video` VARCHAR(255)  NULL  DEFAULT "",
-`room_pano` VARCHAR(255)  NULL  DEFAULT "",
 PRIMARY KEY (`id`),
 UNIQUE INDEX `idx_room_name` (`room_name`),
 INDEX `idx_room_category` (`room_category`),

@@ -340,25 +340,32 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
 
 Il vecchio componente Joomla 3 era nella cartella `com_accommodation_manager_four` ma registrato in `#__extensions` come `com_accommodation_manager` (stesso element del nuovo). Le tabelle DB sono le stesse (`#__accommodation_manager_*`).
 
-Quando si installa il nuovo pacchetto (v3.3.0) sopra il vecchio (v2.1.1), Joomla esegue automaticamente gli SQL di update (3.0.0 → 3.3.0) che fanno tutti gli ALTER TABLE necessari (nuove colonne, cambio tipi, indici, collation).
+Quando si installa il nuovo pacchetto (v3.3.0) sopra il vecchio (v2.1.1):
+- Il manifest ora usa `<schemas><schemapath>` per SQL versionati (fix 2026-02-11)
+- `script.php` postflight esegue `upgradeSchema()` che aggiunge colonne mancanti, modifica tipi, aggiunge indici e popola rate_typology_title — gestisce il caso in cui le tabelle esistevano già dal vecchio componente
+- `script.php` postflight esegue `removeLegacyComponent()` che rimuove `com_accommodation_manager_four` (DB + filesystem) senza triggerare il suo uninstall SQL (che farebbe DROP TABLE)
 
-**Lo script serve solo per convertire i DATI** nei 3 casi dove il contenuto non e compatibile con il nuovo tipo/formato colonna.
+**Lo script migrazione serve solo per convertire i DATI** nei 2 casi dove il contenuto non è compatibile con il nuovo formato.
 
 #### Conversioni dati necessarie
 
-- [ ] **19.1** `room_gallery` — da path stringa (es. `images/rooms/suite/`) a JSON subform `[{"image":"...","image_mobile":"","alt_de":"","alt_it":"","alt_en":"","alt_fr":"","alt_es":""}]`. Serve listare i file immagine nella cartella indicata e creare un entry JSON per ciascuno.
-- [ ] **19.2** `rates.rate` — da VARCHAR a DECIMAL: valori `"--"` (non disponibile) → NULL, valori numerici stringa `"125.00"` → DECIMAL. L'ALTER TABLE cambia il tipo ma `"--"` causa errore nel cast.
-- [ ] **19.3** `rate_typology_title` — nuova colonna NOT NULL. Va popolata con il valore di `rate_typology_de` (o `rate_typology_en` se vuoto) per ogni riga esistente.
+- [x] **19.1** `room_gallery` — convertito in `migrateData()` postflight: scansiona cartella immagini, crea JSON subform (2026-02-11)
+- [x] **19.2** `rates.rate` — convertito in `migrateData()` postflight: "--" e non-numerici → NULL prima del MODIFY a DECIMAL (2026-02-11)
+- [x] **19.3** `rate_typology_title` — gestito da `upgradeSchema()` postflight: popola da COALESCE(de, it, en, fr, es) (2026-02-11)
 
-#### Ordine di esecuzione
+#### Implementazione
 
-Lo script deve girare **DOPO** l'installazione del pacchetto (che applica gli ALTER TABLE) ma **PRIMA** che l'utente usi il componente. Oppure in alternativa, lo script puo fare tutto in autonomia (ALTER + conversione dati) prima dell'installazione del pacchetto.
+Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente durante l'installazione del pacchetto:
+
+1. `migrateData()` — converte dati (rate "--"→NULL, gallery path→JSON, svuota pano)
+2. `upgradeSchema()` — ALTER TABLE, MODIFY COLUMN, DROP room_pano, indici, popola rate_typology_title
+3. `removeLegacyComponent()` — rimuove vecchio com_accommodation_manager_four
 
 #### Task operativi
 
-- [ ] **19.4** Decidere come gestire `room_pano` (colonna ancora nel DB, rimossa dal form. Migrare a video? Scartare? Lasciare?)
-- [ ] **19.5** Creare script di backup pre-migrazione
-- [ ] **19.6** Creare script PHP eseguibile da CLI o browser che faccia le 3 conversioni
+- [x] **19.4** `room_pano` — colonna rimossa: dati svuotati in migrateData(), DROP COLUMN in upgradeSchema() (2026-02-11)
+- [ ] **19.5** Creare script di backup pre-migrazione (raccomandazione nella documentazione)
+- [x] **19.6** ~~Script PHP separato~~ — integrato nel postflight, non serve script esterno (2026-02-11)
 - [ ] **19.7** Testare su copia del DB di produzione
 
 ---

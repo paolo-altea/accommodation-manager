@@ -18,7 +18,7 @@ use \Joomla\CMS\Installer\InstallerScript;
 /**
  * Updates the database structure of the component
  *
- * @version  Release: 3.3.0
+ * @version  Release: 3.4.0
  * @author   Altea Software Srl <web@altea.it>
  * @since    3.0.0
  */
@@ -49,7 +49,8 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	public function install($parent)
 	{
-		$this->installDb($parent);
+		// Tables are created by sql/install.mysql.utf8.sql (via manifest).
+		// Schema upgrades handled by upgradeSchema() in postflight.
 		$this->installPlugins($parent);
 		$this->installModules($parent);
 	}
@@ -886,7 +887,8 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	public function update($parent)
 	{
-		$this->installDb($parent);
+		// Schema upgrades are handled by upgradeSchema() in postflight.
+		// installDb() uses installer/structure.xml which no longer exists.
 		$this->installPlugins($parent);
 		$this->installModules($parent);
 	}
@@ -910,8 +912,228 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	public function postflight($type, $parent)
 	{
+		$this->migrateData();
 		$this->upgradeSchema();
 		$this->removeLegacyComponent();
+	}
+
+	/**
+	 * Migrate data from the legacy Joomla 3 format.
+	 *
+	 * Runs BEFORE upgradeSchema() so that data conversions happen while
+	 * columns still have the old types (e.g. rate is still VARCHAR when
+	 * we convert "--" to NULL, gallery is widened to TEXT before storing
+	 * JSON).
+	 *
+	 * Safe to run multiple times — each step checks current state before
+	 * acting.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3.0
+	 */
+	private function migrateData(): void
+	{
+		$db  = Factory::getDbo();
+		$app = Factory::getApplication();
+		$t   = '#__accommodation_manager_';
+
+		// ── 1. rates.rate: convert "--" and non-numeric values to NULL ──
+		// Must run while column is still VARCHAR, before MODIFY to DECIMAL
+		// (MariaDB would silently convert "--" to 0.00 instead of NULL)
+
+		try
+		{
+			$columns = $db->getTableColumns($t . 'rates');
+			$rateType = $columns['rate'] ?? '';
+
+			if (stripos($rateType, 'char') !== false)
+			{
+				// Old column is NOT NULL — allow NULL first
+				$db->setQuery("ALTER TABLE `{$t}rates` MODIFY COLUMN `rate` VARCHAR(255) NULL DEFAULT NULL");
+				$db->execute();
+
+				// Now convert non-numeric values ("--", etc.) to NULL
+				$db->setQuery(
+					"UPDATE `{$t}rates` SET `rate` = NULL " .
+					"WHERE `rate` IS NOT NULL AND TRIM(`rate`) != '' " .
+					"AND TRIM(`rate`) NOT REGEXP '^[0-9]+(\\\\.[0-9]+)?$'"
+				);
+				$db->execute();
+				$count = $db->getAffectedRows();
+
+				if ($count > 0)
+				{
+					$app->enqueueMessage(
+						Text::sprintf('Migration: %d non-numeric rate values converted to NULL.', $count)
+					);
+				}
+			}
+		}
+		catch (\Exception $e)
+		{
+			$app->enqueueMessage('Migration rates: ' . $e->getMessage(), 'warning');
+		}
+
+		// ── 2. room_gallery: convert directory path to JSON subform ──
+		// Old format: "images/rooms/suite/" (directory with images)
+		// New format: [{"image":"images/rooms/suite/1.jpg","image_mobile":"","alt_de":"",…}]
+
+		try
+		{
+			if ($this->existsField($t . 'rooms', 'room_gallery'))
+			{
+				// Ensure column is TEXT first (old schema had VARCHAR(255))
+				$columns = $db->getTableColumns($t . 'rooms');
+
+				if (stripos($columns['room_gallery'] ?? '', 'varchar') !== false)
+				{
+					$db->setQuery("ALTER TABLE `{$t}rooms` MODIFY COLUMN `room_gallery` TEXT NULL");
+					$db->execute();
+				}
+
+				// Find rows with non-empty, non-JSON gallery values
+				$query = $db->getQuery(true)
+					->select([$db->quoteName('id'), $db->quoteName('room_gallery')])
+					->from($db->quoteName($t . 'rooms'))
+					->where($db->quoteName('room_gallery') . ' IS NOT NULL')
+					->where($db->quoteName('room_gallery') . " != ''")
+					->where($db->quoteName('room_gallery') . " NOT LIKE " . $db->quote('[%'));
+				$db->setQuery($query);
+				$rows = $db->loadObjectList();
+
+				$converted = 0;
+
+				foreach ($rows as $row)
+				{
+					$galleryJson = $this->convertGalleryPathToJson($row->room_gallery);
+
+					$update = $db->getQuery(true)
+						->update($db->quoteName($t . 'rooms'))
+						->set($db->quoteName('room_gallery') . ' = ' . $db->quote($galleryJson))
+						->where($db->quoteName('id') . ' = ' . (int) $row->id);
+					$db->setQuery($update);
+					$db->execute();
+					$converted++;
+				}
+
+				if ($converted > 0)
+				{
+					$app->enqueueMessage(
+						Text::sprintf('Migration: %d room galleries converted to JSON.', $converted)
+					);
+				}
+			}
+		}
+		catch (\Exception $e)
+		{
+			$app->enqueueMessage('Migration gallery: ' . $e->getMessage(), 'warning');
+		}
+
+		// ── 3. room_pano: clear data (column will be dropped by upgradeSchema) ──
+
+		try
+		{
+			if ($this->existsField($t . 'rooms', 'room_pano'))
+			{
+				$db->setQuery(
+					"UPDATE `{$t}rooms` SET `room_pano` = '' " .
+					"WHERE `room_pano` IS NOT NULL AND `room_pano` != ''"
+				);
+				$db->execute();
+				$count = $db->getAffectedRows();
+
+				if ($count > 0)
+				{
+					$app->enqueueMessage(
+						Text::sprintf('Migration: %d room panorama values cleared.', $count)
+					);
+				}
+			}
+		}
+		catch (\Exception $e)
+		{
+			$app->enqueueMessage('Migration pano: ' . $e->getMessage(), 'warning');
+		}
+	}
+
+	/**
+	 * Convert a gallery directory path to JSON subform format.
+	 *
+	 * Scans the directory for image files and builds a JSON array
+	 * with one entry per image, ready for the repeatable subform.
+	 *
+	 * @param   string  $path  Directory or file path (relative to JPATH_ROOT)
+	 *
+	 * @return  string  JSON string, or empty string if no images found
+	 *
+	 * @since   3.3.0
+	 */
+	private function convertGalleryPathToJson(string $path): string
+	{
+		$path = trim($path);
+
+		// Strip Joomla media fragment (images/x.jpg#joomlaImage://…)
+		if (strpos($path, '#') !== false)
+		{
+			$path = explode('#', $path)[0];
+		}
+
+		$fullPath = JPATH_ROOT . '/' . ltrim($path, '/');
+		$items    = [];
+		$allowed  = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
+
+		if (is_dir($fullPath))
+		{
+			$files = @scandir($fullPath);
+
+			if ($files !== false)
+			{
+				sort($files);
+
+				foreach ($files as $file)
+				{
+					if ($file === '.' || $file === '..')
+					{
+						continue;
+					}
+
+					$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+					if (in_array($ext, $allowed))
+					{
+						$items[] = [
+							'image'        => rtrim($path, '/') . '/' . $file,
+							'image_mobile' => '',
+							'alt_de'       => '',
+							'alt_it'       => '',
+							'alt_en'       => '',
+							'alt_fr'       => '',
+							'alt_es'       => '',
+						];
+					}
+				}
+			}
+		}
+		elseif (is_file($fullPath))
+		{
+			$items[] = [
+				'image'        => $path,
+				'image_mobile' => '',
+				'alt_de'       => '',
+				'alt_it'       => '',
+				'alt_en'       => '',
+				'alt_fr'       => '',
+				'alt_es'       => '',
+			];
+		}
+
+		if (empty($items))
+		{
+			return '';
+		}
+
+		return json_encode($items, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	}
 
 	/**
@@ -1071,6 +1293,22 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		catch (\Exception $e)
 		{
 			// Already exists
+		}
+
+		// ── DROP obsolete columns ──
+
+		if ($this->existsField($t . 'rooms', 'room_pano'))
+		{
+			try
+			{
+				$db->setQuery("ALTER TABLE `{$t}rooms` DROP COLUMN `room_pano`");
+				$db->execute();
+				$app->enqueueMessage('Dropped obsolete column room_pano.');
+			}
+			catch (\Exception $e)
+			{
+				$app->enqueueMessage('Could not drop room_pano: ' . $e->getMessage(), 'warning');
+			}
 		}
 
 		// ── UTF-8MB4 conversion ──
