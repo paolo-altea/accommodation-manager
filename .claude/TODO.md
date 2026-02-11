@@ -334,16 +334,32 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
 
 ---
 
-### FASE 19 - Script import dati
+### FASE 19 - Script migrazione dati
 
-Script PHP per migrare dati dal vecchio componente al nuovo:
+#### Contesto
 
-- [ ] **17.1** Convertire `room_gallery` da path stringa a JSON subform (estrarre immagini da cartella e creare array)
-- [ ] **17.2** Mappare dati esistenti nei nuovi campi alt (se disponibili altrove)
-- [ ] **17.3** Decidere come gestire `room_pano` (migrare a video? scartare?)
-- [ ] **17.4** Verificare/pulire dati rates, periods, typologies, categories
-- [ ] **17.5** Creare script di backup pre-migrazione
-- [ ] **17.6** Creare script di rollback in caso di errori
+Il vecchio componente Joomla 3 era nella cartella `com_accommodation_manager_four` ma registrato in `#__extensions` come `com_accommodation_manager` (stesso element del nuovo). Le tabelle DB sono le stesse (`#__accommodation_manager_*`).
+
+Quando si installa il nuovo pacchetto (v3.3.0) sopra il vecchio (v2.1.1), Joomla esegue automaticamente gli SQL di update (3.0.0 → 3.3.0) che fanno tutti gli ALTER TABLE necessari (nuove colonne, cambio tipi, indici, collation).
+
+**Lo script serve solo per convertire i DATI** nei 3 casi dove il contenuto non e compatibile con il nuovo tipo/formato colonna.
+
+#### Conversioni dati necessarie
+
+- [ ] **19.1** `room_gallery` — da path stringa (es. `images/rooms/suite/`) a JSON subform `[{"image":"...","image_mobile":"","alt_de":"","alt_it":"","alt_en":"","alt_fr":"","alt_es":""}]`. Serve listare i file immagine nella cartella indicata e creare un entry JSON per ciascuno.
+- [ ] **19.2** `rates.rate` — da VARCHAR a DECIMAL: valori `"--"` (non disponibile) → NULL, valori numerici stringa `"125.00"` → DECIMAL. L'ALTER TABLE cambia il tipo ma `"--"` causa errore nel cast.
+- [ ] **19.3** `rate_typology_title` — nuova colonna NOT NULL. Va popolata con il valore di `rate_typology_de` (o `rate_typology_en` se vuoto) per ogni riga esistente.
+
+#### Ordine di esecuzione
+
+Lo script deve girare **DOPO** l'installazione del pacchetto (che applica gli ALTER TABLE) ma **PRIMA** che l'utente usi il componente. Oppure in alternativa, lo script puo fare tutto in autonomia (ALTER + conversione dati) prima dell'installazione del pacchetto.
+
+#### Task operativi
+
+- [ ] **19.4** Decidere come gestire `room_pano` (colonna ancora nel DB, rimossa dal form. Migrare a video? Scartare? Lasciare?)
+- [ ] **19.5** Creare script di backup pre-migrazione
+- [ ] **19.6** Creare script PHP eseguibile da CLI o browser che faccia le 3 conversioni
+- [ ] **19.7** Testare su copia del DB di produzione
 
 ---
 
