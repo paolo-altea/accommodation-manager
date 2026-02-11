@@ -314,7 +314,10 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
   - Cast (int) per $item->id e $item->ordering in tutte le 4 liste admin
   - Cast (int) per $catId in rooms/default.php
   - Fix caricamento CSS managerrates: registerAndUseStyle hardcoded → useStyle da joomla.asset.json
-- [ ] **PR.2** Strategia traduzioni per lingue non installate: il componente prevede 5 lingue (de, it, en, fr, es) con colonne DB dedicate, ma i file `.ini` esistono solo per en-GB, de-DE, it-IT. Decidere come gestire fr-FR e es-ES (creare i file? fallback a en-GB? generare automaticamente?). Valutare anche cosa succede se una lingua è abilitata nel componente (`config.xml`) ma il language pack Joomla corrispondente non è installato nel sito.
+- [x] **PR.2** Traduzioni fr-FR e es-ES (2026-02-11):
+  - Joomla fa fallback automatico a en-GB se il file .ini della lingua attiva non esiste
+  - Creati 20 file .ini (10 per lingua) per componente admin/site + 3 moduli
+  - Il componente ora supporta tutte e 5 le lingue (de, it, en, fr, es) sia nei dati DB che nelle label interfaccia
 
 ---
 
@@ -341,6 +344,9 @@ Script PHP per migrare dati dal vecchio componente al nuovo:
 
 - [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.)
 - [ ] **POST.2** Creare script per aggiungere nuova lingua (SQL + config + form + template)
+- [ ] **POST.3** Template frontend modulari con Joomla Layout: spezzare i template delle view (rooms, room, categories, category, rates) in sotto-layout separati per ogni blocco (es. `room/thumbnail`, `room/intro`, `room/gallery`, `room/floor-plan`, `room/rates`, `room/buttons`, `rates/season-group`, `category/image`, ecc.). Vantaggi:
+  - **Override singolo blocco**: sovrascrivere solo `room/gallery.php` nel template Joomla senza ricopiare l'intero template
+  - **Riordinamento facile**: il template principale diventa una sequenza di chiamate `LayoutHelper::render()`, basta cambiarne l'ordine per riorganizzare i blocchi (es. spostare thumbnail dopo description) senza riscrivere l'HTML di ciascuno
 
 ---
 
