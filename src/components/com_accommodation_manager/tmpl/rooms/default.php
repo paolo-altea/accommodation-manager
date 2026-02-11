@@ -128,7 +128,7 @@ if ($showCategoryFilter && !empty($this->items))
 		<?php endif; ?>
 
 		<?php foreach ($this->items as $item) : ?>
-		<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>" data-category="<?php echo (int) $item->room_category; ?>">
+		<section class="room-item<?php echo !empty($item->room_class) ? ' ' . htmlspecialchars($item->room_class, ENT_QUOTES, 'UTF-8') : ''; ?>" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>" data-category="<?php echo (int) $item->room_category; ?>">
 
 			<?php if (!empty($item->title)) : ?>
 				<h2 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h2>

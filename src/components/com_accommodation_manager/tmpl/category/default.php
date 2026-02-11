@@ -75,7 +75,7 @@ $bookingUrl     = $this->params->get('booking_link_' . $lang, '');
 		</div>
 	<?php else : ?>
 		<?php foreach ($this->items as $item) : ?>
-		<section class="room-item" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
+		<section class="room-item<?php echo !empty($item->room_class) ? ' ' . htmlspecialchars($item->room_class, ENT_QUOTES, 'UTF-8') : ''; ?>" id="room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
 
 			<?php if (!empty($item->title)) : ?>
 				<h2 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h2>

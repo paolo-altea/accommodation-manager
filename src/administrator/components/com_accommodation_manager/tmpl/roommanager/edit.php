@@ -56,6 +56,7 @@ $enabledLanguages = Accommodation_managerHelper::getEnabledLanguages();
             <?php echo $this->form->renderField('room_surface'); ?>
             <?php echo $this->form->renderField('room_people'); ?>
             <?php echo $this->form->renderField('room_price_from'); ?>
+            <?php echo $this->form->renderField('room_class'); ?>
         </div>
         <div class="col-lg-3">
             <div class="card">

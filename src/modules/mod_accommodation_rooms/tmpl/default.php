@@ -78,7 +78,7 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 ?>
 <div class="mod-accommodation-rooms <?php echo htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8'); ?>">
 	<?php foreach ($items as $item) : ?>
-	<section class="room-item" id="mod-room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
+	<section class="room-item<?php echo !empty($item->room_class) ? ' ' . htmlspecialchars($item->room_class, ENT_QUOTES, 'UTF-8') : ''; ?>" id="mod-room-<?php echo htmlspecialchars($item->room_name, ENT_QUOTES, 'UTF-8'); ?>">
 
 		<?php if (!empty($item->title)) : ?>
 			<h3 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h3>

@@ -153,6 +153,7 @@ class Accommodation_managerHelper
 				$db->quoteName('a.room_surface'),
 				$db->quoteName('a.room_people'),
 				$db->quoteName('a.room_price_from'),
+				$db->quoteName('a.room_class'),
 				$db->quoteName('a.room_title_' . $lang, 'title'),
 				$db->quoteName('a.room_intro_' . $lang, 'intro'),
 				$db->quoteName('a.room_description_' . $lang, 'description'),

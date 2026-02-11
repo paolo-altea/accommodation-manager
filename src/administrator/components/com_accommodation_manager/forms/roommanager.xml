@@ -20,6 +20,7 @@
     <field name="room_surface" filter="safehtml" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_SURFACE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_SURFACE"/>
     <field name="room_people" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_PEOPLE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_PEOPLE"/>
     <field name="room_price_from" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_PRICE_FROM" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_PRICE_FROM"/>
+    <field name="room_class" filter="cmd" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_CLASS" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_CLASS"/>
 
     <!-- Titoli multilingua -->
     <field name="room_title_de" filter="safehtml" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_TITLE_DE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_TITLE_DE"/>

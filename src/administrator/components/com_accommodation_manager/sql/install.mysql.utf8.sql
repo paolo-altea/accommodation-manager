@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `#__accommodation_manager_rooms` (
 `room_surface` VARCHAR(50)  NULL  DEFAULT "",
 `room_people` VARCHAR(20)  NULL  DEFAULT "",
 `room_price_from` VARCHAR(255)  NULL  DEFAULT "",
+`room_class` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_de` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_it` VARCHAR(255)  NULL  DEFAULT "",
 `room_title_en` VARCHAR(255)  NULL  DEFAULT "",
