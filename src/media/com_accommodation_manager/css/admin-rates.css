@@ -1,0 +1,77 @@
+/* Admin rates grid - extracted from inline styles */
+
+/* Grid wrapper for horizontal scroll */
+.rates-grid-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+.rates-grid {
+    margin-bottom: 0;
+}
+
+.rates-grid th {
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+/* Sticky first column */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: inherit;
+}
+
+.sticky-header {
+    z-index: 2;
+}
+
+.period-cell {
+    vertical-align: middle;
+    min-width: 150px;
+    border-right: 2px solid var(--bs-border-color) !important;
+}
+
+.period-cell small {
+    color: var(--bs-secondary-color);
+}
+
+.typology-cell {
+    white-space: nowrap;
+    font-size: 0.85rem;
+}
+
+.rate-input-cell {
+    padding: 0.25rem !important;
+    vertical-align: middle;
+}
+
+.rate-input {
+    width: 80px;
+    font-size: 0.85rem;
+}
+
+.pagination-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Period-based row striping - works in both light and dark mode */
+.rates-grid tr.period-odd > td {
+    background-color: rgba(128, 128, 128, 0.15) !important;
+}
+
+.rates-grid tr.period-even > td {
+    background-color: transparent !important;
+}
+
+/* Disable row hover effect - override Atum dark theme */
+[data-bs-theme="dark"] .j-main-container .table.rates-grid tr:hover,
+.j-main-container .table.rates-grid tr:hover {
+    background: transparent !important;
+}

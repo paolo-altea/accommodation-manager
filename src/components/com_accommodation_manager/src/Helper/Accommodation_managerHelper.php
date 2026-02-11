@@ -11,6 +11,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\Helper;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -57,9 +58,10 @@ class Accommodation_managerHelper
 
 		foreach ($periods as $period)
 		{
-			$year       = (int) date('Y', strtotime($period->period_start));
-			$month      = (int) date('m', strtotime($period->period_start));
-			$day        = (int) date('d', strtotime($period->period_start));
+			$date       = new Date($period->period_start);
+			$year       = (int) $date->format('Y');
+			$month      = (int) $date->format('m');
+			$day        = (int) $date->format('d');
 			$periodMMDD = $month * 100 + $day;
 
 			if ($periodMMDD >= $summerMMDD && $periodMMDD < $winterMMDD)

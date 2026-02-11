@@ -29,4 +29,16 @@ window.Joomla = window.Joomla || {};
 
         return false;
     };
+
+    // Handle [data-task] buttons: set hidden task field before form submit
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-task]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var taskField = document.getElementById('task');
+                if (taskField) {
+                    taskField.value = this.getAttribute('data-task');
+                }
+            });
+        });
+    });
 })(window, Joomla);

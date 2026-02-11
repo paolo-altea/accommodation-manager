@@ -18,6 +18,11 @@
             }
         },
         {
+            "name": "com_accommodation_manager.admin-rates",
+            "type": "style",
+            "uri": "com_accommodation_manager/admin-rates.css"
+        },
+        {
             "name": "com_accommodation_manager.list",
             "type": "style",
             "uri": "com_accommodation_manager/list.css"

@@ -30,10 +30,12 @@ $lang = substr(Factory::getApplication()->getLanguage()->getTag(), 0, 2);
 // Count typologies for rowspan
 $typologyCount = count($typologies);
 
-// Load component stylesheet
+// Load component stylesheets and scripts
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-$wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/components/com_accommodation_manager/assets/css/accommodation_manager.css');
+$wa->useStyle('com_accommodation_manager.admin')
+    ->useStyle('com_accommodation_manager.admin-rates')
+    ->useScript('com_accommodation_manager.admin');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_accommodation_manager&view=managerrates'); ?>"
@@ -52,7 +54,7 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
                 </a>
             </div>
             <div class="col-md-6 text-end">
-                <button type="submit" class="btn btn-success btn-sm" onclick="document.getElementById('task').value='managerrates.saveGrid';">
+                <button type="submit" class="btn btn-success btn-sm" data-task="managerrates.saveGrid">
                     <span class="icon-save" aria-hidden="true"></span>
                     <?php echo Text::_('COM_ACCOMMODATION_MANAGER_SAVE_RATES'); ?>
                 </button>
@@ -165,7 +167,7 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
                 </a>
             </div>
             <div class="col-md-6 text-end">
-                <button type="submit" class="btn btn-success btn-sm" onclick="document.getElementById('task').value='managerrates.saveGrid';">
+                <button type="submit" class="btn btn-success btn-sm" data-task="managerrates.saveGrid">
                     <span class="icon-save" aria-hidden="true"></span>
                     <?php echo Text::_('COM_ACCOMMODATION_MANAGER_SAVE_RATES'); ?>
                 </button>
@@ -177,81 +179,3 @@ $wa->registerAndUseStyle('com_accommodation_manager.admin', 'administrator/compo
     <input type="hidden" name="boxchecked" value="0">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-
-<style>
-/* Grid wrapper for horizontal scroll */
-.rates-grid-wrapper {
-    overflow-x: auto;
-    max-width: 100%;
-    margin-bottom: 1rem;
-}
-
-.rates-grid {
-    margin-bottom: 0;
-}
-
-.rates-grid th {
-    white-space: nowrap;
-    font-size: 0.9rem;
-}
-
-/* Sticky first column */
-.sticky-col {
-    position: sticky;
-    left: 0;
-    z-index: 1;
-    background: inherit;
-}
-
-.sticky-header {
-    z-index: 2;
-}
-
-.period-cell {
-    vertical-align: middle;
-    min-width: 150px;
-    border-right: 2px solid var(--bs-border-color) !important;
-}
-
-.period-cell small {
-    color: var(--bs-secondary-color);
-}
-
-.typology-cell {
-    white-space: nowrap;
-    font-size: 0.85rem;
-}
-
-.rate-input-cell {
-    padding: 0.25rem !important;
-    vertical-align: middle;
-}
-
-.rate-input {
-    width: 80px;
-    font-size: 0.85rem;
-}
-
-.pagination-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-/* Period-based row striping - works in both light and dark mode */
-.rates-grid tr.period-odd > td {
-    background-color: rgba(128, 128, 128, 0.15) !important;
-}
-
-.rates-grid tr.period-even > td {
-    background-color: transparent !important;
-}
-
-/* Disable row hover effect - override Atum dark theme */
-[data-bs-theme="dark"] .j-main-container .table.rates-grid tr:hover,
-.j-main-container .table.rates-grid tr:hover {
-    background: transparent !important;
-}
-</style>

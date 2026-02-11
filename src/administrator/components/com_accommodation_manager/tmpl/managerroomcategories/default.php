@@ -112,7 +112,7 @@ if ($saveOrder) {
                                     <span class="icon-ellipsis-v" aria-hidden="true"></span>
                                 </span>
                                 <?php if ($canChange && $saveOrder) : ?>
-                                    <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order hidden">
+                                    <input type="text" name="order[]" size="5" value="<?php echo (int) $item->ordering; ?>" class="width-20 text-area-order hidden">
                                 <?php endif; ?>
                             </td>
                             <?php endif; ?>
@@ -152,7 +152,7 @@ if ($saveOrder) {
                             </td>
 
                             <td class="d-none d-md-table-cell">
-                                <?php echo $item->id; ?>
+                                <?php echo (int) $item->id; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

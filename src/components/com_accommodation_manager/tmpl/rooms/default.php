@@ -124,7 +124,7 @@ if ($showCategoryFilter && !empty($this->items))
 			<div class="rooms-category-filter">
 				<button type="button" class="btn btn-outline-primary active" data-filter-category=""><?php echo Text::_('COM_ACCOMMODATION_MANAGER_FILTER_ALL'); ?></button>
 				<?php foreach ($filterCategories as $catId => $catName) : ?>
-					<button type="button" class="btn btn-outline-primary" data-filter-category="<?php echo $catId; ?>"><?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?></button>
+					<button type="button" class="btn btn-outline-primary" data-filter-category="<?php echo (int) $catId; ?>"><?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?></button>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>

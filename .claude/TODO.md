@@ -307,7 +307,13 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
 
 ---
 
-- [ ] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla: verificare tutto il codice (template, model, view, controller) per individuare casi in cui si costruisce output a mano invece di usare helper nativi Joomla (es. `HTMLHelper::_('image')`, `HTMLHelper::_('date')`, `HTMLHelper::_('grid.*')`, `Text::_()`, `Route::_()`, ecc.)
+- [x] **PR.1** Audit utilizzo HTMLHelper e funzioni native Joomla (2026-02-11):
+  - CSS inline estratto da managerrates/default.php → admin-rates.css via WebAssetManager
+  - onclick inline rimossi → data-task attribute + handler in admin.js
+  - date() PHP nativo in Helper → Joomla\CMS\Date\Date
+  - Cast (int) per $item->id e $item->ordering in tutte le 4 liste admin
+  - Cast (int) per $catId in rooms/default.php
+  - Fix caricamento CSS managerrates: registerAndUseStyle hardcoded → useStyle da joomla.asset.json
 - [ ] **PR.2** Strategia traduzioni per lingue non installate: il componente prevede 5 lingue (de, it, en, fr, es) con colonne DB dedicate, ma i file `.ini` esistono solo per en-GB, de-DE, it-IT. Decidere come gestire fr-FR e es-ES (creare i file? fallback a en-GB? generare automaticamente?). Valutare anche cosa succede se una lingua è abilitata nel componente (`config.xml`) ma il language pack Joomla corrispondente non è installato nel sito.
 
 ---
