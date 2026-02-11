@@ -39,6 +39,7 @@ class ManagerratetypologiesModel extends ListModel
 				'ordering', 'a.ordering',
 				'state', 'a.state',
 				'created_by', 'a.created_by',
+				'rate_typology_title', 'a.rate_typology_title',
 				'rate_typology_de', 'a.rate_typology_de',
 				'rate_typology_it', 'a.rate_typology_it',
 				'rate_typology_en', 'a.rate_typology_en',

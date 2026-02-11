@@ -10,6 +10,7 @@
 defined('_JEXEC') or die();
 
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\Filesystem\Folder;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Installer\Installer;
 use \Joomla\CMS\Installer\InstallerScript;
@@ -17,7 +18,7 @@ use \Joomla\CMS\Installer\InstallerScript;
 /**
  * Updates the database structure of the component
  *
- * @version  Release: 3.1.0
+ * @version  Release: 3.3.0
  * @author   Altea Software Srl <web@altea.it>
  * @since    3.0.0
  */
@@ -888,6 +889,341 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 		$this->installDb($parent);
 		$this->installPlugins($parent);
 		$this->installModules($parent);
+	}
+
+	/**
+	 * Runs after install or update. Removes the legacy
+	 * com_accommodation_manager_four component if present.
+	 *
+	 * The old component (Joomla 3 era) used the same DB tables
+	 * (#__accommodation_manager_*) but a different element name.
+	 * Its uninstall SQL contains DROP TABLE statements that would
+	 * destroy shared data, so we remove it manually without
+	 * triggering the Joomla uninstaller.
+	 *
+	 * @param   string  $type    install, update, or discover_install
+	 * @param   mixed   $parent  Installer parent object
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3.0
+	 */
+	public function postflight($type, $parent)
+	{
+		$this->upgradeSchema();
+		$this->removeLegacyComponent();
+	}
+
+	/**
+	 * Ensure the database schema matches the expected state.
+	 *
+	 * When upgrading from the legacy Joomla 3 component, the tables
+	 * already exist with the old schema. The CREATE TABLE IF NOT EXISTS
+	 * in install.mysql.utf8.sql is skipped. This method adds any
+	 * missing columns, modifies column types, adds indexes, and
+	 * populates rate_typology_title from existing language data.
+	 *
+	 * Safe to run multiple times — checks before each change.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3.0
+	 */
+	private function upgradeSchema(): void
+	{
+		$db  = Factory::getDbo();
+		$app = Factory::getApplication();
+		$t   = '#__accommodation_manager_';
+
+		// ── ADD COLUMN (skipped if column already exists) ──
+
+		$addColumns = [
+			// 3.0.0 — rooms
+			[$t . 'rooms', 'room_price_from',        "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_floor_plan_alt_de',  "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_floor_plan_alt_it',  "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_floor_plan_alt_en',  "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_floor_plan_alt_fr',  "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_floor_plan_alt_es',  "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_thumbnail_alt_de',   "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_thumbnail_alt_it',   "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_thumbnail_alt_en',   "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_thumbnail_alt_fr',   "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rooms', 'room_thumbnail_alt_es',   "VARCHAR(255) NULL DEFAULT ''"],
+
+			// 3.0.0 — rate_typologies
+			[$t . 'rate_typologies', 'rate_typology_title', "VARCHAR(255) NOT NULL DEFAULT ''"],
+
+			// 3.1.0 — audit columns (all 5 tables)
+			[$t . 'rooms',            'created',      'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rooms',            'modified_by',  'INT(11) NULL DEFAULT 0'],
+			[$t . 'rooms',            'modified',     'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rooms',            'version_note', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories',  'created',      'DATETIME NULL DEFAULT NULL'],
+			[$t . 'room_categories',  'modified_by',  'INT(11) NULL DEFAULT 0'],
+			[$t . 'room_categories',  'modified',     'DATETIME NULL DEFAULT NULL'],
+			[$t . 'room_categories',  'version_note', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rate_periods',     'created',      'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rate_periods',     'modified_by',  'INT(11) NULL DEFAULT 0'],
+			[$t . 'rate_periods',     'modified',     'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rate_periods',     'version_note', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rates',            'created',      'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rates',            'modified_by',  'INT(11) NULL DEFAULT 0'],
+			[$t . 'rates',            'modified',     'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rates',            'version_note', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'rate_typologies',  'created',      'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rate_typologies',  'modified_by',  'INT(11) NULL DEFAULT 0'],
+			[$t . 'rate_typologies',  'modified',     'DATETIME NULL DEFAULT NULL'],
+			[$t . 'rate_typologies',  'version_note', "VARCHAR(255) NULL DEFAULT ''"],
+
+			// 3.2.0 — room_categories image
+			[$t . 'room_categories', 'room_category_image',        "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories', 'room_category_image_alt_de', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories', 'room_category_image_alt_it', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories', 'room_category_image_alt_en', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories', 'room_category_image_alt_fr', "VARCHAR(255) NULL DEFAULT ''"],
+			[$t . 'room_categories', 'room_category_image_alt_es', "VARCHAR(255) NULL DEFAULT ''"],
+
+			// 3.3.0 — room_class
+			[$t . 'rooms', 'room_class', "VARCHAR(255) NULL DEFAULT ''"],
+		];
+
+		$columnsAdded = 0;
+
+		foreach ($addColumns as [$table, $column, $type])
+		{
+			if (!$this->existsField($table, $column))
+			{
+				try
+				{
+					$db->setQuery("ALTER TABLE `{$table}` ADD COLUMN `{$column}` {$type}");
+					$db->execute();
+					$columnsAdded++;
+				}
+				catch (\Exception $e)
+				{
+					$app->enqueueMessage("Schema: could not add {$column}: " . $e->getMessage(), 'warning');
+				}
+			}
+		}
+
+		// ── MODIFY COLUMN (safe to re-run) ──
+
+		$modifyColumns = [
+			[$t . 'rooms',        'room_gallery',  'TEXT NULL'],
+			[$t . 'rates',        'rate',          'DECIMAL(10,2) NULL DEFAULT NULL'],
+			[$t . 'rooms',        'room_surface',  "VARCHAR(50) NULL DEFAULT ''"],
+			[$t . 'rooms',        'room_people',   "VARCHAR(20) NULL DEFAULT ''"],
+			[$t . 'rate_periods', 'period_start',  'DATE NOT NULL'],
+			[$t . 'rate_periods', 'period_end',    'DATE NOT NULL'],
+		];
+
+		foreach ($modifyColumns as [$table, $column, $type])
+		{
+			if ($this->existsField($table, $column))
+			{
+				try
+				{
+					$db->setQuery("ALTER TABLE `{$table}` MODIFY COLUMN `{$column}` {$type}");
+					$db->execute();
+				}
+				catch (\Exception $e)
+				{
+					$app->enqueueMessage("Schema: could not modify {$column}: " . $e->getMessage(), 'warning');
+				}
+			}
+		}
+
+		// ── ADD INDEXES (silently ignore duplicates) ──
+
+		$indexes = [
+			[$t . 'rooms',           'idx_room_category',        '(`room_category`)'],
+			[$t . 'rooms',           'idx_state_ordering',       '(`state`, `ordering`)'],
+			[$t . 'room_categories', 'idx_room_category_parent', '(`room_category_parent`)'],
+			[$t . 'room_categories', 'idx_state_ordering',       '(`state`, `ordering`)'],
+			[$t . 'rates',           'idx_room_id',              '(`room_id`)'],
+			[$t . 'rates',           'idx_period_id',            '(`period_id`)'],
+			[$t . 'rates',           'idx_typology_id',          '(`typology_id`)'],
+			[$t . 'rates',           'idx_state',                '(`state`)'],
+			[$t . 'rate_periods',    'idx_state_ordering',       '(`state`, `ordering`)'],
+			[$t . 'rate_typologies', 'idx_state_ordering',       '(`state`, `ordering`)'],
+		];
+
+		foreach ($indexes as [$table, $name, $columns])
+		{
+			try
+			{
+				$db->setQuery("ALTER TABLE `{$table}` ADD INDEX `{$name}` {$columns}");
+				$db->execute();
+			}
+			catch (\Exception $e)
+			{
+				// Index already exists — expected
+			}
+		}
+
+		// Unique index on room_name
+		try
+		{
+			$db->setQuery("ALTER TABLE `{$t}rooms` ADD UNIQUE INDEX `idx_room_name` (`room_name`)");
+			$db->execute();
+		}
+		catch (\Exception $e)
+		{
+			// Already exists
+		}
+
+		// ── UTF-8MB4 conversion ──
+
+		$allTables = ['rooms', 'room_categories', 'rate_periods', 'rates', 'rate_typologies'];
+
+		foreach ($allTables as $table)
+		{
+			try
+			{
+				$db->setQuery("ALTER TABLE `{$t}{$table}` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+				$db->execute();
+			}
+			catch (\Exception $e)
+			{
+				// Already utf8mb4
+			}
+		}
+
+		// ── Populate rate_typology_title from first non-empty language column ──
+
+		try
+		{
+			$db->setQuery(
+				"UPDATE `{$t}rate_typologies` " .
+				"SET `rate_typology_title` = COALESCE(" .
+					"NULLIF(`rate_typology_de`, ''), " .
+					"NULLIF(`rate_typology_it`, ''), " .
+					"NULLIF(`rate_typology_en`, ''), " .
+					"NULLIF(`rate_typology_fr`, ''), " .
+					"NULLIF(`rate_typology_es`, ''), " .
+					"'') " .
+				"WHERE `rate_typology_title` = '' OR `rate_typology_title` IS NULL"
+			);
+			$db->execute();
+		}
+		catch (\Exception $e)
+		{
+			$app->enqueueMessage('Could not populate rate_typology_title: ' . $e->getMessage(), 'warning');
+		}
+
+		if ($columnsAdded > 0)
+		{
+			$app->enqueueMessage(
+				Text::sprintf('Database schema upgraded: %d columns added.', $columnsAdded)
+			);
+		}
+	}
+
+	/**
+	 * Remove the legacy com_accommodation_manager_four component
+	 * without triggering its uninstall SQL (which would DROP the
+	 * shared tables).
+	 *
+	 * Cleans up: #__extensions, #__menu, #__assets, #__content_types,
+	 * and filesystem directories.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3.0
+	 */
+	private function removeLegacyComponent(): void
+	{
+		$db  = Factory::getDbo();
+		$app = Factory::getApplication();
+
+		$oldElement = 'com_accommodation_manager_four';
+
+		// Check if the old component exists in #__extensions
+		$query = $db->getQuery(true)
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote($oldElement))
+			->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+		$db->setQuery($query);
+		$oldExtensionId = (int) $db->loadResult();
+
+		if (!$oldExtensionId)
+		{
+			return;
+		}
+
+		$app->enqueueMessage(
+			Text::sprintf('Removing legacy component "%s" (ID %d)...', $oldElement, $oldExtensionId)
+		);
+
+		try
+		{
+			// 1. Remove admin menu items linked to the old component
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__menu'))
+				->where($db->quoteName('component_id') . ' = ' . $oldExtensionId);
+			$db->setQuery($query);
+			$db->execute();
+
+			// 2. Remove ACL assets
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__assets'))
+				->where($db->quoteName('name') . ' LIKE ' . $db->quote($oldElement . '%'));
+			$db->setQuery($query);
+			$db->execute();
+
+			// 3. Remove content type mappings
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__content_types'))
+				->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote($oldElement . '.%'));
+			$db->setQuery($query);
+			$db->execute();
+
+			// 4. Remove the old Finder plugin extension record (if any)
+			// The plugin element is "accommodation_manager_fourroomsmanager" (no "com_" prefix)
+			$oldElementNoPrefix = str_replace('com_', '', $oldElement);
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__extensions'))
+				->where($db->quoteName('element') . ' LIKE ' . $db->quote($oldElementNoPrefix . '%'))
+				->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+			$db->setQuery($query);
+			$db->execute();
+
+			// 5. Remove the old component extension record
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__extensions'))
+				->where($db->quoteName('extension_id') . ' = ' . $oldExtensionId);
+			$db->setQuery($query);
+			$db->execute();
+
+			// 6. Remove filesystem directories
+			$foldersToRemove = [
+				JPATH_ADMINISTRATOR . '/components/' . $oldElement,
+				JPATH_SITE . '/components/' . $oldElement,
+				JPATH_SITE . '/media/' . $oldElement,
+				JPATH_PLUGINS . '/finder/' . $oldElementNoPrefix . 'roomsmanager',
+			];
+
+			foreach ($foldersToRemove as $folder)
+			{
+				if (is_dir($folder))
+				{
+					Folder::delete($folder);
+				}
+			}
+
+			$app->enqueueMessage(
+				Text::sprintf('Legacy component "%s" removed successfully.', $oldElement)
+			);
+		}
+		catch (\Exception $e)
+		{
+			$app->enqueueMessage(
+				Text::sprintf('Error removing legacy component "%s": %s', $oldElement, $e->getMessage()),
+				'warning'
+			);
+		}
 	}
 
 	/**

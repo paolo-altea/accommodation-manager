@@ -7,7 +7,7 @@
     <author>Altea Software Srl</author>
     <authorEmail>web@altea.it</authorEmail>
     <authorUrl>https://www.altea.it</authorUrl>
-    <version>3.1.0</version>
+    <version>3.3.0</version>
     <description>COM_ACCOMMODATION_MANAGER_XML_DESCRIPTION</description>
     <namespace path="src">Accomodationmanager\Component\Accommodation_manager</namespace>
 
@@ -19,9 +19,9 @@
         </sql>
     </install>
     <update> <!-- Runs on update -->
-        <sql>
-            <file driver="mysql" charset="utf8">sql/update.mysql.utf8.sql</file>
-        </sql>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
     </update>
     <uninstall> <!-- Runs on uninstall -->
         <sql>
