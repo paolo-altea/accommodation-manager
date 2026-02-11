@@ -53,6 +53,16 @@
                 <field name="spacer_display" type="spacer" hr="true" />
 
                 <field
+                    name="show_category"
+                    type="radio"
+                    default="1"
+                    label="MOD_ACCOMMODATION_ROOMS_SHOW_CATEGORY"
+                    layout="joomla.form.field.radio.switcher"
+                >
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
                     name="show_surface"
                     type="radio"
                     default="1"

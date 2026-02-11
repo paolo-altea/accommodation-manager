@@ -23,6 +23,7 @@ if (empty($items))
 }
 
 // Show/hide toggles
+$showCategory    = (int) $params->get('show_category', 1);
 $showSurface     = (int) $params->get('show_surface', 1);
 $showPeople      = (int) $params->get('show_people', 1);
 $showPriceFrom   = (int) $params->get('show_price_from', 1);
@@ -84,7 +85,7 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 			<h3 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h3>
 		<?php endif; ?>
 
-		<?php if (!empty($item->category_name)) : ?>
+		<?php if ($showCategory && !empty($item->category_name)) : ?>
 			<p class="room-category"><?php echo htmlspecialchars($item->category_name, ENT_QUOTES, 'UTF-8'); ?></p>
 		<?php endif; ?>
 

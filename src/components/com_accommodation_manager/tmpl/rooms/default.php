@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
 // Show/hide toggles
+$showCategory    = $this->params->get('rooms_show_category', 1);
 $showSurface     = $this->params->get('rooms_show_surface', 1);
 $showPeople      = $this->params->get('rooms_show_people', 1);
 $showPriceFrom   = $this->params->get('rooms_show_price_from', 1);
@@ -134,7 +135,7 @@ if ($showCategoryFilter && !empty($this->items))
 				<h2 class="room-title"><?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></h2>
 			<?php endif; ?>
 
-			<?php if (!empty($item->category_name)) : ?>
+			<?php if ($showCategory && !empty($item->category_name)) : ?>
 				<p class="room-category"><?php echo htmlspecialchars($item->category_name, ENT_QUOTES, 'UTF-8'); ?></p>
 			<?php endif; ?>
 

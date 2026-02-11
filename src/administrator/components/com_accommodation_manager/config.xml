@@ -249,6 +249,16 @@
 
     <fieldset name="view_rooms" label="COM_ACCOMMODATION_MANAGER_CONFIG_VIEW_ROOMS">
         <field
+            name="rooms_show_category"
+            type="radio"
+            default="1"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_CATEGORY"
+            layout="joomla.form.field.radio.switcher"
+            >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field
             name="rooms_show_surface"
             type="radio"
             default="1"
@@ -721,7 +731,12 @@
         />
     </fieldset>
 
-    <fieldset name="request_links" label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINKS">
+    <fieldset name="links" label="COM_ACCOMMODATION_MANAGER_CONFIG_LINKS">
+        <field
+            name="spacer_request_links"
+            type="spacer"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINKS"
+        />
         <field
             name="request_link_de"
             type="url"
@@ -757,9 +772,17 @@
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
             filter="url"
         />
-    </fieldset>
 
-    <fieldset name="booking_links" label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINKS">
+        <field
+            name="spacer_booking_links"
+            type="spacer"
+            hr="true"
+        />
+        <field
+            name="spacer_booking_links_label"
+            type="spacer"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINKS"
+        />
         <field
             name="booking_link_de"
             type="url"
