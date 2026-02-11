@@ -1,6 +1,6 @@
 # Accommodation Manager for Joomla 5/6
 
-Joomla component for managing hotel rooms, categories, rate periods, rate typologies, and rates. Designed for multilingual accommodation websites (typical South Tyrol / Alto Adige hospitality).
+Joomla component for managing hotel rooms, categories, rate periods, rate typologies, and rates. Designed for multilingual accommodation websites.
 
 ## Requirements
 
