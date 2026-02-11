@@ -19,7 +19,7 @@ ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `room_thumbnail_alt_fr` 
 ALTER TABLE `#__accommodation_manager_rooms` ADD COLUMN `room_thumbnail_alt_es` VARCHAR(255) NULL DEFAULT '' AFTER `room_thumbnail_alt_fr`;
 
 -- Change room_gallery from VARCHAR to TEXT for JSON subform data
-ALTER TABLE `#__accommodation_manager_rooms` MODIFY COLUMN `room_gallery` TEXT NULL;
+ALTER TABLE `#__accommodation_manager_rooms` MODIFY `room_gallery` TEXT NULL;
 
 -- Add rate_typology_title field for backend display
 ALTER TABLE `#__accommodation_manager_rate_typologies` ADD COLUMN `rate_typology_title` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`;

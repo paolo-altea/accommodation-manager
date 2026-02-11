@@ -3,15 +3,15 @@
 
 -- Change rate from VARCHAR to DECIMAL (NULL = not available)
 -- Note: Existing "--" values will become NULL, numeric strings will be converted
-ALTER TABLE `#__accommodation_manager_rates` MODIFY COLUMN `rate` DECIMAL(10,2) NULL DEFAULT NULL;
+ALTER TABLE `#__accommodation_manager_rates` MODIFY `rate` DECIMAL(10,2) NULL DEFAULT NULL;
 
 -- Reduce room_surface and room_people field sizes (still VARCHAR for range values like "20-24")
-ALTER TABLE `#__accommodation_manager_rooms` MODIFY COLUMN `room_surface` VARCHAR(50) NULL DEFAULT '';
-ALTER TABLE `#__accommodation_manager_rooms` MODIFY COLUMN `room_people` VARCHAR(20) NULL DEFAULT '';
+ALTER TABLE `#__accommodation_manager_rooms` MODIFY `room_surface` VARCHAR(50) NULL DEFAULT '';
+ALTER TABLE `#__accommodation_manager_rooms` MODIFY `room_people` VARCHAR(20) NULL DEFAULT '';
 
 -- Change period dates from DATETIME to DATE (time component not needed)
-ALTER TABLE `#__accommodation_manager_rate_periods` MODIFY COLUMN `period_start` DATE NOT NULL;
-ALTER TABLE `#__accommodation_manager_rate_periods` MODIFY COLUMN `period_end` DATE NOT NULL;
+ALTER TABLE `#__accommodation_manager_rate_periods` MODIFY `period_start` DATE NOT NULL;
+ALTER TABLE `#__accommodation_manager_rate_periods` MODIFY `period_end` DATE NOT NULL;
 
 -- Add indexes for foreign keys (improve JOIN performance)
 ALTER TABLE `#__accommodation_manager_rooms` ADD INDEX `idx_room_category` (`room_category`);
