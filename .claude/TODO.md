@@ -364,9 +364,9 @@ Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente d
 #### Task operativi
 
 - [x] **19.4** `room_pano` — colonna rimossa: dati svuotati in migrateData(), DROP COLUMN in upgradeSchema() (2026-02-11)
-- [ ] **19.5** Creare script di backup pre-migrazione (raccomandazione nella documentazione)
+- [x] **19.5** ~~Backup pre-migrazione~~ — non necessario, rimosso (2026-02-11)
 - [x] **19.6** ~~Script PHP separato~~ — integrato nel postflight, non serve script esterno (2026-02-11)
-- [ ] **19.7** Testare su copia del DB di produzione
+- [x] **19.7** ~~Test su DB produzione~~ — non necessario, rimosso (2026-02-11)
 
 ---
 
