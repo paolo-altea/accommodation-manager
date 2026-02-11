@@ -318,21 +318,10 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
   - Joomla fa fallback automatico a en-GB se il file .ini della lingua attiva non esiste
   - Creati 20 file .ini (10 per lingua) per componente admin/site + 3 moduli
   - Il componente ora supporta tutte e 5 le lingue (de, it, en, fr, es) sia nei dati DB che nelle label interfaccia
-- [ ] **PR.4** Checklist per aggiungere nuova lingua (es. `pt` portoghese):
-  1. `sql/install.mysql.utf8.sql` — Aggiungere colonne `*_pt`: rooms (title, intro, description, floor_plan_alt, thumbnail_alt), categories (name, description, image_alt), rate_periods (period_title)
-  2. `sql/updates/mysql/X.X.X.sql` — ALTER TABLE per le stesse colonne
-  3. `config.xml` — Toggle `lang_pt` + campi `request_link_pt` e `booking_link_pt`
-  4. `forms/roommanager.xml` — Campi `room_title_pt`, `room_intro_pt`, `room_description_pt`, `room_floor_plan_alt_pt`, `room_thumbnail_alt_pt`
-  5. `forms/roommanagercategory.xml` — Campi `room_category_name_pt`, `room_category_description_pt`, `room_category_image_alt_pt`
-  6. `forms/managerrateperiod.xml` — Campo `period_title_pt`
-  7. `forms/roommanager_gallery.xml` — Campo `alt_pt` nel subform
-  8. Admin `Helper` — Aggiungere `'pt' => 'Português'` alla costante `LANGUAGES`
-  9. Site `Helper` — Aggiungere `'pt'` all'array `$validLanguages`
-  10. `Router.php` — Aggiungere `room_category_name_pt` in `loadCategories()` e `room_title_pt` in `loadRooms()`
-  11. Admin `RoomsmanagerModel.php` — Aggiungere filter fields `room_title_pt`, `room_intro_pt`, `room_description_pt`
-  12. Language files — Creare cartella `pt-PT/` per componente admin + site + 3 moduli (10 file .ini)
-  13. Language keys config — Aggiungere `CONFIG_LANG_PT`, `CONFIG_REQUEST_LINK_PT`, `CONFIG_BOOKING_LINK_PT` nelle 5 lingue esistenti (.ini + .sys.ini)
-  - **NON serve toccare** (dinamici via `getLanguageSuffix()`): Models frontend, Module helpers, Template frontend/layouts, Template admin edit
+- [x] **PR.4** Checklist per aggiungere nuova lingua (2026-02-11):
+  - Creato `docs/ADD-LANGUAGE.md` con checklist completa e autosufficiente (44 language keys esplicite, tutti i form XML, SQL, config, manifest)
+  - Refactoring: Router.php e RoomsmanagerModel.php ora dinamici (leggono da costanti LANGUAGES/VALID_LANGUAGES)
+  - **NON serve toccare** (dinamici via `getLanguageSuffix()`): Router, RoomsmanagerModel, Models frontend, Module helpers, Template frontend/layouts, Template admin edit
 - [x] **PR.5** Template frontend modulari con Joomla Layout (2026-02-11):
   - Creati 6 layout: `room/thumbnail`, `room/info`, `room/floor-plan`, `room/actions`, `room/detail-link`, `category/item`
   - Fix bug: gallery inline in `rooms/grouped.php` e `category/default.php` → usano `room.gallery` layout
