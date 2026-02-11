@@ -10,9 +10,8 @@
 defined('_JEXEC') or die;
 
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
+use Joomla\CMS\Layout\LayoutHelper;
 
 // Show/hide toggles
 $showSurface     = $this->params->get('rooms_show_surface', 1);
@@ -31,29 +30,32 @@ $showDetailLink = $this->params->get('rooms_show_detail_link', 0);
 // Category description
 $showCategoryDesc = $this->params->get('rooms_show_category_description', 0);
 
+$layoutPath = JPATH_SITE . '/components/com_accommodation_manager/layouts';
+
 // Gallery Swiper
 $gallerySwiper = $showGallery && $this->params->get('rooms_enable_swiper', 0);
+$gallerySwiperConfig = [];
 
 if ($gallerySwiper)
 {
-	$galSlidesPerViewMobile  = (float) $this->params->get('rooms_gallery_slides_per_view_mobile', 1);
-	$galSlidesPerViewDesktop = (float) $this->params->get('rooms_gallery_slides_per_view_desktop', 1);
-	$galSpaceBetweenMobile   = (int) $this->params->get('rooms_gallery_space_between_mobile', 10);
-	$galSpaceBetweenDesktop  = (int) $this->params->get('rooms_gallery_space_between_desktop', 30);
-	$galAutoplay             = (int) $this->params->get('rooms_gallery_autoplay', 0);
-	$galAutoplayDelay        = (int) $this->params->get('rooms_gallery_autoplay_delay', 5000);
-	$galNavigation           = (int) $this->params->get('rooms_gallery_navigation', 1);
-	$galPagination           = (int) $this->params->get('rooms_gallery_pagination', 1);
-	$galLoadCss              = (int) $this->params->get('rooms_gallery_load_css', 1);
-	$galLoadJs               = (int) $this->params->get('rooms_gallery_load_js', 1);
+	$gallerySwiperConfig = [
+		'slidesPerViewMobile'  => (float) $this->params->get('rooms_gallery_slides_per_view_mobile', 1),
+		'slidesPerViewDesktop' => (float) $this->params->get('rooms_gallery_slides_per_view_desktop', 1),
+		'spaceBetweenMobile'   => (int) $this->params->get('rooms_gallery_space_between_mobile', 10),
+		'spaceBetweenDesktop'  => (int) $this->params->get('rooms_gallery_space_between_desktop', 30),
+		'autoplay'             => (int) $this->params->get('rooms_gallery_autoplay', 0),
+		'autoplayDelay'        => (int) $this->params->get('rooms_gallery_autoplay_delay', 5000),
+		'navigation'           => (int) $this->params->get('rooms_gallery_navigation', 1),
+		'pagination'           => (int) $this->params->get('rooms_gallery_pagination', 1),
+	];
 
 	/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 	$wa = $this->document->getWebAssetManager();
 
-	if ($galLoadJs) {
+	if ((int) $this->params->get('rooms_gallery_load_js', 1)) {
 		$wa->useScript('com_accommodation_manager.gallery-slider');
 	}
-	if ($galLoadCss) {
+	if ((int) $this->params->get('rooms_gallery_load_css', 1)) {
 		$wa->useStyle('com_accommodation_manager.gallery-slider');
 	}
 }
@@ -107,46 +109,19 @@ if (!empty($this->items))
 						<?php endif; ?>
 
 						<?php // Thumbnail ?>
-						<?php if (!empty($item->thumbnail)) :
-							$thumbData    = HTMLHelper::_('cleanImageURL', $item->thumbnail);
-							$thumbAttribs = ['loading' => 'lazy'];
-							if (!empty($thumbData->attributes['width'])) {
-								$thumbAttribs['width'] = (int) $thumbData->attributes['width'];
-							}
-							if (!empty($thumbData->attributes['height'])) {
-								$thumbAttribs['height'] = (int) $thumbData->attributes['height'];
-							}
-						?>
-							<div class="room-thumbnail">
-								<?php echo HTMLHelper::_('image', $thumbData->url, $item->thumbnail_alt ?? '', $thumbAttribs); ?>
-							</div>
-						<?php endif; ?>
+						<?php echo LayoutHelper::render('room.thumbnail', [
+							'src' => $item->thumbnail ?? '',
+							'alt' => $item->thumbnail_alt ?? '',
+						], $layoutPath); ?>
 
 						<?php // Basic info ?>
-						<?php if ($showInfo) : ?>
-							<div class="room-info">
-								<?php if ($showSurface && !empty($item->room_surface)) : ?>
-									<span class="room-surface">
-										<?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_SURFACE'); ?>:
-										<?php echo htmlspecialchars($item->room_surface, ENT_QUOTES, 'UTF-8'); ?>
-									</span>
-								<?php endif; ?>
-
-								<?php if ($showPeople && !empty($item->room_people)) : ?>
-									<span class="room-people">
-										<?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_PEOPLE'); ?>:
-										<?php echo htmlspecialchars($item->room_people, ENT_QUOTES, 'UTF-8'); ?>
-									</span>
-								<?php endif; ?>
-
-								<?php if ($showPriceFrom && !empty($item->room_price_from)) : ?>
-									<span class="room-price-from">
-										<?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_PRICE_FROM'); ?>:
-										<?php echo htmlspecialchars($item->room_price_from, ENT_QUOTES, 'UTF-8'); ?>
-									</span>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
+						<?php echo LayoutHelper::render('room.info', [
+							'surface'    => $item->room_surface ?? '',
+							'people'     => $item->room_people ?? '',
+							'price_from' => $item->room_price_from ?? '',
+							'show'       => ['surface' => $showSurface, 'people' => $showPeople, 'price_from' => $showPriceFrom],
+							'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+						], $layoutPath); ?>
 
 						<?php // Intro ?>
 						<?php if ($showIntro && !empty($item->intro)) : ?>
@@ -163,106 +138,30 @@ if (!empty($this->items))
 						<?php endif; ?>
 
 						<?php // Detail link ?>
-						<?php if ($showDetailLink) : ?>
-							<div class="room-detail-link">
-								<a class="btn btn-outline-primary" href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=room&id=' . (int) $item->id); ?>">
-									<?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_DETAIL'); ?>
-								</a>
-							</div>
-						<?php endif; ?>
+						<?php if ($showDetailLink) :
+							echo LayoutHelper::render('room.detail-link', [
+								'roomId'     => (int) $item->id,
+								'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+							], $layoutPath);
+						endif; ?>
 
 						<?php // Floor plan ?>
-						<?php if ($showFloorPlan && !empty($item->floor_plan)) :
-							$fpData    = HTMLHelper::_('cleanImageURL', $item->floor_plan);
-							$fpAttribs = ['loading' => 'lazy'];
-							if (!empty($fpData->attributes['width'])) {
-								$fpAttribs['width'] = (int) $fpData->attributes['width'];
-							}
-							if (!empty($fpData->attributes['height'])) {
-								$fpAttribs['height'] = (int) $fpData->attributes['height'];
-							}
-						?>
-							<div class="room-floor-plan">
-								<h4><?php echo Text::_('COM_ACCOMMODATION_MANAGER_ROOM_FLOOR_PLAN'); ?></h4>
-								<?php echo HTMLHelper::_('image', $fpData->url, $item->floor_plan_alt ?? '', $fpAttribs); ?>
-							</div>
-						<?php endif; ?>
+						<?php if ($showFloorPlan) :
+							echo LayoutHelper::render('room.floor-plan', [
+								'src'        => $item->floor_plan ?? '',
+								'alt'        => $item->floor_plan_alt ?? '',
+								'headingTag' => 'h4',
+								'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+							], $layoutPath);
+						endif; ?>
 
 						<?php // Gallery ?>
 						<?php if ($showGallery && !empty($item->gallery_items)) : ?>
-							<?php if ($gallerySwiper) : ?>
-							<div class="room-gallery am-gallery-swiper swiper"
-								 data-slides-per-view-mobile="<?php echo $this->escape($galSlidesPerViewMobile); ?>"
-								 data-slides-per-view-desktop="<?php echo $this->escape($galSlidesPerViewDesktop); ?>"
-								 data-space-between-mobile="<?php echo $galSpaceBetweenMobile; ?>"
-								 data-space-between-desktop="<?php echo $galSpaceBetweenDesktop; ?>"
-								 data-autoplay="<?php echo $galAutoplay ? $galAutoplayDelay : '0'; ?>"
-								 data-navigation="<?php echo $galNavigation; ?>"
-								 data-pagination="<?php echo $galPagination; ?>">
-								<div class="swiper-wrapper">
-							<?php else : ?>
-							<div class="room-gallery">
-							<?php endif; ?>
-								<?php foreach ($item->gallery_items as $galleryItem) : ?>
-									<?php if (!empty($galleryItem->image)) :
-										$imgData = HTMLHelper::_('cleanImageURL', $galleryItem->image);
-										$imgW    = $imgData->attributes['width'] ?? null;
-										$imgH    = $imgData->attributes['height'] ?? null;
-
-										// Subform media fields don't store the #joomlaImage fragment,
-										// so fall back to getimagesize() for dimensions
-										if (!$imgW || !$imgH)
-										{
-											$imgPath = JPATH_ROOT . '/' . $imgData->url;
-
-											if (is_file($imgPath))
-											{
-												$size = getimagesize($imgPath);
-
-												if ($size)
-												{
-													$imgW = $size[0];
-													$imgH = $size[1];
-												}
-											}
-										}
-
-										$imgAttribs = ['loading' => 'lazy'];
-										if ($imgW) {
-											$imgAttribs['width'] = (int) $imgW;
-										}
-										if ($imgH) {
-											$imgAttribs['height'] = (int) $imgH;
-										}
-
-										$mobileUrl = null;
-										if (!empty($galleryItem->image_mobile))
-										{
-											$mobileData = HTMLHelper::_('cleanImageURL', $galleryItem->image_mobile);
-											$mobileUrl  = $mobileData->url;
-										}
-									?>
-										<?php if ($gallerySwiper) : ?><div class="swiper-slide"><?php endif; ?>
-										<picture class="room-gallery__picture">
-											<?php if ($mobileUrl) : ?>
-												<source media="(max-width: 768px)" srcset="<?php echo htmlspecialchars($mobileUrl, ENT_QUOTES, 'UTF-8'); ?>">
-											<?php endif; ?>
-											<?php echo HTMLHelper::_('image', $imgData->url, $galleryItem->alt ?? '', $imgAttribs); ?>
-										</picture>
-										<?php if ($gallerySwiper) : ?></div><?php endif; ?>
-									<?php endif; ?>
-								<?php endforeach; ?>
-							<?php if ($gallerySwiper) : ?>
-								</div>
-								<?php if ($galNavigation) : ?>
-									<div class="swiper-button-prev"></div>
-									<div class="swiper-button-next"></div>
-								<?php endif; ?>
-								<?php if ($galPagination) : ?>
-									<div class="swiper-pagination"></div>
-								<?php endif; ?>
-							<?php endif; ?>
-							</div>
+							<?php echo LayoutHelper::render('room.gallery', [
+								'items'        => $item->gallery_items,
+								'swiper'       => $gallerySwiper,
+								'swiperConfig' => $gallerySwiperConfig,
+							], $layoutPath); ?>
 						<?php endif; ?>
 
 						<?php // Video ?>
@@ -273,20 +172,13 @@ if (!empty($this->items))
 						<?php endif; ?>
 
 						<?php // Request / Booking buttons ?>
-						<?php if (($showRequestBtn && $requestUrl) || ($showBookingBtn && $bookingUrl)) : ?>
-							<div class="room-actions">
-								<?php if ($showRequestBtn && $requestUrl) : ?>
-									<a class="btn btn-primary room-request-btn" href="<?php echo htmlspecialchars($requestUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
-										<?php echo Text::_('COM_ACCOMMODATION_MANAGER_REQUEST'); ?>
-									</a>
-								<?php endif; ?>
-								<?php if ($showBookingBtn && $bookingUrl) : ?>
-									<a class="btn btn-primary room-booking-btn" href="<?php echo htmlspecialchars($bookingUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
-										<?php echo Text::_('COM_ACCOMMODATION_MANAGER_BOOKING'); ?>
-									</a>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
+						<?php echo LayoutHelper::render('room.actions', [
+							'requestUrl'     => $requestUrl,
+							'bookingUrl'     => $bookingUrl,
+							'showRequestBtn' => $showRequestBtn,
+							'showBookingBtn' => $showBookingBtn,
+							'langPrefix'     => 'COM_ACCOMMODATION_MANAGER',
+						], $layoutPath); ?>
 
 					</section>
 					<?php endforeach; ?>

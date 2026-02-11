@@ -11,10 +11,8 @@ defined('_JEXEC') or die;
 
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Router\Route;
 
 /** @var array $items */
 $items = $items ?? [];
@@ -91,46 +89,19 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 		<?php endif; ?>
 
 		<?php // Thumbnail ?>
-		<?php if (!empty($item->thumbnail)) :
-			$thumbData    = HTMLHelper::_('cleanImageURL', $item->thumbnail);
-			$thumbAttribs = ['loading' => 'lazy'];
-			if (!empty($thumbData->attributes['width'])) {
-				$thumbAttribs['width'] = (int) $thumbData->attributes['width'];
-			}
-			if (!empty($thumbData->attributes['height'])) {
-				$thumbAttribs['height'] = (int) $thumbData->attributes['height'];
-			}
-		?>
-			<div class="room-thumbnail">
-				<?php echo HTMLHelper::_('image', $thumbData->url, $item->thumbnail_alt ?? '', $thumbAttribs); ?>
-			</div>
-		<?php endif; ?>
+		<?php echo LayoutHelper::render('room.thumbnail', [
+			'src' => $item->thumbnail ?? '',
+			'alt' => $item->thumbnail_alt ?? '',
+		], $layoutPath); ?>
 
 		<?php // Basic info ?>
-		<?php if ($showInfo) : ?>
-			<div class="room-info">
-				<?php if ($showSurface && !empty($item->room_surface)) : ?>
-					<span class="room-surface">
-						<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_ROOM_SURFACE'); ?>:
-						<?php echo htmlspecialchars($item->room_surface, ENT_QUOTES, 'UTF-8'); ?>
-					</span>
-				<?php endif; ?>
-
-				<?php if ($showPeople && !empty($item->room_people)) : ?>
-					<span class="room-people">
-						<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_ROOM_PEOPLE'); ?>:
-						<?php echo htmlspecialchars($item->room_people, ENT_QUOTES, 'UTF-8'); ?>
-					</span>
-				<?php endif; ?>
-
-				<?php if ($showPriceFrom && !empty($item->room_price_from)) : ?>
-					<span class="room-price-from">
-						<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_ROOM_PRICE_FROM'); ?>:
-						<?php echo htmlspecialchars($item->room_price_from, ENT_QUOTES, 'UTF-8'); ?>
-					</span>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php echo LayoutHelper::render('room.info', [
+			'surface'    => $item->room_surface ?? '',
+			'people'     => $item->room_people ?? '',
+			'price_from' => $item->room_price_from ?? '',
+			'show'       => ['surface' => $showSurface, 'people' => $showPeople, 'price_from' => $showPriceFrom],
+			'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+		], $layoutPath); ?>
 
 		<?php // Intro ?>
 		<?php if ($showIntro && !empty($item->intro)) : ?>
@@ -147,30 +118,22 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 		<?php endif; ?>
 
 		<?php // Detail link ?>
-		<?php if ($showDetailLink) : ?>
-			<div class="room-detail-link">
-				<a class="btn btn-outline-primary" href="<?php echo Route::_('index.php?option=com_accommodation_manager&view=room&id=' . (int) $item->id); ?>">
-					<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_ROOM_DETAIL'); ?>
-				</a>
-			</div>
-		<?php endif; ?>
+		<?php if ($showDetailLink) :
+			echo LayoutHelper::render('room.detail-link', [
+				'roomId'     => (int) $item->id,
+				'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+			], $layoutPath);
+		endif; ?>
 
 		<?php // Floor plan ?>
-		<?php if ($showFloorPlan && !empty($item->floor_plan)) :
-			$fpData    = HTMLHelper::_('cleanImageURL', $item->floor_plan);
-			$fpAttribs = ['loading' => 'lazy'];
-			if (!empty($fpData->attributes['width'])) {
-				$fpAttribs['width'] = (int) $fpData->attributes['width'];
-			}
-			if (!empty($fpData->attributes['height'])) {
-				$fpAttribs['height'] = (int) $fpData->attributes['height'];
-			}
-		?>
-			<div class="room-floor-plan">
-				<h4><?php echo Text::_('MOD_ACCOMMODATION_ROOMS_ROOM_FLOOR_PLAN'); ?></h4>
-				<?php echo HTMLHelper::_('image', $fpData->url, $item->floor_plan_alt ?? '', $fpAttribs); ?>
-			</div>
-		<?php endif; ?>
+		<?php if ($showFloorPlan) :
+			echo LayoutHelper::render('room.floor-plan', [
+				'src'        => $item->floor_plan ?? '',
+				'alt'        => $item->floor_plan_alt ?? '',
+				'headingTag' => 'h4',
+				'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+			], $layoutPath);
+		endif; ?>
 
 		<?php // Gallery ?>
 		<?php if ($showGallery && !empty($item->gallery_items)) : ?>
@@ -189,20 +152,13 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 		<?php endif; ?>
 
 		<?php // Request / Booking buttons ?>
-		<?php if (($showRequestBtn && $requestUrl) || ($showBookingBtn && $bookingUrl)) : ?>
-			<div class="room-actions">
-				<?php if ($showRequestBtn && $requestUrl) : ?>
-					<a class="btn btn-primary room-request-btn" href="<?php echo htmlspecialchars($requestUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
-						<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_REQUEST'); ?>
-					</a>
-				<?php endif; ?>
-				<?php if ($showBookingBtn && $bookingUrl) : ?>
-					<a class="btn btn-primary room-booking-btn" href="<?php echo htmlspecialchars($bookingUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
-						<?php echo Text::_('MOD_ACCOMMODATION_ROOMS_BOOKING'); ?>
-					</a>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php echo LayoutHelper::render('room.actions', [
+			'requestUrl'     => $requestUrl,
+			'bookingUrl'     => $bookingUrl,
+			'showRequestBtn' => $showRequestBtn,
+			'showBookingBtn' => $showBookingBtn,
+			'langPrefix'     => 'MOD_ACCOMMODATION_ROOMS',
+		], $layoutPath); ?>
 
 	</section>
 	<?php endforeach; ?>

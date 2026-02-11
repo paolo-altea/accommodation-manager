@@ -318,6 +318,12 @@ Blocco gallery (~50 righe) con Swiper, `<picture>`, `getimagesize()` fallback, m
   - Joomla fa fallback automatico a en-GB se il file .ini della lingua attiva non esiste
   - Creati 20 file .ini (10 per lingua) per componente admin/site + 3 moduli
   - Il componente ora supporta tutte e 5 le lingue (de, it, en, fr, es) sia nei dati DB che nelle label interfaccia
+- [ ] **PR.4** Creare script per aggiungere nuova lingua (SQL + config + form + template)
+- [x] **PR.5** Template frontend modulari con Joomla Layout (2026-02-11):
+  - Creati 6 layout: `room/thumbnail`, `room/info`, `room/floor-plan`, `room/actions`, `room/detail-link`, `category/item`
+  - Fix bug: gallery inline in `rooms/grouped.php` e `category/default.php` → usano `room.gallery` layout
+  - Aggiornati 6 template componente + 2 template modulo per usare i layout condivisi
+  - Parametro `langPrefix` per supportare prefissi lingua diversi (componente vs modulo)
 
 ---
 
@@ -343,10 +349,6 @@ Script PHP per migrare dati dal vecchio componente al nuovo:
 ---
 
 - [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.)
-- [ ] **POST.2** Creare script per aggiungere nuova lingua (SQL + config + form + template)
-- [ ] **POST.3** Template frontend modulari con Joomla Layout: spezzare i template delle view (rooms, room, categories, category, rates) in sotto-layout separati per ogni blocco (es. `room/thumbnail`, `room/intro`, `room/gallery`, `room/floor-plan`, `room/rates`, `room/buttons`, `rates/season-group`, `category/image`, ecc.). Vantaggi:
-  - **Override singolo blocco**: sovrascrivere solo `room/gallery.php` nel template Joomla senza ricopiare l'intero template
-  - **Riordinamento facile**: il template principale diventa una sequenza di chiamate `LayoutHelper::render()`, basta cambiarne l'ordine per riorganizzare i blocchi (es. spostare thumbnail dopo description) senza riscrivere l'HTML di ciascuno
 
 ---
 
