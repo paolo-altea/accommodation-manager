@@ -207,11 +207,12 @@ class Accommodation_managerHelper
 	}
 
 	/**
-	 * Valid language suffixes matching DB column naming
+	 * Valid language suffixes matching DB column naming.
 	 *
-	 * @var array
+	 * @var string[]
+	 * @since 3.2.0
 	 */
-	private static array $validLanguages = ['de', 'it', 'en', 'fr', 'es'];
+	public const VALID_LANGUAGES = ['de', 'it', 'en', 'fr', 'es'];
 
 	/**
 	 * Gets the language suffix for the current frontend language.
@@ -226,7 +227,7 @@ class Accommodation_managerHelper
 		$langTag  = Factory::getLanguage()->getTag();
 		$langCode = strtolower(substr($langTag, 0, 2));
 
-		if (in_array($langCode, self::$validLanguages, true))
+		if (in_array($langCode, self::VALID_LANGUAGES, true))
 		{
 			return $langCode;
 		}

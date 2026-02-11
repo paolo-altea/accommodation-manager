@@ -302,16 +302,18 @@ class Router extends RouterView
 
 		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
+		$columns = [
+			$db->quoteName('id'),
+			$db->quoteName('room_category_title'),
+		];
+
+		foreach (Accommodation_managerHelper::VALID_LANGUAGES as $lang)
+		{
+			$columns[] = $db->quoteName('room_category_name_' . $lang);
+		}
+
 		$query = $db->getQuery(true)
-			->select([
-				$db->quoteName('id'),
-				$db->quoteName('room_category_title'),
-				$db->quoteName('room_category_name_de'),
-				$db->quoteName('room_category_name_it'),
-				$db->quoteName('room_category_name_en'),
-				$db->quoteName('room_category_name_fr'),
-				$db->quoteName('room_category_name_es'),
-			])
+			->select($columns)
 			->from($db->quoteName('#__accommodation_manager_room_categories'))
 			->where($db->quoteName('state') . ' = 1');
 
@@ -337,16 +339,18 @@ class Router extends RouterView
 
 		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
+		$columns = [
+			$db->quoteName('id'),
+			$db->quoteName('room_name'),
+		];
+
+		foreach (Accommodation_managerHelper::VALID_LANGUAGES as $lang)
+		{
+			$columns[] = $db->quoteName('room_title_' . $lang);
+		}
+
 		$query = $db->getQuery(true)
-			->select([
-				$db->quoteName('id'),
-				$db->quoteName('room_name'),
-				$db->quoteName('room_title_de'),
-				$db->quoteName('room_title_it'),
-				$db->quoteName('room_title_en'),
-				$db->quoteName('room_title_fr'),
-				$db->quoteName('room_title_es'),
-			])
+			->select($columns)
 			->from($db->quoteName('#__accommodation_manager_rooms'))
 			->where($db->quoteName('state') . ' = 1');
 

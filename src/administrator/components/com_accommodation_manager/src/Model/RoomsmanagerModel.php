@@ -11,6 +11,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Administrator\Mode
 // No direct access.
 defined('_JEXEC') or die;
 
+use Accomodationmanager\Component\Accommodation_manager\Administrator\Helper\Accommodation_managerHelper;
 use \Joomla\CMS\MVC\Model\ListModel;
 use \Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 use \Joomla\CMS\Factory;
@@ -34,7 +35,7 @@ class RoomsmanagerModel extends ListModel
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'ordering', 'a.ordering',
 				'state', 'a.state',
@@ -44,27 +45,21 @@ class RoomsmanagerModel extends ListModel
 				'room_code', 'a.room_code',
 				'room_surface', 'a.room_surface',
 				'room_people', 'a.room_people',
-				'room_title_de', 'a.room_title_de',
-				'room_title_it', 'a.room_title_it',
-				'room_title_en', 'a.room_title_en',
-				'room_title_fr', 'a.room_title_fr',
-				'room_title_es', 'a.room_title_es',
-				'room_intro_de', 'a.room_intro_de',
-				'room_intro_it', 'a.room_intro_it',
-				'room_intro_en', 'a.room_intro_en',
-				'room_intro_fr', 'a.room_intro_fr',
-				'room_intro_es', 'a.room_intro_es',
-				'room_description_de', 'a.room_description_de',
-				'room_description_it', 'a.room_description_it',
-				'room_description_en', 'a.room_description_en',
-				'room_description_fr', 'a.room_description_fr',
-				'room_description_es', 'a.room_description_es',
 				'room_floor_plan', 'a.room_floor_plan',
 				'room_thumbnail', 'a.room_thumbnail',
 				'room_gallery', 'a.room_gallery',
 				'room_video', 'a.room_video',
 				'room_pano', 'a.room_pano',
-			);
+			];
+
+			foreach (array_keys(Accommodation_managerHelper::LANGUAGES) as $lang)
+			{
+				foreach (['room_title_', 'room_intro_', 'room_description_'] as $prefix)
+				{
+					$config['filter_fields'][] = $prefix . $lang;
+					$config['filter_fields'][] = 'a.' . $prefix . $lang;
+				}
+			}
 		}
 
 		parent::__construct($config);
