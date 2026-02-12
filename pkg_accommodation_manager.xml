@@ -8,11 +8,11 @@
     <authorUrl>https://www.altea.it</authorUrl>
     <copyright>Copyright (C) 2026. Tutti i diritti riservati.</copyright>
     <license>GNU General Public License versione 2 o successiva; vedi LICENSE.txt</license>
-    <version>3.4.0</version>
+    <version>3.5.1</version>
     <description>PKG_ACCOMMODATION_MANAGER_DESC</description>
 
     <files>
-        <file type="component" id="com_accommodation_manager">com_accommodation_manager-3.4.0.zip</file>
+        <file type="component" id="com_accommodation_manager">com_accommodation_manager-3.5.1.zip</file>
         <file type="module" id="mod_accommodation_categories" client="site">mod_accommodation_categories-1.0.0.zip</file>
         <file type="module" id="mod_accommodation_rooms" client="site">mod_accommodation_rooms-1.0.0.zip</file>
         <file type="module" id="mod_accommodation_rates" client="site">mod_accommodation_rates-1.0.0.zip</file>
