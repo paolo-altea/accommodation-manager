@@ -17,9 +17,9 @@
     <field name="room_name" filter="safehtml" type="text" required="true" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_NAME" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_NAME"/>
     <field name="room_category" type="foreignkey" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_CATEGORY" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_CATEGORY" default="" input_type="list" table="#__accommodation_manager_room_categories" key_field="id" translate="true" value_field="room_category_title" required="true" layout="joomla.form.field.list"/>
     <field name="room_code" filter="safehtml" type="text" required="true" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_CODE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_CODE"/>
-    <field name="room_surface" filter="safehtml" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_SURFACE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_SURFACE"/>
+    <field name="room_surface" type="number" min="0" step="1" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_SURFACE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_SURFACE"/>
     <field name="room_people" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_PEOPLE" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_PEOPLE"/>
-    <field name="room_price_from" filter="string" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_PRICE_FROM" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_PRICE_FROM"/>
+    <field name="room_price_from" type="number" min="0" step="0.01" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_PRICE_FROM" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_PRICE_FROM"/>
     <field name="room_class" filter="cmd" type="text" label="COM_ACCOMMODATION_MANAGER_FORM_LBL_ROOMMANAGER_ROOM_CLASS" description="COM_ACCOMMODATION_MANAGER_FORM_DESC_ROOMMANAGER_ROOM_CLASS"/>
 
     <!-- Titoli multilingua -->

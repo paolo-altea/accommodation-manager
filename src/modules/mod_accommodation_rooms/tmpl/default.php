@@ -101,7 +101,7 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 			'people'     => $item->room_people ?? '',
 			'price_from' => $item->room_price_from ?? '',
 			'show'       => ['surface' => $showSurface, 'people' => $showPeople, 'price_from' => $showPriceFrom],
-			'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+			'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
 		], $layoutPath); ?>
 
 		<?php // Intro ?>
@@ -122,7 +122,7 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 		<?php if ($showDetailLink) :
 			echo LayoutHelper::render('room.detail-link', [
 				'roomId'     => (int) $item->id,
-				'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+				'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
 			], $layoutPath);
 		endif; ?>
 
@@ -132,7 +132,7 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 				'src'        => $item->floor_plan ?? '',
 				'alt'        => $item->floor_plan_alt ?? '',
 				'headingTag' => 'h4',
-				'langPrefix' => 'MOD_ACCOMMODATION_ROOMS',
+				'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
 			], $layoutPath);
 		endif; ?>
 

@@ -382,11 +382,11 @@ Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente d
 - [x] **BF.4** Tutte le `<thead>` delle tabelle liste admin non sono tradotte (language keys mancanti) (2026-02-12)
 - [x] **BF.5** Rates grid admin: gli input dei prezzi non sono centrati come le intestazioni `<thead>` (2026-02-12)
 - [x] **BF.6** `room_code` deve essere univoco (vincolo UNIQUE nel DB + validazione lato server) (2026-02-12)
-- [ ] **BF.7** Roommanager gallery — problemi multipli:
+- [x] **BF.7** Roommanager gallery e campi room — problemi multipli: (2026-02-12)
   - [x] **BF.7a** Il tasto "-" (rimuovi immagine) nel subform gallery non funziona — creato sublayout `gallery_section.php` mancante (2026-02-12)
   - [x] **BF.7b** Non salva più di 3 immagini nella gallery — causa: PHP `max_input_vars=1000` insufficiente per form pesante, non è bug componente (2026-02-12)
   - [x] **BF.7c** Rimuovere testo errato "Insert the path to the folder where the specific room images are specified" — corretto in en-GB, fr-FR, es-ES (2026-02-12)
-  - [ ] **BF.7d** Ripensare `room_surface`, `room_people` e `room_price_from`: se accettano testo libero il contenuto rischia di essere in più lingue — valutare campi multilingua o numerico
+  - [x] **BF.7d** Ripensare `room_surface`, `room_people` e `room_price_from` — `room_surface` INT + unità m² da language key, `room_price_from` DECIMAL + format string da language key (es. "a partire da %s €"), `room_people` invariato VARCHAR (2026-02-12)
 
 ### Frontend
 

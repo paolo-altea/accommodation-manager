@@ -12,6 +12,7 @@ namespace Accomodationmanager\Module\AccommodationRooms\Site\Dispatcher;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -30,6 +31,10 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
 	{
 		$data   = parent::getLayoutData();
 		$params = $data['params'];
+
+		// Load component frontend language for shared layout strings
+		Factory::getLanguage()->load('com_accommodation_manager', JPATH_SITE . '/components/com_accommodation_manager');
+
 		$helper = $this->getHelperFactory()->getHelper('RoomsHelper');
 
 		$data['items'] = $helper->getRooms($params);
