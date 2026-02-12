@@ -52,9 +52,9 @@
 
 			<menu link="option=com_accommodation_manager&amp;view=managerrateperiods" view="managerrateperiods" alt="Accommodation_manager/Managerrateperiods">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATEPERIODS</menu>
 
-			<menu link="option=com_accommodation_manager&amp;view=managerrates" view="managerrates" alt="Accommodation_manager/Managerrates">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATES</menu>
-
 			<menu link="option=com_accommodation_manager&amp;view=managerratetypologies" view="managerratetypologies" alt="Accommodation_manager/Managerratetypologies">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATETYPOLOGIES</menu>
+
+			<menu link="option=com_accommodation_manager&amp;view=managerrates" view="managerrates" alt="Accommodation_manager/Managerrates">COM_ACCOMMODATION_MANAGER_TITLE_MANAGERRATES</menu>
 
         </submenu>
         <files folder="administrator">

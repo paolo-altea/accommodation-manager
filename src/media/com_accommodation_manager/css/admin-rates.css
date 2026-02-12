@@ -46,11 +46,13 @@
 .rate-input-cell {
     padding: 0.25rem !important;
     vertical-align: middle;
+    text-align: center;
 }
 
 .rate-input {
     width: 80px;
     font-size: 0.85rem;
+    margin: 0 auto;
 }
 
 .pagination-toolbar {

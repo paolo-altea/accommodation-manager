@@ -2,10 +2,10 @@
 /**
  * @package     Com_Accommodation_manager
  * @subpackage  Layout
- * @copyright   Copyright (C) 2019. All rights reserved.
+ * @copyright   Copyright (C) 2024. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  *
- * Custom gallery subform layout - displays images and buttons on row 1, alt texts on row 2
+ * Custom gallery subform layout
  */
 
 defined('_JEXEC') or die;
@@ -51,7 +51,7 @@ $class = $class ? ' ' . $class : '';
         repeatable-element=".subform-repeatable-group" minimum="<?php echo $min; ?>" maximum="<?php echo $max; ?>">
 
         <?php if (!empty($buttons['add'])) : ?>
-        <div class="btn-toolbar mb-3">
+        <div class="btn-toolbar">
             <div class="btn-group">
                 <button type="button" class="group-add btn btn-sm btn-success" aria-label="<?php echo Text::_('JGLOBAL_FIELD_ADD'); ?>">
                     <span class="icon-plus" aria-hidden="true"></span> <?php echo Text::_('JGLOBAL_FIELD_ADD'); ?>
@@ -60,13 +60,11 @@ $class = $class ? ' ' . $class : '';
         </div>
         <?php endif; ?>
 
-        <div class="subform-repeatable-container">
-            <?php
-            foreach ($forms as $k => $form) :
-                echo $this->sublayout('section', ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
-            endforeach;
-            ?>
-        </div>
+        <?php
+        foreach ($forms as $k => $form) :
+            echo $this->sublayout('section', ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
+        endforeach;
+        ?>
 
         <?php if ($multiple) : ?>
         <template class="subform-repeatable-template-section hidden"><?php

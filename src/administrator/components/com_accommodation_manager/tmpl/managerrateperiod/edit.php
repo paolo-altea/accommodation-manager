@@ -106,6 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var form = document.getElementById('managerrateperiod-form');
 
     form.addEventListener('submit', function(e) {
+        var task = form.querySelector('input[name="task"]').value;
+        if (task === 'managerrateperiod.cancel') {
+            return;
+        }
+
         var startField = document.getElementById('jform_period_start');
         var endField = document.getElementById('jform_period_end');
 

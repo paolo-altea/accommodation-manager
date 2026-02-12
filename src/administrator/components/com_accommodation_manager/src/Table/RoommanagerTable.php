@@ -49,7 +49,16 @@ class RoommanagerTable extends BaseTable
 			return false;
 		}
 
-		$db    = $this->getDbo();
+		if (empty($this->room_code))
+		{
+			$this->setError(Text::_('COM_ACCOMMODATION_MANAGER_ERROR_ROOM_CODE_REQUIRED'));
+
+			return false;
+		}
+
+		$db = $this->getDbo();
+
+		// Check room_name uniqueness
 		$query = $db->getQuery(true)
 			->select('id')
 			->from($db->quoteName($this->_tbl))
@@ -67,6 +76,28 @@ class RoommanagerTable extends BaseTable
 		if ($db->loadResult())
 		{
 			$this->setError(Text::sprintf('COM_ACCOMMODATION_MANAGER_ERROR_ROOM_NAME_DUPLICATE', $this->room_name));
+
+			return false;
+		}
+
+		// Check room_code uniqueness
+		$query = $db->getQuery(true)
+			->select('id')
+			->from($db->quoteName($this->_tbl))
+			->where($db->quoteName('room_code') . ' = :roomCode')
+			->bind(':roomCode', $this->room_code);
+
+		if ($this->id)
+		{
+			$query->where($db->quoteName('id') . ' != :idCode')
+				->bind(':idCode', $this->id, \Joomla\Database\ParameterType::INTEGER);
+		}
+
+		$db->setQuery($query);
+
+		if ($db->loadResult())
+		{
+			$this->setError(Text::sprintf('COM_ACCOMMODATION_MANAGER_ERROR_ROOM_CODE_DUPLICATE', $this->room_code));
 
 			return false;
 		}

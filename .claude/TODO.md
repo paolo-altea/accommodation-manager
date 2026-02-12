@@ -370,6 +370,31 @@ Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente d
 
 ---
 
+## BUG FIX
+
+---
+
+### Backend — Administrator
+
+- [x] **BF.1** `view=managerrateperiod`: la validazione date scatta anche sul pulsante "Chiudi", deve attivarsi solo al salvataggio (2026-02-12)
+- [x] **BF.2** Menu ordine errato: "Tipologie Tariffa" deve venire prima di "Rates" (prima rate typologies, poi rates) (2026-02-12)
+- [x] **BF.3** Menu: traduzioni mancanti — alcune voci sono tradotte, altre no (2026-02-12)
+- [x] **BF.4** Tutte le `<thead>` delle tabelle liste admin non sono tradotte (language keys mancanti) (2026-02-12)
+- [x] **BF.5** Rates grid admin: gli input dei prezzi non sono centrati come le intestazioni `<thead>` (2026-02-12)
+- [x] **BF.6** `room_code` deve essere univoco (vincolo UNIQUE nel DB + validazione lato server) (2026-02-12)
+- [ ] **BF.7** Roommanager gallery — problemi multipli:
+  - [x] **BF.7a** Il tasto "-" (rimuovi immagine) nel subform gallery non funziona — creato sublayout `gallery_section.php` mancante (2026-02-12)
+  - [x] **BF.7b** Non salva più di 3 immagini nella gallery — causa: PHP `max_input_vars=1000` insufficiente per form pesante, non è bug componente (2026-02-12)
+  - [x] **BF.7c** Rimuovere testo errato "Insert the path to the folder where the specific room images are specified" — corretto in en-GB, fr-FR, es-ES (2026-02-12)
+  - [ ] **BF.7d** Ripensare `room_surface`, `room_people` e `room_price_from`: se accettano testo libero il contenuto rischia di essere in più lingue — valutare campi multilingua o numerico
+
+### Frontend
+
+- [ ] **BF.8** Problema con la scrittura degli URL (da definire — dettagli da discutere)
+- [ ] **BF.9** Rates view responsive: su desktop mantenere scroll orizzontale per tante camere; su mobile layout card/accordion tipo [fleuralp.altea-service.com/de/preise](https://fleuralp.altea-service.com/de/preise)
+
+---
+
 ## POST-RELEASE
 
 ---

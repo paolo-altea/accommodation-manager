@@ -67,7 +67,7 @@ if ($saveOrder) {
                         </th>
                         <?php foreach ($enabledLanguages as $lang) : ?>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'Name (' . strtoupper($lang) . ')', 'a.room_category_name_' . $lang, $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', Text::sprintf('COM_ACCOMMODATION_MANAGER_NAME_LANG', strtoupper($lang)), 'a.room_category_name_' . $lang, $listDirn, $listOrder); ?>
                         </th>
                         <?php endforeach; ?>
                         <th scope="col">
