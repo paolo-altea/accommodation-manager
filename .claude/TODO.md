@@ -390,8 +390,8 @@ Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente d
 
 ### Frontend
 
-- [ ] **BF.8** Problema con la scrittura degli URL (da definire — dettagli da discutere)
-- [ ] **BF.9** Rates view responsive: su desktop mantenere scroll orizzontale per tante camere; su mobile layout card/accordion tipo [fleuralp.altea-service.com/de/preise](https://fleuralp.altea-service.com/de/preise)
+- [x] **BF.8** ~~Problema con la scrittura degli URL~~ — Non è un bug: il menu item deve puntare a "Accommodation Manager > Rooms" (non a un articolo con modulo dentro). Il router SEF richiede un menu item del componente come anchor point. (2026-02-12)
+- [x] **BF.9** Rates view responsive: desktop tabella con scroll orizzontale, mobile (<=768px) cards raggruppate per periodo via JS — tabella nascosta, cards generate da `rates-grid.js`, stesse custom properties CSS, fallback senza JS = tabella scrollabile (2026-02-12)
 
 ---
 

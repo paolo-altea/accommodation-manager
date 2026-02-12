@@ -40,7 +40,7 @@ if (empty($periods) || empty($rooms) || empty($typologies)) : ?>
 			<h2 class="rates-season-heading"><?php echo $table['heading']; ?></h2>
 		<?php endif; ?>
 
-		<div class="rates-grid-wrapper">
+		<div class="rates-grid-wrapper" data-layout="multi-room">
 			<table class="rates-grid">
 				<thead>
 					<tr>

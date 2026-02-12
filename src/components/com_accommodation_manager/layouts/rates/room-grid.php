@@ -53,7 +53,7 @@ if (empty($periods) || empty($typologies) || !$hasRates)
 		<h3 class="rates-season-heading"><?php echo $table['heading']; ?></h3>
 	<?php endif; ?>
 
-	<div class="rates-grid-wrapper">
+	<div class="rates-grid-wrapper" data-layout="single-room">
 		<table class="rates-grid">
 			<thead>
 				<tr>
