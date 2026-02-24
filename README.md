@@ -122,14 +122,18 @@ The script reads the version from `accommodation_manager.xml` and `pkg_accommoda
 
 ```
 dist/
-  com_accommodation_manager-3.4.0.zip
+  com_accommodation_manager-3.5.3.zip
   mod_accommodation_categories-1.0.0.zip
   mod_accommodation_rooms-1.0.0.zip
   mod_accommodation_rates-1.0.0.zip
-  pkg_accommodation_manager-3.4.0.zip   ← install this one
+  pkg_accommodation_manager-3.5.3.zip   ← install this one
 ```
 
 Upload `pkg_accommodation_manager-*.zip` to Joomla. It installs the component and all three modules in one step.
+
+## Public API
+
+The component exposes static methods to access room and category data from articles, templates, plugins, or external PHP scripts. See [docs/API.md](docs/API.md) for usage examples.
 
 ## Adding a New Language
 
