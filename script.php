@@ -912,9 +912,36 @@ class com_accommodation_managerInstallerScript extends InstallerScript
 	 */
 	public function postflight($type, $parent)
 	{
-		$this->migrateData();
-		$this->upgradeSchema();
-		$this->removeLegacyComponent();
+		if ($this->legacyComponentExists())
+		{
+			$this->migrateData();
+			$this->upgradeSchema();
+			$this->removeLegacyComponent();
+		}
+	}
+
+	/**
+	 * Check if the legacy Joomla 3 component (com_accommodation_manager_four) exists.
+	 *
+	 * Migration steps (migrateData, upgradeSchema, removeLegacyComponent) should
+	 * only run when upgrading from the old component, not on regular updates.
+	 *
+	 * @return  bool
+	 *
+	 * @since   3.5.2
+	 */
+	private function legacyComponentExists(): bool
+	{
+		$db = Factory::getDbo();
+
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_accommodation_manager_four'))
+			->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+		$db->setQuery($query);
+
+		return (int) $db->loadResult() > 0;
 	}
 
 	/**

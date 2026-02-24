@@ -1,0 +1,2 @@
+-- Accommodation Manager 3.5.3
+-- No database changes — fix: migration scripts only run when legacy component exists
