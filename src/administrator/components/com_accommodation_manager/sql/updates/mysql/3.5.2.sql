@@ -1,0 +1,2 @@
+-- Accommodation Manager 3.5.2
+-- No database changes — added public API facade methods in Helper

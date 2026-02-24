@@ -399,7 +399,9 @@ Tutto integrato nel `script.php` postflight (v3.4.0), eseguito automaticamente d
 
 ---
 
-- [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.)
+- [ ] **POST.1** Documentazione componente nel Help button: utilizzare il pulsante Help nella toolbar di configurazione Joomla per linkare/mostrare una documentazione completa del componente (parametri, CSS custom properties, JS custom events, struttura DB, ecc.) — [GitHub Issue #1](https://github.com/paolo-altea/accomodation_manager/issues/1)
+- [ ] **POST.2** Gallery alt lingua non filtrate per lingue attive nel backend: nella schermata gallery del roommanager, i campi alt nelle varie lingue non vengono filtrati per le lingue attive nel config come avviene nelle altre schermate — [GitHub Issue #2](https://github.com/paolo-altea/accomodation_manager/issues/2)
+- [x] **POST.3** Recuperare info su camere e categorie all'interno di script esterni — [GitHub Issue #3](https://github.com/paolo-altea/accomodation_manager/issues/3) (2026-02-24)
 
 ---
 

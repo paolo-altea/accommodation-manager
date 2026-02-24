@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    3.2.0
+ * @version    3.5.2
  * @package    Com_Accommodation_manager
  * @author     Altea Software Srl <web@altea.it>
  * @copyright  Copyright (C) 2026. Tutti i diritti riservati.
@@ -205,6 +205,94 @@ class Accommodation_managerHelper
 			'ratesGrid'  => $ratesModel->getRatesGrid($roomIds),
 		];
 	}
+
+	// ------------------------------------------------------------------
+	// Public facade — use from articles, templates, plugins, scripts
+	// ------------------------------------------------------------------
+
+	/**
+	 * Get all published rooms in the current language.
+	 *
+	 * @return  array  Array of room objects
+	 *
+	 * @since   3.6.0
+	 */
+	public static function getRooms(): array
+	{
+		return self::getMVCFactory()->createModel('Rooms', 'Site')->getItems();
+	}
+
+	/**
+	 * Get all published categories in the current language.
+	 *
+	 * @return  array  Array of category objects
+	 *
+	 * @since   3.6.0
+	 */
+	public static function getCategories(): array
+	{
+		return self::getMVCFactory()->createModel('Categories', 'Site')->getItems();
+	}
+
+	/**
+	 * Get a single published room by ID in the current language.
+	 *
+	 * @param   int  $id  Room ID
+	 *
+	 * @return  object|null  Room object or null if not found
+	 *
+	 * @since   3.6.0
+	 */
+	public static function getRoom(int $id): ?object
+	{
+		return self::getMVCFactory()->createModel('Room', 'Site')->getItem($id);
+	}
+
+	/**
+	 * Get all published categories with their rooms nested as ->rooms property.
+	 *
+	 * Uses only 2 queries (categories + rooms), no N+1.
+	 *
+	 * @return  array  Array of category objects, each with a ->rooms array
+	 *
+	 * @since   3.6.0
+	 */
+	public static function getCategoriesWithRooms(): array
+	{
+		$categories = self::getCategories();
+		$rooms      = self::getRooms();
+
+		$roomsByCategory = [];
+
+		foreach ($rooms as $room)
+		{
+			$catId = (int) $room->room_category;
+			$roomsByCategory[$catId][] = $room;
+		}
+
+		foreach ($categories as $category)
+		{
+			$category->rooms = $roomsByCategory[(int) $category->id] ?? [];
+		}
+
+		return $categories;
+	}
+
+	/**
+	 * Get the MVCFactory for the Accommodation Manager component.
+	 *
+	 * @return  \Joomla\CMS\MVC\Factory\MVCFactoryInterface
+	 *
+	 * @since   3.6.0
+	 */
+	private static function getMVCFactory()
+	{
+		return Factory::getApplication()
+			->bootComponent('com_accommodation_manager')
+			->getMVCFactory();
+	}
+
+	// ------------------------------------------------------------------
 
 	/**
 	 * Valid language suffixes matching DB column naming.
