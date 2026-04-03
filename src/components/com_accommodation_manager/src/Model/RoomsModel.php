@@ -12,6 +12,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\Model;
 defined('_JEXEC') or die;
 
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
@@ -48,10 +49,13 @@ class RoomsModel extends ListModel
 	{
 		$items = parent::getItems();
 		$lang  = Accommodation_managerHelper::getLanguageSuffix();
+		$priceDisplay = ComponentHelper::getParams('com_accommodation_manager')->get('rooms_price_display', 'price_from');
+		$db = $this->getDatabase();
 
 		foreach ($items as $item)
 		{
 			$item->gallery_items = Accommodation_managerHelper::decodeGalleryItems($item->gallery ?? null, $lang);
+			$item->current_rate  = ($priceDisplay === 'current_rate') ? Accommodation_managerHelper::getCurrentRate($db, (int) $item->id) : null;
 		}
 
 		return $items;

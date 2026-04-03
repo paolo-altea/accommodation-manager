@@ -88,12 +88,27 @@ $bookingUrl = $this->params->get('booking_link_' . $lang, '');
 			], $layoutPath); ?>
 
 			<?php // Basic info ?>
+			<?php
+			$priceDisplay = $this->params->get('rooms_price_display', 'price_from');
+			$showPrice    = ($priceDisplay !== 'none');
+			$priceValue   = null;
+
+			if ($priceDisplay === 'current_rate' && $item->current_rate !== null)
+			{
+				$priceValue = $item->current_rate;
+			}
+			elseif ($priceDisplay === 'price_from')
+			{
+				$priceValue = $item->room_price_from ?? null;
+			}
+			?>
 			<?php echo LayoutHelper::render('room.info', [
-				'surface'    => $item->room_surface ?? '',
-				'people'     => $item->room_people ?? '',
-				'price_from' => $item->room_price_from ?? '',
-				'show'       => ['surface' => true, 'people' => true, 'price_from' => true],
-				'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+				'surface'       => $item->room_surface ?? '',
+				'people'        => $item->room_people ?? '',
+				'price'         => $priceValue,
+				'price_display' => $priceDisplay,
+				'show'          => ['surface' => true, 'people' => true, 'price' => $showPrice],
+				'langPrefix'    => 'COM_ACCOMMODATION_MANAGER',
 			], $layoutPath); ?>
 
 			<?php // Intro ?>

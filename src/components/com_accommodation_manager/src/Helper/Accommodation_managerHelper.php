@@ -206,6 +206,35 @@ class Accommodation_managerHelper
 		];
 	}
 
+	/**
+	 * Get the minimum rate for a room in the current period.
+	 *
+	 * @param   DatabaseInterface  $db      Database driver
+	 * @param   int                $roomId  Room ID
+	 *
+	 * @return  string|null  Minimum rate as string, or null if no active period
+	 *
+	 * @since   3.7.0
+	 */
+	public static function getCurrentRate(DatabaseInterface $db, int $roomId): ?string
+	{
+		$query = $db->getQuery(true)
+			->select('MIN(' . $db->quoteName('r.rate') . ')')
+			->from($db->quoteName('#__accommodation_manager_rates', 'r'))
+			->join('INNER', $db->quoteName('#__accommodation_manager_rate_periods', 'p')
+				. ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.period_id'))
+			->where($db->quoteName('r.room_id') . ' = :roomId')
+			->where($db->quoteName('r.state') . ' = 1')
+			->where($db->quoteName('p.state') . ' = 1')
+			->where('CURDATE() BETWEEN ' . $db->quoteName('p.period_start')
+				. ' AND ' . $db->quoteName('p.period_end'))
+			->bind(':roomId', $roomId, \Joomla\Database\ParameterType::INTEGER);
+
+		$result = $db->setQuery($query)->loadResult();
+
+		return $result ? (string) $result : null;
+	}
+
 	// ------------------------------------------------------------------
 	// Public facade — use from articles, templates, plugins, scripts
 	// ------------------------------------------------------------------

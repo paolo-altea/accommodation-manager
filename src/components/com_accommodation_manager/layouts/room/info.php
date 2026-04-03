@@ -9,28 +9,34 @@
  * Layout: room basic info (surface, people, price from).
  *
  * Expected $displayData keys:
- *   - surface    (int|null)
- *   - people     (string)
- *   - price_from (float|null)
- *   - show       (array)  ['surface' => bool, 'people' => bool, 'price_from' => bool]
- *   - langPrefix (string) 'COM_ACCOMMODATION_MANAGER' | 'MOD_ACCOMMODATION_ROOMS'
+ *   - surface       (int|null)
+ *   - people        (string)
+ *   - price         (float|null)  Unified price value (current_rate or price_from)
+ *   - price_display (string)      'price_from'|'current_rate'|'none' (default: 'price_from')
+ *   - show          (array)       ['surface' => bool, 'people' => bool, 'price' => bool]
+ *   - langPrefix    (string)      'COM_ACCOMMODATION_MANAGER' | 'MOD_ACCOMMODATION_ROOMS'
+ *
+ * Legacy support: if 'price_from' key is passed instead of 'price', it still works.
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-$surface   = $displayData['surface'] ?? null;
-$people    = $displayData['people'] ?? '';
-$priceFrom = $displayData['price_from'] ?? null;
-$show      = $displayData['show'] ?? [];
-$prefix    = $displayData['langPrefix'] ?? 'COM_ACCOMMODATION_MANAGER';
+$surface      = $displayData['surface'] ?? null;
+$people       = $displayData['people'] ?? '';
+$show         = $displayData['show'] ?? [];
+$prefix       = $displayData['langPrefix'] ?? 'COM_ACCOMMODATION_MANAGER';
+$priceDisplay = $displayData['price_display'] ?? 'price_from';
 
-$showSurface   = !empty($show['surface']);
-$showPeople    = !empty($show['people']);
-$showPriceFrom = !empty($show['price_from']);
+// Unified price: new 'price' key, fallback to legacy 'price_from'
+$price = $displayData['price'] ?? $displayData['price_from'] ?? null;
 
-if (!$showSurface && !$showPeople && !$showPriceFrom)
+$showSurface = !empty($show['surface']);
+$showPeople  = !empty($show['people']);
+$showPrice   = !empty($show['price']) || !empty($show['price_from']);
+
+if (!$showSurface && !$showPeople && !$showPrice)
 {
 	return;
 }
@@ -50,9 +56,9 @@ if (!$showSurface && !$showPeople && !$showPriceFrom)
 		</span>
 	<?php endif; ?>
 
-	<?php if ($showPriceFrom && $priceFrom !== null && $priceFrom > 0) : ?>
-		<span class="room-price-from">
-			<?php echo Text::sprintf($prefix . '_ROOM_PRICE_FROM_FORMAT', number_format((float) $priceFrom, 2, ',', '.')); ?>
+	<?php if ($showPrice && $price !== null && (float) $price > 0) : ?>
+		<span class="room-price">
+			<?php echo Text::sprintf($prefix . '_ROOM_PRICE_FROM_FORMAT', number_format((float) $price, 2, ',', '.')); ?>
 		</span>
 	<?php endif; ?>
 </div>

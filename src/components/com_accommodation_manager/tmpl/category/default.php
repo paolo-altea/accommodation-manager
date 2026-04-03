@@ -16,13 +16,14 @@ use Joomla\CMS\Layout\LayoutHelper;
 // Show/hide toggles (reuses rooms config params)
 $showSurface     = $this->params->get('rooms_show_surface', 1);
 $showPeople      = $this->params->get('rooms_show_people', 1);
-$showPriceFrom   = $this->params->get('rooms_show_price_from', 1);
+$priceDisplay    = $this->params->get('rooms_price_display', 'price_from');
+$showPrice       = ($priceDisplay !== 'none');
 $showIntro       = $this->params->get('rooms_show_intro', 1);
 $showDescription = $this->params->get('rooms_show_description', 1);
 $showFloorPlan   = $this->params->get('rooms_show_floor_plan', 1);
 $showGallery     = $this->params->get('rooms_show_gallery', 1);
 $showVideo       = $this->params->get('rooms_show_video', 1);
-$showInfo        = $showSurface || $showPeople || $showPriceFrom;
+$showInfo        = $showSurface || $showPeople || $showPrice;
 
 // Detail link
 $showDetailLink = $this->params->get('rooms_show_detail_link', 0);
@@ -88,12 +89,25 @@ $bookingUrl     = $this->params->get('booking_link_' . $lang, '');
 			], $layoutPath); ?>
 
 			<?php // Basic info ?>
+			<?php
+			$priceValue = null;
+
+			if ($priceDisplay === 'current_rate' && $item->current_rate !== null)
+			{
+				$priceValue = $item->current_rate;
+			}
+			elseif ($priceDisplay === 'price_from')
+			{
+				$priceValue = $item->room_price_from ?? null;
+			}
+			?>
 			<?php echo LayoutHelper::render('room.info', [
-				'surface'    => $item->room_surface ?? '',
-				'people'     => $item->room_people ?? '',
-				'price_from' => $item->room_price_from ?? '',
-				'show'       => ['surface' => $showSurface, 'people' => $showPeople, 'price_from' => $showPriceFrom],
-				'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+				'surface'       => $item->room_surface ?? '',
+				'people'        => $item->room_people ?? '',
+				'price'         => $priceValue,
+				'price_display' => $priceDisplay,
+				'show'          => ['surface' => $showSurface, 'people' => $showPeople, 'price' => $showPrice],
+				'langPrefix'    => 'COM_ACCOMMODATION_MANAGER',
 			], $layoutPath); ?>
 
 			<?php // Intro ?>

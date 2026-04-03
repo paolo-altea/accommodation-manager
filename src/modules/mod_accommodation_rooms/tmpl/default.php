@@ -26,13 +26,14 @@ if (empty($items))
 $showCategory    = (int) $params->get('show_category', 1);
 $showSurface     = (int) $params->get('show_surface', 1);
 $showPeople      = (int) $params->get('show_people', 1);
-$showPriceFrom   = (int) $params->get('show_price_from', 1);
+$priceDisplay    = $params->get('price_display', 'price_from');
+$showPrice       = ($priceDisplay !== 'none');
 $showIntro       = (int) $params->get('show_intro', 1);
 $showDescription = (int) $params->get('show_description', 1);
 $showFloorPlan   = (int) $params->get('show_floor_plan', 1);
 $showGallery     = (int) $params->get('show_gallery', 1);
 $showVideo       = (int) $params->get('show_video', 1);
-$showInfo        = $showSurface || $showPeople || $showPriceFrom;
+$showInfo        = $showSurface || $showPeople || $showPrice;
 
 // Gallery Swiper
 $gallerySwiper = $showGallery && (int) $params->get('enable_swiper', 0);
@@ -96,12 +97,25 @@ $showDetailLink = (int) $params->get('show_detail_link', 0);
 		], $layoutPath); ?>
 
 		<?php // Basic info ?>
+		<?php
+		$priceValue = null;
+
+		if ($priceDisplay === 'current_rate' && $item->current_rate !== null)
+		{
+			$priceValue = $item->current_rate;
+		}
+		elseif ($priceDisplay === 'price_from')
+		{
+			$priceValue = $item->room_price_from ?? null;
+		}
+		?>
 		<?php echo LayoutHelper::render('room.info', [
-			'surface'    => $item->room_surface ?? '',
-			'people'     => $item->room_people ?? '',
-			'price_from' => $item->room_price_from ?? '',
-			'show'       => ['surface' => $showSurface, 'people' => $showPeople, 'price_from' => $showPriceFrom],
-			'langPrefix' => 'COM_ACCOMMODATION_MANAGER',
+			'surface'       => $item->room_surface ?? '',
+			'people'        => $item->room_people ?? '',
+			'price'         => $priceValue,
+			'price_display' => $priceDisplay,
+			'show'          => ['surface' => $showSurface, 'people' => $showPeople, 'price' => $showPrice],
+			'langPrefix'    => 'COM_ACCOMMODATION_MANAGER',
 		], $layoutPath); ?>
 
 		<?php // Intro ?>

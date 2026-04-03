@@ -66,7 +66,7 @@ Reusable layout files in `layouts/` for template overrides:
 ```
 layouts/
   room/thumbnail.php      — room thumbnail image
-  room/info.php           — surface, people, price-from
+  room/info.php           — surface, people, price (static or dynamic)
   room/floor-plan.php     — floor plan image with heading
   room/gallery.php        — image gallery (Swiper or plain)
   room/actions.php        — request/booking buttons
@@ -86,9 +86,9 @@ Component Options (**Components > Accommodation Manager > Options**):
 |-----|-----------------|
 | **Component** | Version history, SEF IDs, enabled languages |
 | **Categories** | Show/hide image, description, link button; Swiper slider settings |
-| **Rooms** | Show/hide each section (surface, people, price, intro, description, floor plan, gallery, video, rates); Swiper settings; category filter; action buttons |
+| **Rooms** | Show/hide each section (surface, people, intro, description, floor plan, gallery, video, rates); price display mode (static price-from, dynamic current rate, or hidden); Swiper settings; category filter; action buttons |
 | **Rates** | Hide past periods, season split (summer/winter with configurable start dates) |
-| **Links** | Request and booking URLs per language |
+| **Links** | Request and booking URLs per language (absolute or relative) |
 | **Permissions** | Joomla ACL |
 
 ### CSS/JS Assets
@@ -122,11 +122,11 @@ The script reads the version from `accommodation_manager.xml` and `pkg_accommoda
 
 ```
 dist/
-  com_accommodation_manager-3.5.3.zip
+  com_accommodation_manager-3.5.4.zip
   mod_accommodation_categories-1.0.0.zip
-  mod_accommodation_rooms-1.0.0.zip
+  mod_accommodation_rooms-1.0.1.zip
   mod_accommodation_rates-1.0.0.zip
-  pkg_accommodation_manager-3.5.3.zip   ← install this one
+  pkg_accommodation_manager-3.5.4.zip   ← install this one
 ```
 
 Upload `pkg_accommodation_manager-*.zip` to Joomla. It installs the component and all three modules in one step.

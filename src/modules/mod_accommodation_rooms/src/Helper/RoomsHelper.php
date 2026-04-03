@@ -100,10 +100,13 @@ class RoomsHelper implements DatabaseAwareInterface
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
-		// Decode gallery JSON
+		// Decode gallery JSON + current rate
+		$priceDisplay = $params->get('price_display', 'price_from');
+
 		foreach ($items as $item)
 		{
 			$item->gallery_items = Accommodation_managerHelper::decodeGalleryItems($item->gallery ?? null, $lang);
+			$item->current_rate  = ($priceDisplay === 'current_rate') ? Accommodation_managerHelper::getCurrentRate($db, (int) $item->id) : null;
 		}
 
 		return $items;

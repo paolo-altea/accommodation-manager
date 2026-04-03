@@ -12,6 +12,7 @@ namespace Accomodationmanager\Component\Accommodation_manager\Site\Model;
 defined('_JEXEC') or die;
 
 use Accomodationmanager\Component\Accommodation_manager\Site\Helper\Accommodation_managerHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
@@ -67,6 +68,9 @@ class RoomModel extends BaseDatabaseModel
 				$item->gallery ?? null,
 				Accommodation_managerHelper::getLanguageSuffix()
 			);
+
+			$priceDisplay = ComponentHelper::getParams('com_accommodation_manager')->get('rooms_price_display', 'price_from');
+			$item->current_rate = ($priceDisplay === 'current_rate') ? Accommodation_managerHelper::getCurrentRate($db, (int) $item->id) : null;
 		}
 
 		$this->_item = $item;

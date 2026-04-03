@@ -279,14 +279,16 @@
             <option value="1">JSHOW</option>
         </field>
         <field
-            name="rooms_show_price_from"
-            type="radio"
-            default="1"
-            label="COM_ACCOMMODATION_MANAGER_CONFIG_SHOW_PRICE_FROM"
-            layout="joomla.form.field.radio.switcher"
+            name="rooms_price_display"
+            type="list"
+            default="price_from"
+            label="COM_ACCOMMODATION_MANAGER_CONFIG_PRICE_DISPLAY"
+            description="COM_ACCOMMODATION_MANAGER_CONFIG_PRICE_DISPLAY_DESC"
+            class="form-select"
             >
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
+            <option value="none">COM_ACCOMMODATION_MANAGER_CONFIG_PRICE_DISPLAY_NONE</option>
+            <option value="price_from">COM_ACCOMMODATION_MANAGER_CONFIG_PRICE_DISPLAY_PRICE_FROM</option>
+            <option value="current_rate">COM_ACCOMMODATION_MANAGER_CONFIG_PRICE_DISPLAY_CURRENT_RATE</option>
         </field>
         <field
             name="rooms_show_intro"
@@ -739,38 +741,38 @@
         />
         <field
             name="request_link_de"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DE"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="request_link_it"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_IT"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="request_link_en"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_EN"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="request_link_fr"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_FR"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="request_link_es"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_ES"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_REQUEST_LINK_DESC"
-            filter="url"
+            filter="string"
         />
 
         <field
@@ -785,38 +787,38 @@
         />
         <field
             name="booking_link_de"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DE"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="booking_link_it"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_IT"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="booking_link_en"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_EN"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="booking_link_fr"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_FR"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DESC"
-            filter="url"
+            filter="string"
         />
         <field
             name="booking_link_es"
-            type="url"
+            type="text"
             label="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_ES"
             description="COM_ACCOMMODATION_MANAGER_CONFIG_BOOKING_LINK_DESC"
-            filter="url"
+            filter="string"
         />
     </fieldset>
 
