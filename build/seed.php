@@ -21,7 +21,7 @@ $joomlaRoot = $argv[1] ?? null;
 
 if (!$joomlaRoot || !is_file($joomlaRoot . '/configuration.php')) {
 	echo "Usage: php build/seed.php /path/to/joomla\n";
-	echo "Example: php build/seed.php /Users/paolodaponte/projects/base\n";
+	echo "Example: php build/seed.php /path/to/joomla\n";
 	exit(1);
 }
 

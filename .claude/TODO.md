@@ -169,7 +169,7 @@ Problemi identificati durante code review del backend:
 
 ## FRONTEND
 
-Riferimento analizzato: `/Users/paolodaponte/projects/base/static/room_rate` (script custom usato in produzione al posto del frontend Joomla)
+Riferimento analizzato: lo script custom `static/room_rate` usato in produzione al posto del frontend Joomla
 
 ---
 
