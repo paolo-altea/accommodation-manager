@@ -116,6 +116,13 @@ class RoommanagerTable extends BaseTable
 	 */
 	protected function processBind(array &$array): void
 	{
+		// Normalize empty strings to NULL for nullable numeric columns
+		foreach (['room_surface', 'room_price_from'] as $numField) {
+			if (isset($array[$numField]) && $array[$numField] === '') {
+				$array[$numField] = null;
+			}
+		}
+
 		// Convert room_gallery subform array to JSON
 		if (isset($array['room_gallery']) && is_array($array['room_gallery'])) {
 			$array['room_gallery'] = json_encode($array['room_gallery']);
